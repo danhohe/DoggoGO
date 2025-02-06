@@ -9,16 +9,23 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image("DoggoGOiOS")
-                .resizable()
-                .scaledToFit()
-            Text("DoggoGO")
+        
+        TabView {
+            Tab("Home", systemImage: "house"){
+                HomeView()
+            }
+            Tab("Map", systemImage: "map"){
+                MapView()
+            }
+            Tab("dogGO", systemImage: "pawprint"){
+                DoggoView()
+            }
+            Tab("Profile", systemImage: "person"){
+                ProfileView()
+            }
         }
-        .padding()
     }
 }
-
 #Preview {
     ContentView()
 }
