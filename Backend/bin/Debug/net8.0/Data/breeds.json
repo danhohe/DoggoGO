@@ -1,0 +1,150 @@
+[
+  {
+    "breedName": "Bullterrier",
+    "description": "Ein muskulöser, energischer Hund mit charakteristischem eiförmigem Kopf, ursprünglich als Kampfhund gezüchtet.",
+    "legal_restrictions": {
+      "category": "spezielle_hunderasse",
+      "rules": [
+        "Mindestalter des Halters: 16 Jahre",
+        "Sachkundeausbildung erforderlich",
+        "Verlässlichkeit des Halters notwendig",
+        "Alltagstauglichkeitsprüfung (ATP) verpflichtend",
+        "Leinen- und Maulkorbpflicht im öffentlichen Raum",
+        "Befreiung von Leinen- und Maulkorbpflicht möglich nach positiver verhaltensmedizinischer Evaluierung",
+        "Führen im öffentlichen Raum nur mit maximal einem weiteren großen oder speziellen Hund"
+      ]
+    }
+  },
+  {
+    "breedName": "American Staffordshire Terrier",
+    "description": "Ein kräftiger, selbstbewusster Hund mit freundlichem Wesen, oft als Familienhund gehalten.",
+    "legal_restrictions": {
+      "category": "spezielle_hunderasse",
+      "rules": [
+        "Mindestalter des Halters: 16 Jahre",
+        "Sachkundeausbildung erforderlich",
+        "Verlässlichkeit des Halters notwendig",
+        "Alltagstauglichkeitsprüfung (ATP) verpflichtend",
+        "Leinen- und Maulkorbpflicht im öffentlichen Raum",
+        "Befreiung von Leinen- und Maulkorbpflicht möglich nach positiver verhaltensmedizinischer Evaluierung",
+        "Führen im öffentlichen Raum nur mit maximal einem weiteren großen oder speziellen Hund"
+      ]
+    }
+  },
+  {
+    "breedName": "Staffordshire Bullterrier",
+    "description": "Ein kompakter, mutiger Hund mit liebevollem Charakter, bekannt für seine Bindung an Menschen.",
+    "legal_restrictions": {
+      "category": "spezielle_hunderasse",
+      "rules": [
+        "Mindestalter des Halters: 16 Jahre",
+        "Sachkundeausbildung erforderlich",
+        "Verlässlichkeit des Halters notwendig",
+        "Alltagstauglichkeitsprüfung (ATP) verpflichtend",
+        "Leinen- und Maulkorbpflicht im öffentlichen Raum",
+        "Befreiung von Leinen- und Maulkorbpflicht möglich nach positiver verhaltensmedizinischer Evaluierung",
+        "Führen im öffentlichen Raum nur mit maximal einem weiteren großen oder speziellen Hund"
+      ]
+    }
+  },
+  {
+    "breedName": "Dogo Argentino",
+    "description": "Ein großer, kräftiger Jagdhund mit weißem Fell, gezüchtet für die Großwildjagd.",
+    "legal_restrictions": {
+      "category": "spezielle_hunderasse",
+      "rules": [
+        "Mindestalter des Halters: 16 Jahre",
+        "Sachkundeausbildung erforderlich",
+        "Verlässlichkeit des Halters notwendig",
+        "Alltagstauglichkeitsprüfung (ATP) verpflichtend",
+        "Leinen- und Maulkorbpflicht im öffentlichen Raum",
+        "Befreiung von Leinen- und Maulkorbpflicht möglich nach positiver verhaltensmedizinischer Evaluierung",
+        "Führen im öffentlichen Raum nur mit maximal einem weiteren großen oder speziellen Hund"
+      ]
+    }
+  },
+  {
+    "breedName": "American Pit Bull Terrier",
+    "description": "Ein athletischer, intelligenter Hund mit starkem Willen, oft missverstanden aufgrund seiner Geschichte.",
+    "legal_restrictions": {
+      "category": "spezielle_hunderasse",
+      "rules": [
+        "Mindestalter des Halters: 16 Jahre",
+        "Sachkundeausbildung erforderlich",
+        "Verlässlichkeit des Halters notwendig",
+        "Alltagstauglichkeitsprüfung (ATP) verpflichtend",
+        "Leinen- und Maulkorbpflicht im öffentlichen Raum",
+        "Befreiung von Leinen- und Maulkorbpflicht möglich nach positiver verhaltensmedizinischer Evaluierung",
+        "Führen im öffentlichen Raum nur mit maximal einem weiteren großen oder speziellen Hund"
+      ]
+    }
+  },
+  {
+    "breedName": "Tosa Inu",
+    "description": "Ein großer, ruhiger japanischer Hund, ursprünglich für Hundekämpfe gezüchtet.",
+    "legal_restrictions": {
+      "category": "spezielle_hunderasse",
+      "rules": [
+        "Mindestalter des Halters: 16 Jahre",
+        "Sachkundeausbildung erforderlich",
+        "Verlässlichkeit des Halters notwendig",
+        "Alltagstauglichkeitsprüfung (ATP) verpflichtend",
+        "Leinen- und Maulkorbpflicht im öffentlichen Raum",
+        "Befreiung von Leinen- und Maulkorbpflicht möglich nach positiver verhaltensmedizinischer Evaluierung",
+        "Führen im öffentlichen Raum nur mit maximal einem weiteren großen oder speziellen Hund"
+      ]
+    }
+  },
+  {
+    "breedName": "Deutscher Schäferhund",
+    "description": "Ein vielseitiger, intelligenter Hund, bekannt für seine Arbeit als Dienst- und Familienhund.",
+    "legal_restrictions": {
+      "category": "großer_hund",
+      "rules": [
+        "Mindestalter des Halters: 16 Jahre",
+        "Sachkundeausbildung erforderlich",
+        "Alltagstauglichkeitsprüfung (ATP) verpflichtend",
+        "Leinen- und Maulkorbpflicht in bestimmten öffentlichen Bereichen"
+      ]
+    }
+  },
+  {
+    "breedName": "Labrador Retriever",
+    "description": "Ein freundlicher, ausgeglichener Hund, beliebt als Familien- und Assistenzhund.",
+    "legal_restrictions": {
+      "category": "großer_hund",
+      "rules": [
+        "Mindestalter des Halters: 16 Jahre",
+        "Sachkundeausbildung erforderlich",
+        "Alltagstauglichkeitsprüfung (ATP) verpflichtend",
+        "Leinen- und Maulkorbpflicht in bestimmten öffentlichen Bereichen"
+      ]
+    }
+  },
+  {
+    "breedName": "Golden Retriever",
+    "description": "Ein sanftmütiger, intelligenter Hund, bekannt für seine Geduld und Freundlichkeit.",
+    "legal_restrictions": {
+      "category": "großer_hund",
+      "rules": [
+        "Mindestalter des Halters: 16 Jahre",
+        "Sachkundeausbildung erforderlich",
+        "Alltagstauglichkeitsprüfung (ATP) verpflichtend",
+        "Leinen- und Maulkorbpflicht in bestimmten öffentlichen Bereichen"
+      ]
+    }
+  },
+  {
+    "breedName": "Rottweiler",
+    "description": "Ein kräftiger, selbstsicherer Hund mit ausgeprägtem Schutztrieb, oft als Wachhund eingesetzt.",
+    "legal_restrictions": {
+      "category": "großer_hund",
+      "rules": [
+        "Mindestalter des Halters: 16 Jahre",
+        "Sachkundeausbildung erforderlich",
+        "Alltagstauglichkeitsprüfung (ATP) verpflichtend",
+        "Leinen- und Maulkorbpflicht in bestimmten öffentlichen Bereichen"
+      ]
+    }
+  }
+]

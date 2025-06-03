@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{BCCEB633-414A-43A9-A039-6C4592DE5F6D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7F82C219-F44B-4599-8540-71F7D7646058}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCCEB633-414A-43A9-A039-6C4592DE5F6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCCEB633-414A-43A9-A039-6C4592DE5F6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCCEB633-414A-43A9-A039-6C4592DE5F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCCEB633-414A-43A9-A039-6C4592DE5F6D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

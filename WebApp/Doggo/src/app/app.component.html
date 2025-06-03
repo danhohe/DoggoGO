@@ -1,0 +1,70 @@
+<div class="container" style="margin: 30px auto; max-width: 1200px; background: linear-gradient(135deg, #232526 0%, #414345 100%); border-radius: 16px; box-shadow: 0 2px 24px rgba(0,0,0,0.18); padding: 36px 26px;">
+  <div style="display: flex; flex-wrap: wrap; align-items: flex-start; width: 100%; gap: 32px;">
+    <!-- Linke Spalte: Map und Auswahlleiste -->
+    <div style="display: flex; flex-direction: column; flex: 1 1 650px; min-width: 400px; max-width: 750px; background: #f5f7fa; border-radius: 10px; box-shadow: 0 1px 8px rgba(0,0,0,0.06); padding: 24px 18px;">
+      <google-map [height]="500" width="100%" [center]="center" [zoom]="zoom" style="border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.07);">
+        <map-marker *ngIf="userLocationMarker"
+          [position]="userLocationMarker.position!"
+          [title]="userLocationMarker.title || ''"
+          [icon]="userLocationMarker.icon ? userLocationMarker.icon : ''">
+        </map-marker>
+      </google-map>
+      <!-- Auswahlleiste standalone, unter der Map, volle Breite der Spalte -->
+      <div class="selection" style="overflow-x: auto; margin-top: 18px; width: 100%; background: linear-gradient(90deg, #e0eafc 0%, #cfdef3 100%); border-radius: 10px; padding: 18px 18px 14px 18px; display: flex; align-items: center; gap: 18px; box-shadow: 0 2px 8px rgba(80,120,200,0.08); border: 1.5px solid #b6c6e3;">
+        <span style="margin: 0 8px 0 8px; font-weight: 600; color: #2c3e50; font-size: 1.1rem; letter-spacing: 0.5px;">🐾 Hundekategorie wählen:</span>
+        <select id="categorySelect" [(ngModel)]="selectedDogCategory" style="flex: 1; min-width: 140px; max-width: 320px; padding: 8px 14px; border-radius: 6px; border: 1.5px solid #a3b8d8; background: #fafdff; font-size: 1rem; font-weight: 500; color: #2c3e50; box-shadow: 0 1px 4px rgba(80,120,200,0.06); transition: border 0.2s; outline: none;">
+          <option [ngValue]="null" style="color:#6c757d; font-style:italic; background:#f0f4fa;">🌐 Allgemeine Hinweise</option>
+          <option *ngFor="let category of dogCategories; let i = index" [ngValue]="category" [ngStyle]="{
+            'background': i % 2 === 0 ? '#e0eafc' : '#cfdef3',
+            'color': '#2c3e50',
+            'font-weight': 500,
+            'border-radius': '6px',
+            'padding': '6px 0'
+          }">🐕 {{ category.name }}</option>
+        </select>
+      </div>
+      <!-- Wetteranzeige: Simple, modern, unter der Auswahlleiste -->
+      <div *ngIf="weather" class="weather-glass-box animate-fadein" [ngClass]="{ 'weather-night': isNight, 'weather-day': !isNight }">
+        <span class="weather-emoji">
+          {{ getWeatherEmoji(weather.main) }}
+        </span>
+        <div style="display: flex; flex-direction: column;">
+          <span class="weather-temp">{{ weather.temp }}°C</span>
+          <span class="weather-desc">{{ weather.description }}</span>
+        </div>
+        <div class="weather-gloss"></div>
+      </div>
+    </div>
+    <!-- Informationen rechts -->
+    <div class="info-section" style="flex: 2 1 350px; min-width: 260px; max-width: 500px; background: #f8f9fa; border-radius: 10px; box-shadow: 0 1px 8px rgba(0,0,0,0.06); padding: 28px 22px;">
+      <h3 style="margin-bottom: 14px; color: #232526; font-weight: 600; letter-spacing: 0.2px; font-size: 1.08rem; text-shadow: 0 1px 4px #e0eafc;">Alles Wichtige auf einen Blick</h3>
+      <div *ngIf="selectedDogCategory">
+        <div style="background: linear-gradient(90deg, #e0eafc 0%, #cfdef3 100%); border-radius: 8px; box-shadow: 0 1px 4px rgba(80,120,200,0.07); padding: 12px 14px 8px 14px; margin-bottom: 12px;">
+          <h4 style="margin-top: 0; color: #2c3e50; font-weight: 600; display: flex; align-items: center; gap: 6px; font-size: 1rem;">📋 Kriterien</h4>
+          <p style="margin-bottom: 10px; color: #2c3e50; font-size: 0.98rem;">{{ selectedDogCategory.info.criteria }}</p>
+        </div>
+        <div style="background: linear-gradient(90deg, #f8ffae 0%, #43c6ac 100%); border-radius: 8px; box-shadow: 0 1px 4px rgba(80,120,200,0.07); padding: 12px 14px 8px 14px; margin-bottom: 12px;">
+          <h4 style="color: #2c3e50; font-weight: 600; display: flex; align-items: center; gap: 6px; font-size: 1rem;">⚖️ Gesetze</h4>
+          <p style="margin-bottom: 10px; color: #2c3e50; font-size: 0.98rem;">{{ selectedDogCategory.info.laws }}</p>
+        </div>
+        <div style="background: linear-gradient(90deg, #fbc2eb 0%, #a6c1ee 100%); border-radius: 8px; box-shadow: 0 1px 4px rgba(80,120,200,0.07); padding: 12px 14px 8px 14px;">
+          <h4 style="color: #2c3e50; font-weight: 600; display: flex; align-items: center; gap: 6px; font-size: 1rem;">📑 Richtlinien</h4>
+          <p style="color: #2c3e50; font-size: 0.98rem;">{{ selectedDogCategory.info.guidelines }}</p>
+        </div>
+      </div>
+      <div *ngIf="!selectedDogCategory" style="color: #495057; font-size: 0.98rem; background: #e0eafc; border-radius: 8px; padding: 14px 12px; margin-top: 8px; box-shadow: 0 1px 4px rgba(80,120,200,0.07);">
+        <h4 style="margin-top: 0; color: #2c3e50; font-weight: 600; font-size: 1rem;">Allgemeine Hinweise für Hundehalter</h4>
+        <ul style="margin-bottom: 8px; padding-left: 18px;">
+          <li>🐶 <b>Chip- und Registrierungspflicht:</b> Jeder Hund muss gechippt und bei der zuständigen Behörde gemeldet sein.</li>
+          <li>🦴 <b>Haftpflichtversicherung:</b> Für viele Hunde ist eine Haftpflichtversicherung gesetzlich vorgeschrieben.</li>
+          <li>🚦 <b>Leinen- und Maulkorbpflicht:</b> In öffentlichen Bereichen gelten je nach Region unterschiedliche Vorschriften.</li>
+          <li>💡 <b>Verhalten:</b> Rücksichtnahme auf andere Menschen und Tiere ist Pflicht. Hundekot bitte immer entsorgen!</li>
+          <li>⚠️ <b>Bußgelder:</b> Verstöße gegen die Vorschriften können zu hohen Strafen führen.</li>
+        </ul>
+        <div style="font-size: 0.95rem; color: #6c757d;">
+          Weitere Infos findest du auf den offiziellen Seiten deiner Stadt oder Gemeinde, z.B. <a href="https://www.oesterreich.gv.at/themen/reisen_und_freizeit/haustiere.html" target="_blank" style="color: #3b6ea5; text-decoration: underline;">oesterreich.gv.at</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

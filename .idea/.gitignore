@@ -1,0 +1,38 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/projectSettingsUpdater.xml
+/.idea.DoggoGO.iml
+/contentModel.xml
+/modules.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+#files only i work with
+../iOSDev/
+
+# Angular build output
+/dist/
+/out-tsc/
+
+# Node dependencies
+/node_modules/
+
+# Environment files (if you have secrets)
+/src/environments/environment*.ts
+
+# IDE files
+/.idea/
+/.vscode/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
