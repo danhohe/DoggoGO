@@ -406,6 +406,38 @@ h3, h4 {
   font-family: 'Poppins', 'Inter', Arial, sans-serif;
 }
 
+.weather-glass-box.weather-day {
+  background: linear-gradient(90deg, #e0eafc 0%, #cfdef3 100%);
+  color: #2c3e50;
+  box-shadow: 0 2px 12px rgba(80,120,200,0.13);
+}
+.weather-glass-box.weather-night {
+  background: linear-gradient(120deg, #232526 0%, #414345 100%);
+  color: #e0eafc;
+  box-shadow: 0 2px 16px rgba(30,40,60,0.22);
+}
+.weather-glass-box.weather-night .weather-temp,
+.weather-glass-box.weather-night .weather-desc {
+  color: #e0eafc;
+  text-shadow: 0 1px 4px #232526;
+}
+.weather-glass-box.weather-day .weather-temp,
+.weather-glass-box.weather-day .weather-desc {
+  color: #2c3e50;
+  text-shadow: 0 1px 4px #e0eafc;
+}
+.weather-emoji {
+  font-size: 2.2rem;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+.weather-warning {
+  color: #d32f2f;
+  font-weight: bold;
+  font-size: 1.05rem;
+  margin-top: 8px;
+}
+
 @media (max-width: 900px) {
   .weather-hourly-box-dark, .weather-hourly-title, .weather-hourly-list {
     max-width: 98vw;

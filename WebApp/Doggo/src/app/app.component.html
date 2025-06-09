@@ -25,13 +25,23 @@
       </div>
       <!-- Wetteranzeige: Simple, modern, unter der Auswahlleiste -->
       <div *ngIf="weather" class="weather-glass-box animate-fadein" [ngClass]="{ 'weather-night': isNight, 'weather-day': !isNight }">
-        <span class="weather-emoji">
+        <span class="weather-emoji" [title]="getWeatherEmojiTitle(weather.main)">
           {{ getWeatherEmoji(weather.main) }}
         </span>
         <div style="display: flex; flex-direction: column;">
           <span class="weather-temp">{{ weather.temp }}°C</span>
           <span class="weather-desc">{{ weather.description }}</span>
+          <!-- Wettericon entfernt, da es wie ein Kreis unter 'Klarer Himmel' aussieht -->
         </div>
+        <div *ngIf="wind !== null || humidity !== null" style="margin-top: 6px; font-size: 0.98rem; color: #3b6ea5; display: flex; gap: 18px;">
+          <span *ngIf="wind !== null" [title]="getWindTitle()">💨 {{ wind }} km/h</span>
+          <span *ngIf="humidity !== null" [title]="getHumidityTitle()">💧 {{ humidity }}%</span>
+        </div>
+        <div *ngIf="sunrise || sunset" style="margin-top: 4px; font-size: 0.95rem; color: #6c757d; display: flex; gap: 14px;">
+          <span *ngIf="sunrise" [title]="getSunriseTitle()">🌅 {{ sunrise }}</span>
+          <span *ngIf="sunset" [title]="getSunsetTitle()">🌇 {{ sunset }}</span>
+        </div>
+        <div *ngIf="weatherWarning" style="margin-top: 8px; color: #d32f2f; font-weight: bold; font-size: 1.05rem;">{{ weatherWarning }}</div>
         <div class="weather-gloss"></div>
       </div>
     </div>

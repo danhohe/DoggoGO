@@ -100,6 +100,11 @@ export class AppComponent {
   mapHeight = '500px';
   weather: WeatherData | null = null;
   hourlyWeather: Array<{ time: string, temp: number, icon: string, description: string }> = [];
+  sunrise: string | null = null;
+  sunset: string | null = null;
+  wind: number | null = null;
+  humidity: number | null = null;
+  weatherWarning: string | null = null;
   isNight: boolean = false;
   isRain: boolean = false;
   iconError = false;
@@ -156,6 +161,18 @@ export class AppComponent {
           icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
           main: data.weather[0].main // Wettertyp für Emoji
         };
+        // Tageszeit für Wetterbox bestimmen
+        const now = new Date();
+        const hour = now.getHours();
+        this.isNight = (hour < 6 || hour >= 20); // 20-6 Uhr = Nacht
+        // Sonnenaufgang/Sonnenuntergang
+        this.sunrise = data.sys && data.sys.sunrise ? new Date(data.sys.sunrise * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : null;
+        this.sunset = data.sys && data.sys.sunset ? new Date(data.sys.sunset * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : null;
+        // Wind & Luftfeuchtigkeit
+        this.wind = data.wind && data.wind.speed ? Math.round(data.wind.speed) : null;
+        this.humidity = data.main && data.main.humidity ? data.main.humidity : null;
+        // Wetterwarnung (vereinfachtes Beispiel)
+        this.weatherWarning = (data.weather[0].main === 'Thunderstorm' || data.weather[0].main === 'Extreme') ? '⚠️ Unwetterwarnung!' : null;
       })
       .catch(() => {
         this.weather = null;
@@ -183,6 +200,9 @@ export class AppComponent {
   }
 
   getWeatherEmoji(main: string): string {
+    if (this.isNight && (main || '').toLowerCase() === 'clear') {
+      return '🌙'; // Mond bei klarem Nachthimmel
+    }
     switch ((main || '').toLowerCase()) {
       case 'rain':
       case 'drizzle':
@@ -210,5 +230,51 @@ export class AppComponent {
       default:
         return '🌡️';
     }
+  }
+
+  getWeatherEmojiTitle(main: string): string {
+    if (this.isNight && (main || '').toLowerCase() === 'clear') {
+      return 'Klarer Nachthimmel';
+    }
+    switch ((main || '').toLowerCase()) {
+      case 'rain':
+      case 'drizzle':
+      case 'thunderstorm':
+        return 'Regen, Nieselregen oder Gewitter';
+      case 'snow':
+        return 'Schnee';
+      case 'clear':
+        return 'Sonnig';
+      case 'clouds':
+        return 'Bewölkt';
+      case 'mist':
+      case 'fog':
+      case 'haze':
+        return 'Nebel oder Dunst';
+      case 'smoke':
+        return 'Rauch';
+      case 'tornado':
+        return 'Tornado';
+      case 'squall':
+        return 'Sturmböen';
+      case 'dust':
+      case 'sand':
+        return 'Staub oder Sand';
+      default:
+        return 'Unbekanntes Wetter';
+    }
+  }
+
+  getWindTitle(): string {
+    return this.wind !== null ? `Windgeschwindigkeit: ${this.wind} km/h` : '';
+  }
+  getHumidityTitle(): string {
+    return this.humidity !== null ? `Luftfeuchtigkeit: ${this.humidity}%` : '';
+  }
+  getSunriseTitle(): string {
+    return this.sunrise ? `Sonnenaufgang: ${this.sunrise}` : '';
+  }
+  getSunsetTitle(): string {
+    return this.sunset ? `Sonnenuntergang: ${this.sunset}` : '';
   }
 }
