@@ -1,0 +1,64 @@
+/* Responsive Design für mobile Geräte */
+@media (max-width: 900px) {
+  .weather-hourly-box-dark, 
+  .weather-hourly-title, 
+  .weather-hourly-list {
+    max-width: 98vw;
+  }
+  
+  .weather-hourly-item {
+    min-width: 80px;
+    padding: 10px 8px;
+  }
+  
+  .container {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .dark-container {
+    padding: 24px 18px;
+    margin: 20px auto;
+  }
+  
+  .info-section {
+    padding: 20px 16px;
+  }
+  
+  .weather-glass-box {
+    padding: 14px 16px 12px 16px;
+    gap: 15px;
+  }
+  
+  .weather-emoji {
+    font-size: 2rem;
+  }
+  
+  .weather-temp {
+    font-size: 1.8rem;
+  }
+  
+  .weather-desc {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .weather-hourly-item {
+    min-width: 70px;
+    padding: 8px 6px;
+  }
+  
+  .weather-hourly-temp {
+    font-size: 1rem;
+  }
+  
+  .weather-hourly-desc {
+    font-size: 0.8rem;
+  }
+  
+  .dark-container {
+    padding: 20px 14px;
+    margin: 15px auto;
+  }
+}

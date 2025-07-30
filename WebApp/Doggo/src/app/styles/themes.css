@@ -1,0 +1,60 @@
+/* Farbthemen und Gradients */
+.dark-container {
+  background: linear-gradient(135deg, #232526 0%, #414345 100%);
+  border-radius: 16px;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.18);
+  padding: 36px 26px;
+  margin: 30px auto;
+  max-width: 1200px;
+}
+
+/* Auswahlleiste */
+.selection {
+  background: linear-gradient(90deg, #e0eafc 0%, #b6c6e3 100%) !important;
+  border: 1.5px solid #a3b8d8 !important;
+}
+
+/* Info-Boxen */
+.info-section {
+  background: linear-gradient(120deg, #fafdff 0%, #e0eafc 100%) !important;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(80,120,200,0.10);
+  padding: 28px 22px;
+}
+
+.info-section h3 {
+  color: #2c3e50 !important;
+  text-shadow: 0 1px 4px #e0eafc !important;
+}
+
+.info-section > div[ngif],
+.info-section > div[ng-reflect-ng-if] {
+  background: linear-gradient(90deg, #e0eafc 0%, #cfdef3 100%) !important;
+  color: #232526 !important;
+}
+
+/* Info-Boxen Spezialfarben */
+.info-section > div[ngif]:nth-child(2) {
+  background: linear-gradient(90deg, #f8ffae 0%, #43c6ac 100%) !important;
+}
+
+.info-section > div[ngif]:nth-child(3) {
+  background: linear-gradient(90deg, #fbc2eb 0%, #a6c1ee 100%) !important;
+}
+
+/* Allgemeine Hinweise Box */
+.info-section > div[ngif]:last-child {
+  background: linear-gradient(90deg, #232526 0%, #414345 100%) !important;
+  color: #e0eafc !important;
+}
+
+.info-section > div[ngif]:last-child a {
+  color: #b6c6e3 !important;
+}
+
+/* Map-Box: stärker abgerundet, farbiger Rand */
+.google-map {
+  border-radius: 14px !important;
+  box-shadow: 0 2px 12px rgba(80,120,200,0.10) !important;
+  border: 1.5px solid #b6c6e3 !important;
+}

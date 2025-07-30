@@ -1,0 +1,33 @@
+/* Basis Typografie und allgemeine Styles */
+h4 {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul li {
+  padding: 3px 0;
+}
+
+/* Schrift für Überschriften */
+h3, h4 {
+  font-family: 'Poppins', 'Inter', Arial, sans-serif;
+}
+
+/* Auswahlleiste: Hover & Icons */
+.selection select:focus, .selection select:hover {
+  border: 1.5px solid #3b6ea5;
+  box-shadow: 0 2px 8px #b6c6e3;
+}
+
+.selection option {
+  padding-left: 1.2em;
+}
+
+.selection option::before {
+  content: '🐕 ';
+}
