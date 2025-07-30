@@ -65,13 +65,24 @@ import { AuthService } from '../services/auth.service';
         <!-- Register Form -->
         <form *ngIf="activeTab === 'register'" (ngSubmit)="onRegister()" class="login-form">
           <div class="form-group">
+            <label for="registerUsername">Benutzername</label>
+            <input 
+              type="text" 
+              id="registerUsername"
+              [(ngModel)]="registerData.username" 
+              name="registerUsername"
+              placeholder="Eindeutiger Benutzername"
+              required>
+          </div>
+
+          <div class="form-group">
             <label for="registerName">Name</label>
             <input 
               type="text" 
               id="registerName"
               [(ngModel)]="registerData.name" 
               name="registerName"
-              placeholder="Ihr Name"
+              placeholder="Ihr vollständiger Name"
               required>
           </div>
 
@@ -110,6 +121,7 @@ import { AuthService } from '../services/auth.service';
         <div class="demo-info">
           <h3>Demo-Zugangsdaten:</h3>
           <p><strong>E-Mail:</strong> max&#64;example.com</p>
+          <p><strong>Benutzername:</strong> maxmustermann</p>
           <p><strong>Passwort:</strong> beliebig (wird nicht geprüft)</p>
         </div>
 
@@ -289,6 +301,7 @@ export class LoginComponent {
   };
 
   registerData = {
+    username: '',
     name: '',
     email: '',
     password: ''
@@ -327,14 +340,15 @@ export class LoginComponent {
     this.authService.register(
       this.registerData.email, 
       this.registerData.name, 
-      this.registerData.password
+      this.registerData.password,
+      this.registerData.username
     ).subscribe({
       next: (success) => {
         this.isLoading = false;
         if (success) {
           this.router.navigate(['/profile']);
         } else {
-          this.errorMessage = 'Diese E-Mail-Adresse ist bereits registriert.';
+          this.errorMessage = 'Diese E-Mail-Adresse oder Benutzername ist bereits registriert.';
         }
       },
       error: () => {

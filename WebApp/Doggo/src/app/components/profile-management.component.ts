@@ -20,7 +20,7 @@ import { Dog, DogPark, WasteDispenser, User } from '../services/data.service';
           <div class="header-text">
             <h2>⚙️ Profilverwaltung</h2>
             <div *ngIf="currentUser" class="user-welcome">
-              Willkommen, {{ currentUser.name }}! Hier können Sie Ihre Einträge verwalten.
+              Willkommen, <strong>{{ getUsernameDisplay() }}</strong>! Hier können Sie Ihre Einträge verwalten.
             </div>
           </div>
         </div>
@@ -1137,6 +1137,11 @@ export class ProfileManagementComponent implements OnInit, OnDestroy {
       case 'both': return 'Sackerl + Mülleimer';
       default: return type;
     }
+  }
+
+  getUsernameDisplay(): string {
+    if (!this.currentUser) return 'Unbekannt';
+    return this.currentUser.username || this.currentUser.name.toLowerCase().replace(/\s+/g, '');
   }
 
   private getEmptyDog(): Partial<Dog> {

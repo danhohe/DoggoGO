@@ -104,6 +104,7 @@ interface ApiResponse<T = any> {
   "data": {
     "user": {
       "id": 1,
+      "username": "maxmustermann",
       "name": "Max Mustermann",
       "email": "max@example.com",
       "isActive": true,

@@ -28,7 +28,7 @@ import { User } from '../services/data.service';
 
         <div class="nav-auth">
           <div *ngIf="currentUser$ | async as user" class="user-info">
-            <span class="welcome-text">Hallo, {{user.name}}!</span>
+            <span class="welcome-text">Hallo, {{getUsernameDisplay(user)}}!</span>
             <button (click)="logout()" class="logout-btn">
               Abmelden
             </button>
@@ -160,6 +160,10 @@ export class NavigationComponent {
 
   constructor(private authService: AuthService) {
     this.currentUser$ = this.authService.currentUser$;
+  }
+
+  getUsernameDisplay(user: User): string {
+    return user.username || user.name.toLowerCase().replace(/\s+/g, '');
   }
 
   logout(): void {

@@ -30,9 +30,7 @@ export class AuthService {
   ) {
     // Prüfe ob bereits ein Benutzer eingeloggt ist
     const storedUser = this.getStoredUser();
-    const storedToken = this.getStoredToken();
-    
-    if (storedUser && storedToken && this.isTokenValid()) {
+    if (storedUser && this.isTokenValid()) {
       this.currentUserSubject.next(storedUser);
       this.dataService.setCurrentUser(storedUser);
     } else {
@@ -46,7 +44,16 @@ export class AuthService {
   private getStoredUser(): User | null {
     if (typeof window !== 'undefined') {
       const storedUser = localStorage.getItem('currentUser');
-      return storedUser ? JSON.parse(storedUser) : null;
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+        // Für Rückwärtskompatibilität: Username hinzufügen falls nicht vorhanden
+        if (!user.username && user.name) {
+          user.username = user.name.toLowerCase().replace(/\s+/g, '');
+          // Aktualisiere localStorage mit dem neuen Username
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        }
+        return user;
+      }
     }
     return null;
   }
@@ -85,6 +92,7 @@ export class AuthService {
   private convertApiUserToUser(apiUser: ApiUser): User {
     return {
       id: apiUser.id,
+      username: apiUser.username,
       name: apiUser.name,
       email: apiUser.email,
       registeredAt: new Date(apiUser.createdAt || Date.now())
@@ -100,7 +108,6 @@ export class AuthService {
       return token.startsWith('mock_token_');
     }
 
-    // Für echte JWT-Tokens: Prüfe Ablaufdatum
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       const currentTime = Math.floor(Date.now() / 1000);
@@ -167,14 +174,19 @@ export class AuthService {
     });
   }
 
-  register(email: string, name: string, password: string): Observable<boolean> {
+  register(email: string, name: string, password: string, username?: string): Observable<boolean> {
     // Prüfe ob Mock-Daten verwendet werden sollen
     if (environment.enableMockData) {
-      return this.mockRegister(email, name, password);
+      return this.mockRegister(email, name, password, username);
     }
 
     // Echte API-Integration
-    const registerRequest: RegisterRequest = { email, name, password };
+    const registerRequest: RegisterRequest = { 
+      email, 
+      name, 
+      password, 
+      username: username || name.toLowerCase().replace(/\s+/g, '') 
+    };
     
     return this.httpApiService.register(registerRequest).pipe(
       map((response: AuthResponse) => {
@@ -196,18 +208,22 @@ export class AuthService {
     );
   }
 
-  private mockRegister(email: string, name: string, password: string): Observable<boolean> {
+  private mockRegister(email: string, name: string, password: string, username?: string): Observable<boolean> {
     // Simulierte Registrierung - bestehende Implementierung
     return new Observable(observer => {
       this.dataService.getUsers().subscribe((users: User[]) => {
         const existingUser = users.find((u: User) => u.email === email);
+        const existingUsername = users.find((u: User) => u.username === username);
         
         if (existingUser) {
           observer.next(false); // E-Mail bereits registriert
+        } else if (existingUsername && username) {
+          observer.next(false); // Username bereits registriert
         } else {
           const newUserData = {
             email,
             name,
+            username: username || name.toLowerCase().replace(/\s+/g, ''),
             registeredAt: new Date()
           };
           

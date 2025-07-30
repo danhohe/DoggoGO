@@ -26,6 +26,7 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
+  username: string;
   name: string;
   email: string;
   password: string;
@@ -47,6 +48,7 @@ export interface RefreshTokenRequest {
 // User Interfaces
 export interface ApiUser {
   id: number;
+  username: string;
   name: string;
   email: string;
   isActive: boolean;
@@ -60,6 +62,7 @@ export interface ApiUser {
 }
 
 export interface UpdateUserRequest {
+  username?: string;
   name?: string;
   email?: string;
   profile?: {

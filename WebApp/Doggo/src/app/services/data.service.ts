@@ -5,6 +5,7 @@ import { delay } from 'rxjs/operators';
 // Interfaces für die Datenmodelle
 export interface User {
   id: number;
+  username: string;
   email: string;
   name: string;
   registeredAt: Date;
@@ -363,12 +364,14 @@ export class DataService {
     return [
       {
         id: 1,
+        username: 'maxmustermann',
         email: 'max@example.com',
         name: 'Max Mustermann',
         registeredAt: new Date('2024-01-15')
       },
       {
         id: 2,
+        username: 'annaschm',
         email: 'anna@example.com',
         name: 'Anna Schmidt',
         registeredAt: new Date('2024-02-20')
