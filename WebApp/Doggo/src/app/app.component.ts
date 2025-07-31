@@ -61,6 +61,9 @@ export class AppComponent implements OnInit, OnDestroy {
   // Bearbeitungsmodus für direktes Bearbeiten durch Klick
   editMode = false;
   
+  // Navigationsmodus für direkte Navigation durch Klick
+  navigationMode = false;
+  
   // Info Window Content und Position
   infoWindowContent = '';
   infoWindowPosition: google.maps.LatLngLiteral | null = null;
@@ -105,6 +108,10 @@ export class AppComponent implements OnInit, OnDestroy {
     newIssue: '',
     rating: 3
   };
+
+  // Navigation-Modal-Eigenschaften
+  showNavigationModal = false;
+  selectedNavigationLocation: { lat: number; lng: number; name: string; address?: string; type: 'park' | 'dispenser' } | null = null;
 
   dogCategories: DogCategory[] = [
     {
@@ -215,30 +222,71 @@ export class AppComponent implements OnInit, OnDestroy {
             }
           };
           this.fetchWeather(position.coords.latitude, position.coords.longitude);
+          console.log('✅ Aktueller Standort ermittelt:', position.coords.latitude, position.coords.longitude);
         },
         (error) => {
           this.userLocationMarker = null;
           this.center = { lat: 48.3069, lng: 14.2868 };
-          alert('Dein Standort konnte nicht ermittelt werden. Die Karte zeigt den Standardstandort (Linz).');
+          console.warn('⚠️ Standortermittlung fehlgeschlagen:', error.message);
+          
+          let errorMsg = 'Dein Standort konnte nicht ermittelt werden. ';
+          switch(error.code) {
+            case error.PERMISSION_DENIED:
+              errorMsg += 'Standortzugriff wurde verweigert. Bitte erlaube den Standortzugriff in den Browser-Einstellungen.';
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMsg += 'Standortinformationen sind nicht verfügbar.';
+              break;
+            case error.TIMEOUT:
+              errorMsg += 'Zeitüberschreitung bei der Standortermittlung.';
+              break;
+            default:
+              errorMsg += 'Unbekannter Fehler bei der Standortermittlung.';
+          }
+          errorMsg += ' Die Karte zeigt den Standardstandort (HTL Leonding, Linz).';
+          
+          alert(errorMsg);
           // Wetter für Linz abrufen
           this.fetchWeather(48.3069, 14.2868);
+        },
+        { 
+          enableHighAccuracy: true, 
+          timeout: 10000, 
+          maximumAge: 300000 // Cache Position für 5 Minuten
         }
       );
+    } else {
+      // Geolocation nicht unterstützt
+      this.center = { lat: 48.3069, lng: 14.2868 };
+      alert('Standortermittlung wird von diesem Browser nicht unterstützt. Die Karte zeigt den Standardstandort (HTL Leonding, Linz).');
+      this.fetchWeather(48.3069, 14.2868);
     }
     this.setDayNight();
 
+    // Globale Callback-Funktionen für InfoWindow-Buttons - Verbessertes System
+    this.setupGlobalCallbacks();
+  }
+
+  private setupGlobalCallbacks(): void {
+    // Store reference to component context
+    const self = this;
+    
     // Globale Callback-Funktionen für InfoWindow-Buttons
-    (window as any).doggoEditPark = () => {
-      if (this.currentParkId) {
-        this.openParkStatusModal(this.currentParkId);
+    (window as any).doggoEditPark = function() {
+      console.log('doggoEditPark aufgerufen, currentParkId:', self.currentParkId);
+      if (self.currentParkId) {
+        self.openParkStatusModal(self.currentParkId);
       }
     };
     
-    (window as any).doggoEditDispenser = () => {
-      if (this.currentDispenserId) {
-        this.openDispenserStatusModal(this.currentDispenserId);
+    (window as any).doggoEditDispenser = function() {
+      console.log('doggoEditDispenser aufgerufen, currentDispenserId:', self.currentDispenserId);
+      if (self.currentDispenserId) {
+        self.openDispenserStatusModal(self.currentDispenserId);
       }
     };
+    
+    console.log('✅ Globale Callback-Funktionen erfolgreich registriert');
   }
 
   setDayNight() {
@@ -459,16 +507,28 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
     
+    // Prüfe ob Navigationsmodus aktiv 
+    if (this.navigationMode) {
+      this.navigateToLocation(park.location.lat, park.location.lng, park.name);
+      return;
+    }
+    
     // Prüfe ob Strg+Klick für Status-Bearbeitung
     if (event && (event as any).domEvent && (event as any).domEvent.ctrlKey && this.currentUser) {
       this.openParkStatusModal(park.id);
       return;
     }
     
+    // Prüfe ob Alt+Klick für Navigation
+    if (event && (event as any).domEvent && (event as any).domEvent.altKey) {
+      this.navigateToLocation(park.location.lat, park.location.lng, park.name);
+      return;
+    }
+    
     this.currentParkId = park.id;
     this.currentDispenserId = null;
     
-    // Hinweis für eingeloggte Nutzer hinzufügen
+    // Hinweise für eingeloggte Nutzer hinzufügen
     const editHint = this.currentUser ? `
       <div style="margin-top: 15px; padding: 10px; background: #e3f2fd; border-radius: 6px; border-left: 4px solid #2196f3;">
         <div style="font-size: 0.9rem; color: #1976d2; font-weight: 600;">
@@ -476,6 +536,14 @@ export class AppComponent implements OnInit, OnDestroy {
         </div>
       </div>
     ` : '';
+    
+    const navigationHint = `
+      <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 6px; border-left: 4px solid #28a745;">
+        <div style="font-size: 0.9rem; color: #495057; font-weight: 600;">
+          🧭 Navigation: <strong>Navigationsmodus</strong> aktivieren oder <strong>Alt + Klick</strong>
+        </div>
+      </div>
+    `;
     
     this.infoWindowContent = `
       <div style="max-width: 300px; padding: 10px;">
@@ -497,8 +565,10 @@ export class AppComponent implements OnInit, OnDestroy {
             ${park.isOpen ? '✅ Geöffnet' : '❌ Geschlossen'}
           </span>
         </div>
-        ${park.userId ? '<div style="font-size: 0.9rem; color: #6c757d; margin-top: 10px;">👤 Eigener Eintrag</div>' : ''}
+        
+        ${park.userId && this.currentUser && park.userId === this.currentUser.id ? '<div style="font-size: 0.9rem; color: #6c757d; margin-top: 10px;">👤 Eigener Eintrag</div>' : ''}
         ${editHint}
+        ${navigationHint}
       </div>
     `;
     
@@ -519,16 +589,28 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
     
+    // Prüfe ob Navigationsmodus aktiv 
+    if (this.navigationMode) {
+      this.navigateToLocation(dispenser.location.lat, dispenser.location.lng, dispenser.name);
+      return;
+    }
+    
     // Prüfe ob Strg+Klick für Status-Bearbeitung
     if (event && (event as any).domEvent && (event as any).domEvent.ctrlKey && this.currentUser) {
       this.openDispenserStatusModal(dispenser.id);
       return;
     }
     
+    // Prüfe ob Alt+Klick für Navigation
+    if (event && (event as any).domEvent && (event as any).domEvent.altKey) {
+      this.navigateToLocation(dispenser.location.lat, dispenser.location.lng, dispenser.name);
+      return;
+    }
+    
     this.currentDispenserId = dispenser.id;
     this.currentParkId = null;
     
-    // Hinweis für eingeloggte Nutzer hinzufügen
+    // Hinweise für eingeloggte Nutzer hinzufügen
     const editHint = this.currentUser ? `
       <div style="margin-top: 15px; padding: 10px; background: #fff3cd; border-radius: 6px; border-left: 4px solid #ffc107;">
         <div style="font-size: 0.9rem; color: #856404; font-weight: 600;">
@@ -536,6 +618,14 @@ export class AppComponent implements OnInit, OnDestroy {
         </div>
       </div>
     ` : '';
+    
+    const navigationHint = `
+      <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 6px; border-left: 4px solid #ffc107;">
+        <div style="font-size: 0.9rem; color: #495057; font-weight: 600;">
+          🧭 Navigation: <strong>Navigationsmodus</strong> aktivieren oder <strong>Alt + Klick</strong>
+        </div>
+      </div>
+    `;
     
     this.infoWindowContent = `
       <div style="max-width: 300px; padding: 10px;">
@@ -561,8 +651,10 @@ export class AppComponent implements OnInit, OnDestroy {
             </ul>
           </div>
         ` : ''}
-        ${dispenser.userId ? '<div style="font-size: 0.9rem; color: #6c757d; margin-top: 10px;">👤 Eigener Eintrag</div>' : ''}
+        
+        ${dispenser.userId && this.currentUser && dispenser.userId === this.currentUser.id ? '<div style="font-size: 0.9rem; color: #6c757d; margin-top: 10px;">👤 Eigener Eintrag</div>' : ''}
         ${editHint}
+        ${navigationHint}
       </div>
     `;
     
@@ -834,6 +926,21 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
     this.editMode = !this.editMode;
+    
+    // Navigationsmodus deaktivieren wenn Bearbeitungsmodus aktiviert wird
+    if (this.editMode) {
+      this.navigationMode = false;
+    }
+  }
+
+  // Toggle für Navigationsmodus
+  toggleNavigationMode() {
+    this.navigationMode = !this.navigationMode;
+    
+    // Bearbeitungsmodus deaktivieren wenn Navigationsmodus aktiviert wird
+    if (this.navigationMode) {
+      this.editMode = false;
+    }
   }
 
   // Hilfsmethoden für Hunde-Informationen
@@ -1034,5 +1141,265 @@ export class AppComponent implements OnInit, OnDestroy {
       return this.statusUpdateForm.isWorking !== null && this.statusUpdateForm.isWorking !== undefined;
     }
     return false;
+  }
+
+  // ===== NAVIGATION & ROUTING FUNKTIONEN =====
+
+  // Navigation zu einem Standort (intern mit Google Directions)
+  navigateToLocation(lat: number, lng: number, name: string): void {
+    console.log(`🧭 Navigation zu ${name} (${lat}, ${lng})`);
+    
+    // Finde die vollständigen Informationen des Standorts
+    const park = this.dogParks.find(p => p.location.lat === lat && p.location.lng === lng);
+    const dispenser = this.wasteDispensers.find(d => d.location.lat === lat && d.location.lng === lng);
+    
+    if (park) {
+      this.selectedNavigationLocation = {
+        lat,
+        lng,
+        name,
+        address: park.address,
+        type: 'park'
+      };
+    } else if (dispenser) {
+      this.selectedNavigationLocation = {
+        lat,
+        lng,
+        name,
+        address: dispenser.address,
+        type: 'dispenser'
+      };
+    } else {
+      // Fallback falls der Standort nicht gefunden wird
+      this.selectedNavigationLocation = {
+        lat,
+        lng,
+        name,
+        type: 'park'
+      };
+    }
+    
+    this.showNavigationModal = true;
+  }
+
+  // Navigation-Modal schließen
+  closeNavigationModal(): void {
+    this.showNavigationModal = false;
+    this.selectedNavigationLocation = null;
+  }
+
+  // Starte interne Navigation (mit Routenberechnung)
+  startInternalNavigation(): void {
+    if (!this.selectedNavigationLocation) return;
+    
+    const { lat, lng, name } = this.selectedNavigationLocation;
+    
+    // Aktuelle Position ermitteln
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const start = { lat: position.coords.latitude, lng: position.coords.longitude };
+          const end = { lat, lng };
+          
+          this.showInternalNavigation(start, end, name);
+          this.closeNavigationModal();
+        },
+        (error) => {
+          console.error('Fehler beim Ermitteln der aktuellen Position:', error);
+          alert('⚠️ Aktuelle Position konnte nicht ermittelt werden. Verwenden Sie "Google Maps" für externe Navigation.');
+        }
+      );
+    } else {
+      alert('⚠️ Geolocation wird von diesem Browser nicht unterstützt. Verwenden Sie "Google Maps" für externe Navigation.');
+    }
+  }
+
+  // Starte externe Navigation mit Google Maps
+  startExternalNavigation(): void {
+    if (!this.selectedNavigationLocation) return;
+    
+    const { lat, lng, name } = this.selectedNavigationLocation;
+    
+    // Aktuelle Position ermitteln für externe Navigation
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const startLat = position.coords.latitude;
+          const startLng = position.coords.longitude;
+          this.navigateToLocationWithGoogleFromPosition(startLat, startLng, lat, lng, name);
+          this.closeNavigationModal();
+        },
+        (error) => {
+          console.error('Fehler beim Ermitteln der aktuellen Position für externe Navigation:', error);
+          // Fallback ohne Startposition
+          this.navigateToLocationWithGoogle(lat, lng, name);
+          this.closeNavigationModal();
+        }
+      );
+    } else {
+      // Fallback ohne Startposition
+      this.navigateToLocationWithGoogle(lat, lng, name);
+      this.closeNavigationModal();
+    }
+  }
+
+  // Navigation mit Google Maps mit expliziter Startposition
+  navigateToLocationWithGoogleFromPosition(startLat: number, startLng: number, destLat: number, destLng: number, name: string): void {
+    console.log(`📱 Externe Navigation von ${startLat},${startLng} zu ${name} (${destLat}, ${destLng})`);
+    
+    // Verschiedene Plattformen unterstützen
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // Google Maps URL mit expliziter Start- und Zielposition
+    const googleMapsUrl = `https://www.google.com/maps/dir/${startLat},${startLng}/${destLat},${destLng}/@${destLat},${destLng},15z/data=!3m1!4b1!4m2!4m1!3e2`;
+    
+    if (isMobile) {
+      // Mobile Geräte: Versuche Google Maps App zu öffnen
+      window.open(googleMapsUrl, '_blank');
+    } else {
+      // Desktop: Öffne Google Maps im Browser
+      window.open(googleMapsUrl, '_blank');
+    }
+    
+    // InfoWindow schließen nach Navigation
+    if (this.infoWindow) {
+      this.infoWindow.close();
+    }
+  }
+
+  // Navigation mit Google Maps (externe App) - versucht aktuellen Standort zu ermitteln
+  navigateToLocationWithGoogle(lat: number, lng: number, name: string): void {
+    console.log(`📱 Externe Navigation zu ${name} (${lat}, ${lng})`);
+    
+    // Versuche aktuelle Position zu ermitteln
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Mit aktueller Position navigieren
+          const startLat = position.coords.latitude;
+          const startLng = position.coords.longitude;
+          this.navigateToLocationWithGoogleFromPosition(startLat, startLng, lat, lng, name);
+        },
+        (error) => {
+          console.warn('Aktuelle Position nicht verfügbar, verwende Google Maps Standard-Navigation:', error);
+          // Fallback: Google Maps ohne explizite Startposition (verwendet automatische Erkennung)
+          this.navigateToLocationWithGoogleFallback(lat, lng, name);
+        },
+        { timeout: 5000, enableHighAccuracy: true }
+      );
+    } else {
+      // Fallback: Google Maps ohne explizite Startposition
+      this.navigateToLocationWithGoogleFallback(lat, lng, name);
+    }
+  }
+
+  // Fallback Navigation ohne explizite Startposition
+  private navigateToLocationWithGoogleFallback(lat: number, lng: number, name: string): void {
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // Mobile Geräte: Öffne Google Maps App oder Web
+      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&destination_place_id=${encodeURIComponent(name)}&travelmode=walking`;
+      window.open(googleMapsUrl, '_blank');
+    } else {
+      // Desktop: Öffne Google Maps im Browser
+      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&destination_place_id=${encodeURIComponent(name)}&travelmode=walking`;
+      window.open(googleMapsUrl, '_blank');
+    }
+    
+    // InfoWindow schließen nach Navigation
+    if (this.infoWindow) {
+      this.infoWindow.close();
+    }
+  }
+
+  // Interne Navigation anzeigen (Routenberechnung und Anzeige)
+  private showInternalNavigation(start: google.maps.LatLngLiteral, end: google.maps.LatLngLiteral, destinationName: string): void {
+    console.log(`🗺️ Berechne Route von ${start.lat},${start.lng} nach ${end.lat},${end.lng}`);
+    
+    const directionsService = new google.maps.DirectionsService();
+    
+    const request: google.maps.DirectionsRequest = {
+      origin: start,
+      destination: end,
+      travelMode: google.maps.TravelMode.WALKING,
+      unitSystem: google.maps.UnitSystem.METRIC,
+      avoidHighways: true,
+      avoidTolls: true
+    };
+    
+    directionsService.route(request, (result, status) => {
+      if (status === 'OK' && result) {
+        this.displayNavigationResult(result, destinationName);
+      } else {
+        console.error('Routenberechnung fehlgeschlagen:', status);
+        alert('❌ Route konnte nicht berechnet werden. Verwenden Sie "Google Maps" für externe Navigation.');
+      }
+    });
+  }
+
+  // Navigationsergebnis anzeigen
+  private displayNavigationResult(result: google.maps.DirectionsResult, destinationName: string): void {
+    const route = result.routes[0];
+    const leg = route.legs[0];
+    
+    // Entfernung und Zeit ermitteln
+    const distance = leg.distance?.text || 'Unbekannt';
+    const duration = leg.duration?.text || 'Unbekannt';
+    
+    // Vereinfachte Wegbeschreibung
+    const steps = leg.steps.slice(0, 5).map(step => {
+      const instruction = step.instructions.replace(/<[^>]*>/g, ''); // HTML Tags entfernen
+      return `• ${instruction}`;
+    }).join('\n');
+    
+    const hasMoreSteps = leg.steps.length > 5;
+    const additionalSteps = hasMoreSteps ? `\n... und ${leg.steps.length - 5} weitere Schritte` : '';
+    
+    // Navigation-Info-Window erstellen
+    this.infoWindowContent = `
+      <div style="max-width: 350px; padding: 15px;">
+        <h3 style="margin: 0 0 15px 0; color: #2c3e50; font-size: 1.2rem;">🧭 Route zu ${destinationName}</h3>
+        
+        <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <div style="text-align: center;">
+              <div style="font-size: 1.1rem; font-weight: bold; color: #1976d2;">📏 ${distance}</div>
+              <div style="font-size: 0.9rem; color: #666;">Entfernung</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 1.1rem; font-weight: bold; color: #1976d2;">⏱️ ${duration}</div>
+              <div style="font-size: 0.9rem; color: #666;">Gehzeit</div>
+            </div>
+          </div>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+          <h4 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 1rem;">📋 Wegbeschreibung:</h4>
+          <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; font-size: 0.9rem; line-height: 1.4; white-space: pre-line; border-left: 3px solid #28a745;">
+${steps}${additionalSteps}
+          </div>
+        </div>
+        
+        <div style="font-size: 0.8rem; color: #6c757d; text-align: center; margin-top: 10px;">
+          🐕 Optimiert für entspannte Hundespaziergänge
+        </div>
+      </div>
+    `;
+    
+    // InfoWindow an der Zielposition anzeigen
+    this.infoWindowPosition = { lat: result.routes[0].legs[0].end_location.lat(), lng: result.routes[0].legs[0].end_location.lng() };
+    if (this.infoWindow) {
+      this.infoWindow.open();
+    }
+    
+    // Karte zur Route zentrieren
+    const bounds = new google.maps.LatLngBounds();
+    bounds.extend(result.routes[0].legs[0].start_location);
+    bounds.extend(result.routes[0].legs[0].end_location);
+    
+    // Note: Hier würde normalerweise die Karte angepasst werden
+    // Das erfordert aber eine Referenz zur Google Maps Instanz
+    console.log('📍 Route berechnet:', result);
   }
 }

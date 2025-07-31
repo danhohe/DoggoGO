@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { map, catchError, tap } from 'rxjs/operators';
@@ -26,7 +26,7 @@ export class AuthService {
   constructor(
     private dataService: DataService,
     private router: Router,
-    private httpApiService: HttpApiService
+    @Optional() private httpApiService: HttpApiService
   ) {
     // Prüfe ob bereits ein Benutzer eingeloggt ist
     const storedUser = this.getStoredUser();
@@ -128,8 +128,8 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<boolean> {
-    // Prüfe ob Mock-Daten verwendet werden sollen
-    if (environment.enableMockData) {
+    // Prüfe ob Mock-Daten verwendet werden sollen oder HttpApiService nicht verfügbar ist
+    if (environment.enableMockData || !this.httpApiService) {
       return this.mockLogin(email, password);
     }
 
@@ -175,8 +175,8 @@ export class AuthService {
   }
 
   register(email: string, name: string, password: string, username?: string): Observable<boolean> {
-    // Prüfe ob Mock-Daten verwendet werden sollen
-    if (environment.enableMockData) {
+    // Prüfe ob Mock-Daten verwendet werden sollen oder HttpApiService nicht verfügbar ist
+    if (environment.enableMockData || !this.httpApiService) {
       return this.mockRegister(email, name, password, username);
     }
 
@@ -239,8 +239,8 @@ export class AuthService {
   }
 
   logout(): Observable<boolean> {
-    // Prüfe ob echte API verwendet wird
-    if (!environment.enableMockData && this.isTokenValid()) {
+    // Prüfe ob echte API verwendet wird und HttpApiService verfügbar ist
+    if (!environment.enableMockData && this.httpApiService && this.isTokenValid()) {
       return this.httpApiService.logout().pipe(
         map(response => {
           this.clearStoredAuth();
@@ -265,7 +265,7 @@ export class AuthService {
   // ===== TOKEN MANAGEMENT =====
 
   refreshToken(): Observable<boolean> {
-    if (environment.enableMockData) {
+    if (environment.enableMockData || !this.httpApiService) {
       return of(true); // Mock immer erfolgreich
     }
 
@@ -313,7 +313,7 @@ export class AuthService {
   }
 
   getApiStatus(): Observable<boolean> {
-    if (environment.enableMockData) {
+    if (environment.enableMockData || !this.httpApiService) {
       return of(true);
     }
 
