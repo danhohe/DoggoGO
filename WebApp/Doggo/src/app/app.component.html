@@ -286,14 +286,19 @@
 
       <!-- Adresse -->
       <div>
-        <label style="display: block; margin-bottom: 4px; font-weight: 600; color: #2c3e50;">Adresse *</label>
+        <label style="display: block; margin-bottom: 4px; font-weight: 600; color: #2c3e50;">
+          Adresse * 
+          <span style="color: #27ae60; font-size: 0.8rem; font-weight: 400;">
+            (wird automatisch ausgefüllt)
+          </span>
+        </label>
         <input 
           type="text" 
           [(ngModel)]="newLocationForm.address" 
           name="address"
           required
-          style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;"
-          placeholder="z.B. Hauptplatz 1, 4020 Linz"
+          style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; background-color: #f8f9fa;"
+          placeholder="Adresse wird automatisch ermittelt..."
         >
       </div>
 

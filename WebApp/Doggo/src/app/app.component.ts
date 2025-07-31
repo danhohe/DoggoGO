@@ -78,6 +78,8 @@ export class AppComponent implements OnInit, OnDestroy {
   showLocationTypeModal = false;
   newLocationPosition: google.maps.LatLngLiteral | null = null;
   newLocationType: 'park' | 'dispenser' | null = null;
+  tempAddress: string = ''; // Temporäre Speicherung der ermittelten Adresse
+  isGeocodingInProgress: boolean = false; // Flag um doppelte Geocoding-Aufrufe zu verhindern
   
   // Form für neue Einträge
   newLocationForm = {
@@ -573,32 +575,131 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // Kartenklick-Handler für neue Standorte
   onMapClick(event: google.maps.MapMouseEvent): void {
+    console.log('🎯 onMapClick ausgelöst');
+    
     if (!this.currentUser) {
       alert('Sie müssen angemeldet sein, um neue Standorte hinzuzufügen.');
       return;
     }
 
     if (event.latLng) {
-      this.newLocationPosition = {
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng()
-      };
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      console.log('📍 Kartenklick erkannt - Koordinaten:', lat, lng);
+      
+      this.newLocationPosition = { lat, lng };
+      
+      // Sofort eine Fallback-Adresse setzen
+      this.tempAddress = `Koordinaten: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      console.log('💾 Fallback-Adresse gesetzt:', this.tempAddress);
+      
+      // Adresse automatisch aus Koordinaten ermitteln
+      // Kleine Verzögerung um sicherzustellen, dass alle Google Maps Services verfügbar sind
+      setTimeout(() => {
+        console.log('🕐 Starte verzögerte Adressermittlung...');
+        this.getAddressFromCoordinates(lat, lng);
+      }, 300);
+      
       this.showLocationTypeModal = true;
+      console.log('🎪 LocationTypeModal wird angezeigt');
+    } else {
+      console.warn('⚠️ Keine Koordinaten im Map-Event gefunden');
     }
+  }
+
+  // Automatische Adressermittlung aus Koordinaten
+  private getAddressFromCoordinates(lat: number, lng: number): void {
+    // Verhindere doppelte Aufrufe
+    if (this.isGeocodingInProgress) {
+      console.log('Geocoding bereits in Bearbeitung, überspringe...');
+      return;
+    }
+    
+    console.log('Starte Adressermittlung für Koordinaten:', lat, lng);
+    this.isGeocodingInProgress = true;
+    
+    // Prüfe ob Google Maps verfügbar ist
+    if (typeof google === 'undefined' || !google.maps || !google.maps.Geocoder) {
+      console.error('Google Maps Geocoder ist nicht verfügbar');
+      const fallbackAddress = `Koordinaten: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      this.newLocationForm.address = fallbackAddress;
+      this.tempAddress = fallbackAddress;
+      this.isGeocodingInProgress = false;
+      return;
+    }
+    
+    const geocoder = new google.maps.Geocoder();
+    const latLng = new google.maps.LatLng(lat, lng);
+    
+    console.log('Geocoder wird aufgerufen...');
+    
+    geocoder.geocode({ location: latLng }, (results, status) => {
+      console.log('Geocoder Status:', status);
+      console.log('Geocoder Results:', results);
+      
+      if (status === 'OK' && results && results.length > 0) {
+        // Nehme die erste (genaueste) Adresse
+        const address = results[0].formatted_address;
+        
+        // Setze die Adresse im Form und speichere temporär
+        this.newLocationForm.address = address;
+        this.tempAddress = address;
+        
+        console.log('✅ Adresse automatisch ermittelt:', address);
+        
+        // Trigger change detection manually
+        setTimeout(() => {
+          // Force update der UI
+        }, 0);
+      } else {
+        console.warn('❌ Adresse konnte nicht ermittelt werden. Status:', status);
+        console.warn('Verfügbare Ergebnisse:', results?.length || 0);
+        
+        // Fallback: Koordinaten als Adresse verwenden
+        const fallbackAddress = `Koordinaten: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+        this.newLocationForm.address = fallbackAddress;
+        this.tempAddress = fallbackAddress;
+        console.log('Fallback-Adresse gesetzt:', fallbackAddress);
+      }
+      
+      this.isGeocodingInProgress = false;
+    });
   }
 
   // Standorttyp auswählen
   selectLocationType(type: 'park' | 'dispenser'): void {
+    console.log('🏷️ Standorttyp ausgewählt:', type);
+    
     this.newLocationType = type;
     this.showLocationTypeModal = false;
     this.showAddLocationModal = true;
+    
+    console.log('📝 Form wird zurückgesetzt...');
     this.resetForm();
+    
+    // Setze die temporär gespeicherte Adresse wieder ein
+    if (this.tempAddress) {
+      this.newLocationForm.address = this.tempAddress;
+      console.log('🔄 Temporäre Adresse wiederhergestellt:', this.tempAddress);
+    } else if (this.newLocationPosition) {
+      // Falls noch keine Adresse ermittelt wurde, jetzt ermitteln
+      console.log('🔍 Noch keine Adresse vorhanden, starte Ermittlung für Typ:', type);
+      setTimeout(() => {
+        this.getAddressFromCoordinates(
+          this.newLocationPosition!.lat, 
+          this.newLocationPosition!.lng
+        );
+      }, 100);
+    }
+    
+    console.log('🎪 AddLocationModal wird angezeigt');
   }
 
   // Typ-Auswahl abbrechen
   cancelTypeSelection(): void {
     this.showLocationTypeModal = false;
     this.newLocationPosition = null;
+    this.tempAddress = ''; // Temporäre Adresse zurücksetzen
   }
 
   // Form zurücksetzen
@@ -621,6 +722,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.showLocationTypeModal = false;
     this.newLocationPosition = null;
     this.newLocationType = null;
+    this.tempAddress = ''; // Temporäre Adresse zurücksetzen
   }
 
   // Neuen Standort speichern
