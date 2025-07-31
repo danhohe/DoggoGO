@@ -222,14 +222,11 @@ export class AppComponent implements OnInit, OnDestroy {
             }
           };
           this.fetchWeather(position.coords.latitude, position.coords.longitude);
-          console.log('✅ Aktueller Standort ermittelt:', position.coords.latitude, position.coords.longitude);
-        },
+                  },
         (error) => {
           this.userLocationMarker = null;
           this.center = { lat: 48.3069, lng: 14.2868 };
-          console.warn('⚠️ Standortermittlung fehlgeschlagen:', error.message);
-          
-          let errorMsg = 'Dein Standort konnte nicht ermittelt werden. ';
+                    let errorMsg = 'Dein Standort konnte nicht ermittelt werden. ';
           switch(error.code) {
             case error.PERMISSION_DENIED:
               errorMsg += 'Standortzugriff wurde verweigert. Bitte erlaube den Standortzugriff in den Browser-Einstellungen.';
@@ -273,21 +270,18 @@ export class AppComponent implements OnInit, OnDestroy {
     
     // Globale Callback-Funktionen für InfoWindow-Buttons
     (window as any).doggoEditPark = function() {
-      console.log('doggoEditPark aufgerufen, currentParkId:', self.currentParkId);
-      if (self.currentParkId) {
+            if (self.currentParkId) {
         self.openParkStatusModal(self.currentParkId);
       }
     };
     
     (window as any).doggoEditDispenser = function() {
-      console.log('doggoEditDispenser aufgerufen, currentDispenserId:', self.currentDispenserId);
-      if (self.currentDispenserId) {
+            if (self.currentDispenserId) {
         self.openDispenserStatusModal(self.currentDispenserId);
       }
     };
     
-    console.log('✅ Globale Callback-Funktionen erfolgreich registriert');
-  }
+      }
 
   setDayNight() {
     const hour = new Date().getHours();
@@ -667,9 +661,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // Kartenklick-Handler für neue Standorte
   onMapClick(event: google.maps.MapMouseEvent): void {
-    console.log('🎯 onMapClick ausgelöst');
-    
-    if (!this.currentUser) {
+        if (!this.currentUser) {
       alert('Sie müssen angemeldet sein, um neue Standorte hinzuzufügen.');
       return;
     }
@@ -677,43 +669,33 @@ export class AppComponent implements OnInit, OnDestroy {
     if (event.latLng) {
       const lat = event.latLng.lat();
       const lng = event.latLng.lng();
-      console.log('📍 Kartenklick erkannt - Koordinaten:', lat, lng);
-      
-      this.newLocationPosition = { lat, lng };
+            this.newLocationPosition = { lat, lng };
       
       // Sofort eine Fallback-Adresse setzen
       this.tempAddress = `Koordinaten: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-      console.log('💾 Fallback-Adresse gesetzt:', this.tempAddress);
-      
-      // Adresse automatisch aus Koordinaten ermitteln
+            // Adresse automatisch aus Koordinaten ermitteln
       // Kleine Verzögerung um sicherzustellen, dass alle Google Maps Services verfügbar sind
       setTimeout(() => {
-        console.log('🕐 Starte verzögerte Adressermittlung...');
-        this.getAddressFromCoordinates(lat, lng);
+                this.getAddressFromCoordinates(lat, lng);
       }, 300);
       
       this.showLocationTypeModal = true;
-      console.log('🎪 LocationTypeModal wird angezeigt');
-    } else {
-      console.warn('⚠️ Keine Koordinaten im Map-Event gefunden');
-    }
+          } else {
+          }
   }
 
   // Automatische Adressermittlung aus Koordinaten
   private getAddressFromCoordinates(lat: number, lng: number): void {
     // Verhindere doppelte Aufrufe
     if (this.isGeocodingInProgress) {
-      console.log('Geocoding bereits in Bearbeitung, überspringe...');
-      return;
+            return;
     }
     
-    console.log('Starte Adressermittlung für Koordinaten:', lat, lng);
-    this.isGeocodingInProgress = true;
+        this.isGeocodingInProgress = true;
     
     // Prüfe ob Google Maps verfügbar ist
     if (typeof google === 'undefined' || !google.maps || !google.maps.Geocoder) {
-      console.error('Google Maps Geocoder ist nicht verfügbar');
-      const fallbackAddress = `Koordinaten: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            const fallbackAddress = `Koordinaten: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
       this.newLocationForm.address = fallbackAddress;
       this.tempAddress = fallbackAddress;
       this.isGeocodingInProgress = false;
@@ -723,13 +705,8 @@ export class AppComponent implements OnInit, OnDestroy {
     const geocoder = new google.maps.Geocoder();
     const latLng = new google.maps.LatLng(lat, lng);
     
-    console.log('Geocoder wird aufgerufen...');
-    
-    geocoder.geocode({ location: latLng }, (results, status) => {
-      console.log('Geocoder Status:', status);
-      console.log('Geocoder Results:', results);
-      
-      if (status === 'OK' && results && results.length > 0) {
+        geocoder.geocode({ location: latLng }, (results, status) => {
+                  if (status === 'OK' && results && results.length > 0) {
         // Nehme die erste (genaueste) Adresse
         const address = results[0].formatted_address;
         
@@ -737,22 +714,16 @@ export class AppComponent implements OnInit, OnDestroy {
         this.newLocationForm.address = address;
         this.tempAddress = address;
         
-        console.log('✅ Adresse automatisch ermittelt:', address);
-        
-        // Trigger change detection manually
+                // Trigger change detection manually
         setTimeout(() => {
           // Force update der UI
         }, 0);
       } else {
-        console.warn('❌ Adresse konnte nicht ermittelt werden. Status:', status);
-        console.warn('Verfügbare Ergebnisse:', results?.length || 0);
-        
-        // Fallback: Koordinaten als Adresse verwenden
+                        // Fallback: Koordinaten als Adresse verwenden
         const fallbackAddress = `Koordinaten: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
         this.newLocationForm.address = fallbackAddress;
         this.tempAddress = fallbackAddress;
-        console.log('Fallback-Adresse gesetzt:', fallbackAddress);
-      }
+              }
       
       this.isGeocodingInProgress = false;
     });
@@ -760,23 +731,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // Standorttyp auswählen
   selectLocationType(type: 'park' | 'dispenser'): void {
-    console.log('🏷️ Standorttyp ausgewählt:', type);
-    
-    this.newLocationType = type;
+        this.newLocationType = type;
     this.showLocationTypeModal = false;
     this.showAddLocationModal = true;
     
-    console.log('📝 Form wird zurückgesetzt...');
-    this.resetForm();
+        this.resetForm();
     
     // Setze die temporär gespeicherte Adresse wieder ein
     if (this.tempAddress) {
       this.newLocationForm.address = this.tempAddress;
-      console.log('🔄 Temporäre Adresse wiederhergestellt:', this.tempAddress);
-    } else if (this.newLocationPosition) {
+          } else if (this.newLocationPosition) {
       // Falls noch keine Adresse ermittelt wurde, jetzt ermitteln
-      console.log('🔍 Noch keine Adresse vorhanden, starte Ermittlung für Typ:', type);
-      setTimeout(() => {
+            setTimeout(() => {
         this.getAddressFromCoordinates(
           this.newLocationPosition!.lat, 
           this.newLocationPosition!.lng
@@ -784,8 +750,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }, 100);
     }
     
-    console.log('🎪 AddLocationModal wird angezeigt');
-  }
+      }
 
   // Typ-Auswahl abbrechen
   cancelTypeSelection(): void {
@@ -857,8 +822,7 @@ export class AppComponent implements OnInit, OnDestroy {
         alert('Hundepark erfolgreich hinzugefügt!');
       },
       error: (error) => {
-        console.error('Fehler beim Hinzufügen des Parks:', error);
-        alert('Fehler beim Hinzufügen des Parks.');
+                alert('Fehler beim Hinzufügen des Parks.');
       }
     });
   }
@@ -885,8 +849,7 @@ export class AppComponent implements OnInit, OnDestroy {
         alert('Hundesackerlspender erfolgreich hinzugefügt!');
       },
       error: (error) => {
-        console.error('Fehler beim Hinzufügen des Spenders:', error);
-        alert('Fehler beim Hinzufügen des Spenders.');
+                alert('Fehler beim Hinzufügen des Spenders.');
       }
     });
   }
@@ -1205,8 +1168,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.closeNavigationModal();
         },
         (error) => {
-          console.error('Fehler beim Ermitteln der aktuellen Position:', error);
-          alert('⚠️ Aktuelle Position konnte nicht ermittelt werden. Verwenden Sie "Google Maps" für externe Navigation.');
+                    alert('⚠️ Aktuelle Position konnte nicht ermittelt werden. Verwenden Sie "Google Maps" für externe Navigation.');
         }
       );
     } else {
@@ -1230,8 +1192,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.closeNavigationModal();
         },
         (error) => {
-          console.error('Fehler beim Ermitteln der aktuellen Position für externe Navigation:', error);
-          // Fallback ohne Startposition
+                    // Fallback ohne Startposition
           this.navigateToLocationWithGoogle(lat, lng, name);
           this.closeNavigationModal();
         }
@@ -1281,8 +1242,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.navigateToLocationWithGoogleFromPosition(startLat, startLng, lat, lng, name);
         },
         (error) => {
-          console.warn('Aktuelle Position nicht verfügbar, verwende Google Maps Standard-Navigation:', error);
-          // Fallback: Google Maps ohne explizite Startposition (verwendet automatische Erkennung)
+                    // Fallback: Google Maps ohne explizite Startposition (verwendet automatische Erkennung)
           this.navigateToLocationWithGoogleFallback(lat, lng, name);
         },
         { timeout: 5000, enableHighAccuracy: true }
@@ -1315,9 +1275,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // Interne Navigation anzeigen (Routenberechnung und Anzeige)
   private showInternalNavigation(start: google.maps.LatLngLiteral, end: google.maps.LatLngLiteral, destinationName: string): void {
-    console.log(`🗺️ Berechne Route von ${start.lat},${start.lng} nach ${end.lat},${end.lng}`);
-    
-    const directionsService = new google.maps.DirectionsService();
+        const directionsService = new google.maps.DirectionsService();
     
     const request: google.maps.DirectionsRequest = {
       origin: start,
@@ -1332,8 +1290,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (status === 'OK' && result) {
         this.displayNavigationResult(result, destinationName);
       } else {
-        console.error('Routenberechnung fehlgeschlagen:', status);
-        alert('❌ Route konnte nicht berechnet werden. Verwenden Sie "Google Maps" für externe Navigation.');
+                alert('❌ Route konnte nicht berechnet werden. Verwenden Sie "Google Maps" für externe Navigation.');
       }
     });
   }
@@ -1400,6 +1357,6 @@ ${steps}${additionalSteps}
     
     // Note: Hier würde normalerweise die Karte angepasst werden
     // Das erfordert aber eine Referenz zur Google Maps Instanz
-    console.log('📍 Route berechnet:', result);
-  }
+      }
 }
+
