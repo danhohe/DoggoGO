@@ -60,6 +60,7 @@ import { Dog, DogPark, WasteDispenser, User } from '../services/data.service';
                 <h4>🐕 {{ dog.name }}</h4>
                 <p><strong>Rasse:</strong> {{ dog.breed }}</p>
                 <p><strong>Alter:</strong> {{ dog.age }} Jahre</p>
+                <p><strong>Letzter Spaziergang:</strong> {{ formatLastWalk(dog) }}</p>
                 <p><strong>Spezialrasse:</strong> 
                   <span [class]="dog.isSpecialBreed ? 'special-breed' : 'normal-breed'">
                     {{ dog.isSpecialBreed ? 'Ja' : 'Nein' }}
@@ -176,6 +177,12 @@ import { Dog, DogPark, WasteDispenser, User } from '../services/data.service';
           <div class="form-group">
             <label for="age">Alter:</label>
             <input type="number" id="age" [(ngModel)]="currentDog.age" name="age" min="0" max="20" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="lastWalk">Letzter Spaziergang:</label>
+            <input type="datetime-local" id="lastWalk" [(ngModel)]="lastWalkString" name="lastWalk" (ngModelChange)="updateLastWalk($event)">
+            <small>Optional: Wann war der letzte Spaziergang?</small>
           </div>
           
           <div class="form-group">
@@ -806,6 +813,7 @@ export class ProfileManagementComponent implements OnInit, OnDestroy {
   wasteDispensers: WasteDispenser[] = [];
   
   currentDog: Partial<Dog> = this.getEmptyDog();
+  lastWalkString: string = '';
   editingDog: Dog | null = null;
   editingPark: DogPark | null = null;
   editingDispenser: WasteDispenser | null = null;
@@ -933,8 +941,18 @@ export class ProfileManagementComponent implements OnInit, OnDestroy {
       breed: dog.breed,
       age: dog.age,
       isSpecialBreed: dog.isSpecialBreed,
-      userId: dog.userId
+      userId: dog.userId,
+      lastWalk: dog.lastWalk
     };
+    
+    // Formatiere das Datum für das datetime-local Input
+    if (dog.lastWalk) {
+      const date = new Date(dog.lastWalk);
+      this.lastWalkString = date.toISOString().slice(0, 16);
+    } else {
+      this.lastWalkString = '';
+    }
+    
     this.showAddDogForm = true;
   }
 
@@ -999,6 +1017,7 @@ export class ProfileManagementComponent implements OnInit, OnDestroy {
   cancelDogEdit(): void {
     this.editingDog = null;
     this.currentDog = this.getEmptyDog();
+    this.lastWalkString = '';
     this.showAddDogForm = false;
     this.error = '';
   }
@@ -1135,6 +1154,31 @@ export class ProfileManagementComponent implements OnInit, OnDestroy {
   getUsernameDisplay(): string {
     if (!this.currentUser) return 'Unbekannt';
     return this.currentUser.username || this.currentUser.name.toLowerCase().replace(/\s+/g, '');
+  }
+
+  formatLastWalk(dog: Dog): string {
+    if (!dog.lastWalk) return 'Noch kein Spaziergang eingetragen';
+    
+    const walkDate = new Date(dog.lastWalk);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - walkDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) {
+      return 'Gestern';
+    } else if (diffDays < 7) {
+      return `Vor ${diffDays} Tagen`;
+    } else {
+      return walkDate.toLocaleDateString('de-DE');
+    }
+  }
+
+  updateLastWalk(dateString: string): void {
+    if (dateString) {
+      this.currentDog.lastWalk = new Date(dateString);
+    } else {
+      this.currentDog.lastWalk = undefined;
+    }
   }
 
   private getEmptyDog(): Partial<Dog> {
