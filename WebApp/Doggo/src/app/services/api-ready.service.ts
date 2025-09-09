@@ -95,7 +95,6 @@ export class ApiReadyService {
       name: dogData.name,
       breed: dogData.breed,
       age: dogData.age,
-      owner: dogData.owner,
       isSpecialBreed: dogData.isSpecialBreed
     };
 
@@ -129,7 +128,6 @@ export class ApiReadyService {
       name: updates.name,
       breed: updates.breed,
       age: updates.age,
-      owner: updates.owner,
       isSpecialBreed: updates.isSpecialBreed,
       lastWalk: updates.lastWalk?.toISOString()
     };
@@ -358,7 +356,6 @@ export class ApiReadyService {
       name: apiDog.name,
       breed: apiDog.breed,
       age: apiDog.age,
-      owner: apiDog.owner,
       isSpecialBreed: apiDog.isSpecialBreed,
       userId: apiDog.userId,
       lastWalk: apiDog.lastWalk ? new Date(apiDog.lastWalk) : undefined

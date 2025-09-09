@@ -16,7 +16,6 @@ export interface Dog {
   name: string;
   breed: string;
   age: number;
-  owner: string;
   userId: number;
   isSpecialBreed: boolean;
   lastWalk?: Date;
@@ -386,7 +385,6 @@ export class DataService {
         name: 'Buddy',
         breed: 'Golden Retriever',
         age: 3,
-        owner: 'Max Mustermann',
         userId: 1,
         isSpecialBreed: false,
         lastWalk: new Date('2024-03-15T10:30:00')
@@ -396,7 +394,6 @@ export class DataService {
         name: 'Luna',
         breed: 'Border Collie',
         age: 2,
-        owner: 'Anna Schmidt',
         userId: 2,
         isSpecialBreed: false,
         lastWalk: new Date('2024-03-14T16:45:00')
@@ -406,7 +403,6 @@ export class DataService {
         name: 'Rex',
         breed: 'Deutscher Schäferhund',
         age: 5,
-        owner: 'Max Mustermann',
         userId: 1,
         isSpecialBreed: true,
         lastWalk: new Date('2024-03-16T08:15:00')

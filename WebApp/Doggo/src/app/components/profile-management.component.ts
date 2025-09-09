@@ -60,7 +60,6 @@ import { Dog, DogPark, WasteDispenser, User } from '../services/data.service';
                 <h4>🐕 {{ dog.name }}</h4>
                 <p><strong>Rasse:</strong> {{ dog.breed }}</p>
                 <p><strong>Alter:</strong> {{ dog.age }} Jahre</p>
-                <p><strong>Besitzer:</strong> {{ dog.owner }}</p>
                 <p><strong>Spezialrasse:</strong> 
                   <span [class]="dog.isSpecialBreed ? 'special-breed' : 'normal-breed'">
                     {{ dog.isSpecialBreed ? 'Ja' : 'Nein' }}
@@ -177,11 +176,6 @@ import { Dog, DogPark, WasteDispenser, User } from '../services/data.service';
           <div class="form-group">
             <label for="age">Alter:</label>
             <input type="number" id="age" [(ngModel)]="currentDog.age" name="age" min="0" max="20" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="owner">Besitzer:</label>
-            <input type="text" id="owner" [(ngModel)]="currentDog.owner" name="owner" required>
           </div>
           
           <div class="form-group">
@@ -938,7 +932,6 @@ export class ProfileManagementComponent implements OnInit, OnDestroy {
       name: dog.name,
       breed: dog.breed,
       age: dog.age,
-      owner: dog.owner,
       isSpecialBreed: dog.isSpecialBreed,
       userId: dog.userId
     };
@@ -957,7 +950,7 @@ export class ProfileManagementComponent implements OnInit, OnDestroy {
   }
 
   saveDog(): void {
-    if (!this.currentDog.name || !this.currentDog.breed || !this.currentDog.owner) {
+    if (!this.currentDog.name || !this.currentDog.breed) {
       this.error = 'Bitte füllen Sie alle Pflichtfelder aus.';
       return;
     }
@@ -1149,7 +1142,6 @@ export class ProfileManagementComponent implements OnInit, OnDestroy {
       name: '',
       breed: '',
       age: 1,
-      owner: '',
       isSpecialBreed: false,
       userId: this.currentUser?.id
     };

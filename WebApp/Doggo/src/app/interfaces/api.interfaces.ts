@@ -78,7 +78,6 @@ export interface ApiDog {
   name: string;
   breed: string;
   age: number;
-  owner: string;
   isSpecialBreed: boolean;
   userId: number;
   lastWalk?: string;
@@ -97,7 +96,6 @@ export interface CreateDogRequest {
   name: string;
   breed: string;
   age: number;
-  owner: string;
   isSpecialBreed: boolean;
   microchipId?: string;
   insuranceProvider?: string;

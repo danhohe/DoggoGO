@@ -41,7 +41,6 @@ interface Dog {
   name: string;
   breed: string;
   age: number;
-  owner: string;
   userId: number;
   isSpecialBreed: boolean;
   lastWalk?: Date;
