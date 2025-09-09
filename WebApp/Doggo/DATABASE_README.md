@@ -23,6 +23,17 @@ Ihre Angular-App verfügt jetzt über eine vollständig simulierte Datenbank, di
 
 ### 3. Datenmodelle
 
+#### User Interface
+```typescript
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  name: string;
+  registeredAt: Date;
+}
+```
+
 #### Dog Interface
 ```typescript
 interface Dog {
@@ -31,7 +42,7 @@ interface Dog {
   breed: string;
   age: number;
   owner: string;
-  location: { lat: number; lng: number };
+  userId: number;
   isSpecialBreed: boolean;
   lastWalk?: Date;
 }
@@ -42,25 +53,34 @@ interface Dog {
 interface DogPark {
   id: number;
   name: string;
-  location: { lat: number; lng: number };
+  location: {
+    lat: number;
+    lng: number;
+  };
   address: string;
   facilities: string[];
   rating: number;
   isOpen: boolean;
+  userId?: number;
+  isPublic: boolean;
 }
 ```
 
-#### WalkRoute Interface
+#### WasteDispenser Interface
 ```typescript
-interface WalkRoute {
+interface WasteDispenser {
   id: number;
   name: string;
-  description: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  duration: number; // in Minuten
-  distance: number; // in km
-  waypoints: { lat: number; lng: number }[];
-  rating: number;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  address: string;
+  type: 'bags' | 'bins' | 'both';
+  isWorking: boolean;
+  reportedIssues: string[];
+  userId?: number;
+  isPublic: boolean;
 }
 ```
 
