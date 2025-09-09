@@ -51,34 +51,34 @@ interface Dog {
 ```typescript
 interface DogPark {
   id: number;
-  name: string;
+  name: string; // Wird automatisch als "Hundepark [Straßenname]" generiert
   location: {
     lat: number;
     lng: number;
   };
-  address: string;
+  address: string; // Wird über Google Maps Reverse Geocoding ermittelt
   facilities: string[];
   rating: number;
   isOpen: boolean;
-  userId?: number;
+  userId?: number; // Optional: Ersteller des Eintrags
   isPublic: boolean;
 }
 ```
 
-#### WasteDispenser Interface
+#### WasteDispenser Interface (Hundesackerlspender)
 ```typescript
 interface WasteDispenser {
   id: number;
-  name: string;
+  name: string; // Wird automatisch als "Hundesackerlspender [Straßenname]" generiert
   location: {
     lat: number;
     lng: number;
   };
-  address: string;
+  address: string; // Wird über Google Maps Reverse Geocoding ermittelt
   type: 'bags' | 'bins' | 'both';
   isWorking: boolean;
   reportedIssues: string[];
-  userId?: number;
+  userId?: number; // Optional: Ersteller des Eintrags
   isPublic: boolean;
 }
 ```
@@ -90,6 +90,26 @@ Die App verfügt jetzt über zwei Hauptbereiche:
 1. **🗺️ Karte** (`/map`) - Ihre ursprüngliche Karten-Ansicht
 2. **🐕 Hunde verwalten** (`/dogs`) - Neue Verwaltungsseite für die simulierte Datenbank
 
+## Automatisches Benennungssystem
+
+### Funktionsweise
+Das System generiert automatisch Namen für Parks und Hundesackerlspender basierend auf ihrer geografischen Lage:
+
+1. **Benutzer klickt auf Karte** → GPS-Koordinaten werden erfasst
+2. **Typ wird ausgewählt** → Park oder Hundesackerlspender
+3. **Google Maps Reverse Geocoding** → Automatische Adressermittlung
+4. **Name wird generiert** → "Hundepark [Straßenname]" oder "Hundesackerlspender [Straßenname]"
+
+### Beispiele
+- **Hundeparks**: "Hundepark Hauptstraße", "Hundepark Am Stadtpark"
+- **Hundesackerlspender**: "Hundesackerlspender Parkweg", "Hundesackerlspender Lindenallee"
+
+### Vorteile
+- ✅ Keine manuelle Eingabe erforderlich
+- ✅ Konsistente Namensgebung
+- ✅ Automatische Lokalisierung
+- ✅ Benutzerfreundlicher Workflow
+
 ## Verwendung
 
 ### Hunde verwalten
@@ -97,7 +117,18 @@ Die App verfügt jetzt über zwei Hauptbereiche:
 - Bestehende Hunde bearbeiten
 - Hunde löschen
 - Automatische Erkennung von Spezialrassen
+- Letzter Spaziergang-Tracking
 - Validation und Fehlerbehandlung
+
+### Parks und Spender verwalten
+
+- **Automatische Namensgebung**: Namen werden vollständig automatisch generiert
+  - **Hundeparks**: "Hundepark [Straßenname]" (z.B. "Hundepark Hauptstraße")
+  - **Hundesackerlspender**: "Hundesackerlspender [Straßenname]" (z.B. "Hundesackerlspender Parkweg")
+  - Die Namensgebung erfolgt automatisch durch Reverse Geocoding über Google Maps API
+  - Keine manuelle Eingabe von Namen erforderlich
+- Vollautomatischer Prozess: Klick auf Karte → Typ wählen → Fertig
+- Benutzerfreundliche Formulare ohne redundante Eingaben
 
 ### Daten-Persistierung
 - Alle Daten werden automatisch im LocalStorage gespeichert
@@ -133,13 +164,17 @@ createDog(dog: Omit<Dog, 'id'>): Observable<Dog> {
 ## Features der simulierten Datenbank
 
 ### ✅ Verfügbare Funktionen
-- CRUD-Operationen für alle Entitäten
+
+- CRUD-Operationen für alle Entitäten (Hunde, Hundeparks, Hundesackerlspender)
+- **Automatische Namensgenerierung** für Parks und Spender
+- **GPS-basierte Navigation** mit aktueller Position
 - Suchfunktionen (nach Rasse, Standort)
-- Entfernungsberechnung
-- Reaktive Updates
-- LocalStorage-Persistierung
+- Entfernungsberechnung zwischen Standorten
+- Reaktive Updates mit RxJS Observables
+- LocalStorage-Persistierung für Offline-Funktionalität
 - Validierung von Spezialrassen
-- Error-Handling
+- Umfassendes Error-Handling
+- **Google Maps Integration** mit Reverse Geocoding
 
 ### 🔮 Erweiterbar für später
 - Benutzer-Authentifizierung

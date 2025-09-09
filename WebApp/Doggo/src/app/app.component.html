@@ -289,25 +289,12 @@
     </h2>
     
     <form (ngSubmit)="saveNewLocation()" style="display: flex; flex-direction: column; gap: 16px;">
-      <!-- Name -->
-      <div>
-        <label style="display: block; margin-bottom: 4px; font-weight: 600; color: #2c3e50;">Name *</label>
-        <input 
-          type="text" 
-          [(ngModel)]="newLocationForm.name" 
-          name="name"
-          required
-          style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;"
-          [placeholder]="newLocationType === 'park' ? 'z.B. Hundepark Linz Zentrum' : 'z.B. Hundesackerlspender Hauptplatz'"
-        >
-      </div>
-
       <!-- Adresse -->
       <div>
         <label style="display: block; margin-bottom: 4px; font-weight: 600; color: #2c3e50;">
-          Adresse * 
+          Adresse/Straße * 
           <span style="color: #27ae60; font-size: 0.8rem; font-weight: 400;">
-            (wird automatisch ausgefüllt)
+            (Name wird automatisch generiert)
           </span>
         </label>
         <input 
@@ -315,9 +302,21 @@
           [(ngModel)]="newLocationForm.address" 
           name="address"
           required
-          style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; background-color: #f8f9fa;"
-          placeholder="Adresse wird automatisch ermittelt..."
+          (ngModelChange)="updateLocationName()"
+          style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;"
+          [placeholder]="newLocationType === 'park' ? 'z.B. Hauptstraße 15' : 'z.B. Landstraße 42'"
         >
+        <small style="color: #7f8c8d; font-size: 0.8rem;">
+          {{ newLocationType === 'park' ? 'Name wird als "Hundepark [Straßenname]" generiert' : 'Name wird als "Hundesackerlspender [Straßenname]" generiert' }}
+        </small>
+      </div>
+
+      <!-- Automatisch generierter Name (nur zur Anzeige) -->
+      <div *ngIf="newLocationForm.name">
+        <label style="display: block; margin-bottom: 4px; font-weight: 600; color: #2c3e50;">Automatisch generierter Name:</label>
+        <div style="padding: 10px; background-color: #f8f9fa; border: 2px solid #e9ecef; border-radius: 8px; color: #6c757d;">
+          {{ newLocationForm.name }}
+        </div>
       </div>
 
       <!-- Sichtbarkeit -->

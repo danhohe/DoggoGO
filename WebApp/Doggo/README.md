@@ -1,6 +1,6 @@
 # 🐕 DoggoGO - Hundespaziergänge einfach gemacht
 
-Eine Angular-basierte Web-Anwendung für Hundebesitzer, die bei der Planung von Spaziergängen, dem Finden von Hundeparks und Kotbeutelspender-Standorten hilft.
+Eine Angular-basierte Web-Anwendung für Hundebesitzer, die bei der Planung von Spaziergängen, dem Finden von Hundeparks und Hundesackerlspender-Standorten hilft.
 
 ## 📋 Inhaltsverzeichnis
 
@@ -19,11 +19,14 @@ Eine Angular-basierte Web-Anwendung für Hundebesitzer, die bei der Planung von 
 ## 🎯 Überblick
 
 DoggoGO ist eine Progressive Web App (PWA), die Hundebesitzern dabei hilft:
-- 🗺️ Hundeparks und Kotbeutelspender in der Nähe zu finden
-- 🧭 Navigation mit aktueller GPS-Position
+
+- 🗺️ Hundeparks und Hundesackerlspender in der Nähe zu finden
+- 🧭 **GPS-basierte Navigation** mit aktueller Position
+- 🤖 **Automatische Namensgenerierung** für neue Standorte
 - 📱 Mobile-first Design für unterwegs
 - 👥 Community-Features für Bewertungen und Status-Updates
 - 🌤️ Wetter-Integration für Spaziergangsplanung
+- 💾 **Vollständige Offline-Funktionalität** mit LocalStorage
 
 ## 📁 Projektstruktur
 
@@ -71,19 +74,29 @@ src/
 ## 🔧 Technologie-Stack
 
 ### Frontend
-- **Angular 18+** - Modern Web Framework
-- **TypeScript** - Type-Safe JavaScript
-- **Google Maps API** - Kartenintegration & Navigation
-- **RxJS** - Reactive Programming
+
+- **Angular 18+** - Modern Web Framework mit Standalone Components
+- **TypeScript** - Type-Safe JavaScript für bessere Entwicklererfahrung
+- **Google Maps API** - Kartenintegration, Navigation & Reverse Geocoding
+- **RxJS** - Reactive Programming mit Observables
 - **Progressive Web App (PWA)** - App-ähnliche Erfahrung
 
 ### Data Management
-- **LocalStorage** - Client-seitiger Datenspeicher
-- **Mock Data System** - Für Entwicklung ohne Backend
-- **HTTP Client** - RESTful API Integration (optional)
+
+- **LocalStorage** - Client-seitiger Datenspeicher für Offline-Funktionalität
+- **Mock Data System** - Vollständige Simulation für Entwicklung ohne Backend
+- **HTTP Client** - RESTful API Integration (vorbereitet für echtes Backend)
+- **BehaviorSubjects** - Reaktive Datenstream-Verwaltung
+
+### Smart Features
+
+- **Google Maps Geocoding API** - Automatische Adressermittlung
+- **GPS-Integration** - Präzise Standortbestimmung
+- **Automatische Namensgebung** - KI-ähnliche Standortbenennung
 
 ### Styling
-- **CSS3** - Modern Styling
+
+- **CSS3** - Modern Styling mit Flexbox & Grid
 - **Responsive Design** - Mobile-first Approach
 - **Google Maps Marker** - Custom Icons
 
@@ -214,14 +227,26 @@ User → Component → Service → Data Source
 ## ⚡ Funktionen
 
 ### 🗺️ Kartenansicht (app.component.ts)
+
 - **Google Maps Integration**: Interaktive Karte mit Custom Markers
 - **GPS-Standortermittlung**: Automatische Positionsbestimmung
+- **Automatische Namensgenerierung**: Klick auf Karte → Typ wählen → Name wird automatisch erstellt
 - **Marker-System**: 
   - 🟢 Hundeparks (Grüne Marker)
-  - 🟡 Kotbeutelspender (Gelbe Marker)
+  - 🟡 Hundesackerlspender (Gelbe Marker)
   - 🔵 Benutzer-Position (Blauer Marker)
 
-### 🧭 Navigation
+### � Intelligente Standorterfassung
+
+- **Ein-Klick-Erstellung**: Einfach auf Karte klicken
+- **Automatische Adressermittlung**: Google Maps Reverse Geocoding
+- **Smart Naming**: 
+  - Hundeparks: "Hundepark [Straßenname]"
+  - Hundesackerlspender: "Hundesackerlspender [Straßenname]"
+- **Keine manuelle Eingabe erforderlich**
+
+### �🧭 Navigation
+
 - **Interne Navigation**: Routenberechnung mit Google Directions API
 - **Externe Navigation**: Integration mit Google Maps App
 - **Aktuelle Position**: GPS-basierte Startpunkt-Ermittlung
@@ -288,7 +313,7 @@ interface DogPark {
   userId?: number;
 }
 
-// Kotbeutelspender
+// Hundesackerlspender
 interface WasteDispenser {
   id: number;
   name: string;
@@ -364,7 +389,7 @@ POST   /api/dog-parks
 PUT    /api/dog-parks/:id
 DELETE /api/dog-parks/:id
 
-// Kotbeutelspender
+// Hundesackerlspender
 GET    /api/waste-dispensers
 POST   /api/waste-dispensers
 PUT    /api/waste-dispensers/:id

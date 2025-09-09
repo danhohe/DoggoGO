@@ -206,13 +206,10 @@ import { Dog, DogPark, WasteDispenser, User } from '../services/data.service';
           <h3>🏞️ Park bearbeiten</h3>
           <form (ngSubmit)="savePark()" class="item-form">
             <div class="form-group">
-              <label for="parkName">Name:</label>
-              <input type="text" id="parkName" [(ngModel)]="newPark.name" name="parkName" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="parkAddress">Adresse:</label>
-              <input type="text" id="parkAddress" [(ngModel)]="newPark.address" name="parkAddress" required>
+              <label for="parkAddress">Adresse/Straße:</label>
+              <input type="text" id="parkAddress" [(ngModel)]="newPark.address" name="parkAddress" required 
+                     (ngModelChange)="updateParkName()" placeholder="z.B. Hauptstraße 15">
+              <small>Der Name wird automatisch als "Hundepark [Straßenname]" generiert</small>
             </div>
             
             <div class="form-group">
@@ -254,13 +251,10 @@ import { Dog, DogPark, WasteDispenser, User } from '../services/data.service';
           <h3>🗑️ Spender bearbeiten</h3>
           <form (ngSubmit)="saveDispenser()" class="item-form">
             <div class="form-group">
-              <label for="dispenserName">Name:</label>
-              <input type="text" id="dispenserName" [(ngModel)]="newDispenser.name" name="dispenserName" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="dispenserAddress">Adresse:</label>
-              <input type="text" id="dispenserAddress" [(ngModel)]="newDispenser.address" name="dispenserAddress" required>
+              <label for="dispenserAddress">Adresse/Straße:</label>
+              <input type="text" id="dispenserAddress" [(ngModel)]="newDispenser.address" name="dispenserAddress" required 
+                     (ngModelChange)="updateDispenserName()" placeholder="z.B. Landstraße 42">
+              <small>Der Name wird automatisch als "Hundesackerlspender [Straßenname]" generiert</small>
             </div>
             
             <div class="form-group">
@@ -1047,10 +1041,13 @@ export class ProfileManagementComponent implements OnInit, OnDestroy {
   }
 
   savePark(): void {
-    if (!this.newPark.name || !this.newPark.address) {
-      this.error = 'Bitte füllen Sie alle Pflichtfelder aus.';
+    if (!this.newPark.address) {
+      this.error = 'Bitte geben Sie eine Adresse ein.';
       return;
     }
+
+    // Automatische Namensgebung basierend auf Adresse
+    this.updateParkName();
 
     const facilities = this.newPark.facilitiesString 
       ? this.newPark.facilitiesString.split(',').map((f: string) => f.trim()).filter((f: string) => f.length > 0)
@@ -1108,10 +1105,13 @@ export class ProfileManagementComponent implements OnInit, OnDestroy {
   }
 
   saveDispenser(): void {
-    if (!this.newDispenser.name || !this.newDispenser.address || !this.newDispenser.type) {
-      this.error = 'Bitte füllen Sie alle Pflichtfelder aus.';
+    if (!this.newDispenser.address || !this.newDispenser.type) {
+      this.error = 'Bitte geben Sie eine Adresse und einen Typ an.';
       return;
     }
+
+    // Automatische Namensgebung basierend auf Adresse
+    this.updateDispenserName();
 
     const dispenserData = {
       name: this.newDispenser.name,
@@ -1189,5 +1189,31 @@ export class ProfileManagementComponent implements OnInit, OnDestroy {
       isSpecialBreed: false,
       userId: this.currentUser?.id
     };
+  }
+
+  // Automatische Namensgebung für Parks und Spender
+  updateParkName(): void {
+    if (this.newPark.address) {
+      const streetName = this.extractStreetName(this.newPark.address);
+      this.newPark.name = `Hundepark ${streetName}`;
+    }
+  }
+
+  updateDispenserName(): void {
+    if (this.newDispenser.address) {
+      const streetName = this.extractStreetName(this.newDispenser.address);
+      this.newDispenser.name = `Hundesackerlspender ${streetName}`;
+    }
+  }
+
+  private extractStreetName(address: string): string {
+    // Entferne Hausnummern und extrahiere Straßenname
+    const cleaned = address.trim();
+    
+    // Entferne Hausnummer am Ende (z.B. "Hauptstraße 15" -> "Hauptstraße")
+    const withoutNumber = cleaned.replace(/\s+\d+.*$/, '');
+    
+    // Falls kein Straßenname erkennbar, verwende die komplette Adresse
+    return withoutNumber || cleaned;
   }
 }

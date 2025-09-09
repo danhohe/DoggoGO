@@ -714,6 +714,9 @@ export class AppComponent implements OnInit, OnDestroy {
         this.newLocationForm.address = address;
         this.tempAddress = address;
         
+        // Automatisch Namen generieren basierend auf der Adresse
+        this.updateLocationName();
+        
                 // Trigger change detection manually
         setTimeout(() => {
           // Force update der UI
@@ -723,6 +726,9 @@ export class AppComponent implements OnInit, OnDestroy {
         const fallbackAddress = `Koordinaten: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
         this.newLocationForm.address = fallbackAddress;
         this.tempAddress = fallbackAddress;
+        
+        // Auch bei Fallback-Adresse Namen generieren
+        this.updateLocationName();
               }
       
       this.isGeocodingInProgress = false;
@@ -731,26 +737,27 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // Standorttyp auswählen
   selectLocationType(type: 'park' | 'dispenser'): void {
-        this.newLocationType = type;
+    this.newLocationType = type;
     this.showLocationTypeModal = false;
     this.showAddLocationModal = true;
     
-        this.resetForm();
+    this.resetForm();
     
     // Setze die temporär gespeicherte Adresse wieder ein
     if (this.tempAddress) {
       this.newLocationForm.address = this.tempAddress;
-          } else if (this.newLocationPosition) {
+      // Nach dem Setzen der Adresse den Namen automatisch generieren
+      this.updateLocationName();
+    } else if (this.newLocationPosition) {
       // Falls noch keine Adresse ermittelt wurde, jetzt ermitteln
-            setTimeout(() => {
+      setTimeout(() => {
         this.getAddressFromCoordinates(
           this.newLocationPosition!.lat, 
           this.newLocationPosition!.lng
         );
       }, 100);
     }
-    
-      }
+  }
 
   // Typ-Auswahl abbrechen
   cancelTypeSelection(): void {
@@ -787,6 +794,9 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!this.newLocationPosition || !this.newLocationType || !this.currentUser) {
       return;
     }
+
+    // Automatische Namensgebung vor dem Speichern
+    this.updateLocationName();
 
     if (this.newLocationType === 'park') {
       this.saveNewPark();
@@ -991,6 +1001,30 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       return walkDate.toLocaleDateString('de-DE');
     }
+  }
+
+  // Automatische Namensgebung für neue Standorte
+  updateLocationName(): void {
+    if (this.newLocationForm.address && this.newLocationType) {
+      const streetName = this.extractStreetName(this.newLocationForm.address);
+      
+      if (this.newLocationType === 'park') {
+        this.newLocationForm.name = `Hundepark ${streetName}`;
+      } else if (this.newLocationType === 'dispenser') {
+        this.newLocationForm.name = `Hundesackerlspender ${streetName}`;
+      }
+    }
+  }
+
+  private extractStreetName(address: string): string {
+    // Entferne Hausnummern und extrahiere Straßenname
+    const cleaned = address.trim();
+    
+    // Entferne Hausnummer am Ende (z.B. "Hauptstraße 15" -> "Hauptstraße")
+    const withoutNumber = cleaned.replace(/\s+\d+.*$/, '');
+    
+    // Falls kein Straßenname erkennbar, verwende die komplette Adresse
+    return withoutNumber || cleaned;
   }
 
   // Status-Update-Modal-Methoden
