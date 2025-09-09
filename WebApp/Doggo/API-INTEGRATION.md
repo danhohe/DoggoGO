@@ -1,5 +1,5 @@
 # 🤖 DoggoGO API-Integration Guide 🐕
-> **⚠️ KI-KONFIGURIERT:** Diese Dokumentation wurde vollständig von künstlicher Intelligenz erstellt und konfiguriert. Alle API-Definitionen, Interfaces und Implementierungsdetails sind KI-generiert und für eine hypothetische Backend-Integration vorbereitet.
+> **⚠️ KI-KONFIGURIERT:** Diese Dokumentation wurde vollständig von künstlicher Intelligenz erstellt und konfiguriert. Alle API-Definitionen, Interfaces und Implementierungsdetails sind für eine hypothetische Backend-Integration vorbereitet.
 
 ## Überblick
 
