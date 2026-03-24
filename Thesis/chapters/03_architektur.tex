@@ -14,11 +14,22 @@ Abbildung~\ref{fig:gesamtarchitektur} illustriert die Systemkomponenten und dere
 
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.9\textwidth}{\centering\vspace{2.5cm}
-    [Komponentendiagramm:\
-    iOS-App $\rightarrow$ REST API (ASP.NET Core 8) $\rightarrow$ PostgreSQL; \
-    Angular-WebApp $\rightarrow$ REST API $\rightarrow$ PostgreSQL]
-    \vspace{2.5cm}}}
+  \begin{tikzpicture}[
+      comp/.style={draw, rectangle, rounded corners=4pt,
+                   minimum width=3.2cm, minimum height=0.9cm,
+                   align=center, fill=gray!10, font=\small},
+      arr/.style={-{Stealth[length=5pt]}, thick},
+      label/.style={font=\footnotesize\itshape, midway, above}
+    ]
+    \node[comp] (ios)     at (0, 1.2)  {iOS-App\\(Swift/SwiftUI)};
+    \node[comp] (angular) at (0,-1.2)  {Angular\\Web-App};
+    \node[comp] (api)     at (4.5, 0)  {Backend-API\\(ASP.NET Core 8)};
+    \node[comp] (db)      at (9, 0)    {PostgreSQL\\Datenbank};
+
+    \draw[arr] (ios)     -- node[label]{HTTP/JSON} (api);
+    \draw[arr] (angular) -- node[label, below]{HTTP/JSON} (api);
+    \draw[arr] (api)     -- node[label]{EF Core} (db);
+  \end{tikzpicture}
   \caption{Gesamtarchitektur von DoggoGO}
   \label{fig:gesamtarchitektur}
 \end{figure}
@@ -50,10 +61,22 @@ Das Backend ist intern in drei Schichten gegliedert (Abbildung~\ref{fig:backend-
 
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.75\textwidth}{\centering\vspace{2cm}
-    [Schichtendiagramm Backend: Controller → DoggoContext (EF Core) → PostgreSQL; \
-    Utility: BreedSeeder]
-    \vspace{2cm}}}
+  \begin{tikzpicture}[
+      layer/.style={draw, rectangle, minimum width=5.5cm, minimum height=0.85cm,
+                    align=center, font=\small, fill=gray!10},
+      util/.style={draw, rectangle, dashed, minimum width=3cm, minimum height=0.85cm,
+                   align=center, font=\small, fill=white},
+      arr/.style={-{Stealth[length=5pt]}, thick}
+    ]
+    \node[layer] (ctrl) at (0, 2.2) {Controller-Schicht\\(HTTP-Requests, Routing)};
+    \node[layer] (data) at (0, 1.1) {Datenbankschicht\\(DoggoContext / EF Core 9)};
+    \node[layer] (pg)   at (0, 0)   {PostgreSQL};
+    \node[util]  (seed) at (5, 1.1) {BreedSeeder\\(Utility)};
+
+    \draw[arr] (ctrl) -- (data);
+    \draw[arr] (data) -- (pg);
+    \draw[arr, dashed] (seed) -- node[font=\footnotesize, above]{JSON-Seed} (data);
+  \end{tikzpicture}
   \caption{Interne Schichten des Backends}
   \label{fig:backend-schichten}
 \end{figure}
@@ -78,10 +101,30 @@ Das Datenbankschema besteht aus vier Entitäten (Abbildung~\ref{fig:er-diagramm}
 
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.9\textwidth}{\centering\vspace{3cm}
-    [ER-Diagramm: Owner (1) --- (N) Dog (N) --- (1) Breed (N) --- (1) LegalRestrictions;\
-    Owner.Email UNIQUE; Dog→Owner: CASCADE; Dog→Breed, Breed→LegalRestrictions: RESTRICT]
-    \vspace{3cm}}}
+  \begin{tikzpicture}[
+      entity/.style={draw, rectangle, minimum width=2.8cm, minimum height=0.8cm,
+                     align=center, font=\small\bfseries, fill=gray!15},
+      rel/.style={draw, diamond, minimum width=1.4cm, minimum height=0.8cm,
+                  align=center, font=\footnotesize, fill=white, inner sep=1pt},
+      arr/.style={thick},
+      card/.style={font=\footnotesize}
+    ]
+    % Entitäten
+    \node[entity] (owner)  at (0, 0)    {Owner};
+    \node[entity] (dog)    at (4, 0)    {Dog};
+    \node[entity] (breed)  at (8, 0)    {Breed};
+    \node[entity] (legal)  at (8,-2)    {LegalRestrictions};
+
+    % Verbindungen mit Kardinalitäten
+    \draw[arr] (owner) -- node[card, above]{1} node[card, below]{N} (dog);
+    \draw[arr] (dog)   -- node[card, above]{N} node[card, below]{1} (breed);
+    \draw[arr] (breed) -- node[card, right]{N} node[card, left]{1} (legal);
+
+    % Annotationen
+    \node[font=\footnotesize\itshape, below=0.1cm of owner] {Email (UNIQUE)};
+    \node[font=\footnotesize\itshape, below=0.1cm of dog]   {CASCADE};
+    \node[font=\footnotesize\itshape, right=0.1cm of breed] {RESTRICT};
+  \end{tikzpicture}
   \caption{Entity-Relationship-Diagramm (DoggoGO-Datenbank)}
   \label{fig:er-diagramm}
 \end{figure}
@@ -116,7 +159,7 @@ JSON-Format. Tabelle~\ref{tab:api-endpunkte} listet die geplanten Endpunkte auf.
   \centering
   \caption{Übersicht der API-Endpunkte}
   \label{tab:api-endpunkte}
-  \begin{tabularx}{\textwidth}{|l|l|X|}
+  \begin{tabularx}{\textwidth}{|l|l|Y|}
     \hline
     \textbf{Methode} & \textbf{Pfad} & \textbf{Beschreibung} \\
     \hline
@@ -149,11 +192,35 @@ Anfrage von der iOS-App an das Backend:
 
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.9\textwidth}{\centering\vspace{2.5cm}
-    [Sequenzdiagramm: iOS-App → POST /api/owners/login → Backend prüft Hash →
-    JWT zurück → iOS speichert in Keychain → GET /api/dogs (Bearer Token) →
-    Backend validiert JWT → Dogs-Liste zurück → iOS rendert UI]
-    \vspace{2.5cm}}}
+  \begin{tikzpicture}[
+      lifeline/.style={draw, rectangle, minimum width=2.4cm, minimum height=0.7cm,
+                       align=center, font=\small\bfseries, fill=gray!15},
+      msg/.style={-{Stealth[length=4pt]}, thin},
+      ret/.style={-{Stealth[length=4pt]}, thin, dashed},
+      lbl/.style={font=\footnotesize, above, midway}
+    ]
+    % Köpfe
+    \node[lifeline] (ios) at (0,0)   {iOS-App};
+    \node[lifeline] (api) at (6,0)   {Backend-API};
+    \node[lifeline] (db)  at (11,0)  {PostgreSQL};
+
+    % Lebenslinien
+    \draw[dotted] (ios.south) -- (0,-7.5);
+    \draw[dotted] (api.south) -- (6,-7.5);
+    \draw[dotted] (db.south)  -- (11,-7.5);
+
+    % Nachrichten
+    \draw[msg] (0,-0.8) -- node[lbl]{POST /api/owners/login} (6,-0.8);
+    \draw[msg] (6,-1.4) -- node[lbl]{SELECT Owner WHERE email} (11,-1.4);
+    \draw[ret] (11,-2.0) -- node[lbl]{Owner-Datensatz} (6,-2.0);
+    \draw[ret] (6,-2.6) -- node[lbl]{200 OK + JWT} (0,-2.6);
+    \node[font=\footnotesize\itshape] at (1.5,-3.1) {$\rightarrow$ Token in Keychain};
+    \draw[msg] (0,-3.7) -- node[lbl]{GET /api/dogs (Bearer Token)} (6,-3.7);
+    \draw[msg] (6,-4.3) -- node[lbl]{JWT validieren + SELECT Dogs} (11,-4.3);
+    \draw[ret] (11,-4.9) -- node[lbl]{Dog-Datensätze} (6,-4.9);
+    \draw[ret] (6,-5.5) -- node[lbl]{200 OK + Dogs\-Liste (JSON)} (0,-5.5);
+    \node[font=\footnotesize\itshape] at (1.5,-6.0) {$\rightarrow$ UI aktualisieren};
+  \end{tikzpicture}
   \caption{Sequenzdiagramm – Authentifizierter API-Aufruf}
   \label{fig:sequenzdiagramm}
 \end{figure}

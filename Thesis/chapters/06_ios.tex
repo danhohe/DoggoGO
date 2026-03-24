@@ -24,10 +24,25 @@ Testbarkeit und Wartbarkeit.
 
 \begin{figure}[H]
   \centering
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{2cm}
-    [MVVM-Diagramm: View (SwiftUI) ↔ ViewModel (@ObservableObject) ↔ Model (Codable DTOs);
-     ViewModel → URLSession → Backend REST-API]
-    \vspace{2cm}}}
+  \begin{tikzpicture}[
+      box/.style={draw, rectangle, rounded corners=4pt,
+                  minimum width=3cm, minimum height=0.9cm,
+                  align=center, font=\small, fill=gray!10},
+      ext/.style={draw, rectangle, rounded corners=4pt,
+                  minimum width=3cm, minimum height=0.9cm,
+                  align=center, font=\small, fill=white, dashed},
+      arr/.style={Stealth[length=5pt]-{Stealth[length=5pt]}, thick},
+      oarr/.style={-{Stealth[length=5pt]}, thick, dashed}
+    ]
+    \node[box] (view)  at (0, 0)   {View\\(SwiftUI)};
+    \node[box] (vm)    at (4, 0)   {ViewModel\\(@ObservableObject)};
+    \node[box] (model) at (8, 0)   {Model\\(Codable DTOs)};
+    \node[ext] (api)   at (4,-1.8) {Backend REST-API\\(URLSession)};
+
+    \draw[arr]  (view)  -- node[font=\footnotesize, above]{Bindings} (vm);
+    \draw[arr]  (vm)    -- node[font=\footnotesize, above]{Daten}    (model);
+    \draw[oarr] (vm)    -- node[font=\footnotesize, right]{HTTP}     (api);
+  \end{tikzpicture}
   \caption{MVVM-Architektur der DoggoGO iOS-App}
   \label{fig:mvvm}
 \end{figure}

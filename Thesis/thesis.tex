@@ -25,6 +25,15 @@
 \usepackage{array}
 \usepackage{multirow}
 
+%% Tabellen: raggedright X-Spalte (verhindert Overfull hbox)
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{Z}{>{\centering\arraybackslash}X}
+\renewcommand{\arraystretch}{1.3}
+
+%% TikZ für Diagramme
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, shapes.multipart, arrows.meta, positioning, fit, calc, er}
+
 \usepackage{listings}
 \usepackage{xcolor}
 

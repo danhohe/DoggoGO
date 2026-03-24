@@ -38,7 +38,7 @@ Die wichtigsten Stakeholder des Projekts sind:
   \centering
   \caption{Funktionale Anforderungen – Backend}
   \label{tab:fa-backend}
-  \begin{tabularx}{\textwidth}{|l|X|}
+  \begin{tabularx}{\textwidth}{|l|Y|}
     \hline
     \textbf{ID} & \textbf{Anforderung} \\
     \hline
@@ -75,7 +75,7 @@ Die wichtigsten Stakeholder des Projekts sind:
   \centering
   \caption{Funktionale Anforderungen – iOS-App}
   \label{tab:fa-ios}
-  \begin{tabularx}{\textwidth}{|l|X|}
+  \begin{tabularx}{\textwidth}{|l|Y|}
     \hline
     \textbf{ID} & \textbf{Anforderung} \\
     \hline
@@ -109,7 +109,7 @@ Die wichtigsten Stakeholder des Projekts sind:
   \centering
   \caption{Nicht-funktionale Anforderungen}
   \label{tab:nfas}
-  \begin{tabularx}{\textwidth}{|l|l|X|}
+  \begin{tabularx}{\textwidth}{|l|l|Y|}
     \hline
     \textbf{ID} & \textbf{Kategorie} & \textbf{Anforderung} \\
     \hline
@@ -149,10 +149,34 @@ iOS-Komponenten.
 
 \begin{figure}[H]
   \centering
-  % Platzhalter – Use-Case-Diagramm hier einfügen
-  \fbox{\parbox{0.85\textwidth}{\centering\vspace{2cm}
-    [Use-Case-Diagramm: Nutzer\-in/Nutzer $\leftrightarrow$ iOS-App $\leftrightarrow$ Backend-API]
-    \vspace{2cm}}}
+  \begin{tikzpicture}[
+      actor/.style={draw, rectangle, rounded corners=6pt,
+                    minimum width=2.8cm, minimum height=0.7cm,
+                    align=center, font=\small},
+      uc/.style={draw, ellipse, minimum width=3.2cm, minimum height=0.8cm,
+                 align=center, font=\small},
+      sys/.style={draw, dashed, rectangle, rounded corners=2pt,
+                  inner sep=8pt, font=\small\itshape},
+      arr/.style={-{Stealth[length=5pt]}, thin}
+    ]
+    % Akteur links
+    \node[actor] (user) at (0,0) {Nutzer\-in / Nutzer};
+
+    % System-Rahmen
+    \node[sys, fit={(3,-2.5)(9,2.5)}] (sys) {};
+    \node[font=\footnotesize\itshape] at (6, 2.2) {DoggoGO (iOS-App + Backend)};
+
+    % Use Cases
+    \node[uc] (uc1) at (6, 1.6) {Registrieren};
+    \node[uc] (uc2) at (6, 0.7) {Anmelden};
+    \node[uc] (uc3) at (6,-0.2) {Hund anlegen};
+    \node[uc] (uc4) at (6,-1.1) {Rasse auswählen};
+    \node[uc] (uc5) at (6,-2.0) {Vorschriften abrufen};
+
+    % Verbindungen
+    \foreach \uc in {uc1,uc2,uc3,uc4,uc5}
+      \draw[arr] (user) -- (\uc);
+  \end{tikzpicture}
   \caption{Use-Case-Diagramm – Backend und iOS-App}
   \label{fig:use-case}
 \end{figure}
