@@ -1,0 +1,57 @@
+%% -------------------------------------------------------
+%% Kapitel 0: Abstract (DE + EN)
+%% -------------------------------------------------------
+\chapter*{Kurzfassung}
+\addcontentsline{toc}{chapter}{Kurzfassung}
+
+Die vorliegende Diplomarbeit beschreibt die Entwicklung von \textbf{DoggoGO}, einer standortbasierten
+Plattform für Hundehalter\-innen und Hundehalter. Das Ziel der Anwendung ist es, relevante
+Informationen – wie die Positionen von Freilaufwiesen, Sackerlspendern und Hundekot-Müllbehältern
+sowie rassenspezifische gesetzliche Vorschriften (Leinen- und Maulkorbpflicht) – in Echtzeit und
+standortgebunden bereitzustellen.
+
+Dieser Teil der Arbeit behandelt die technische Umsetzung des \textbf{Backends} auf Basis von
+\textbf{ASP.NET~Core~8} sowie die Entwicklung der \textbf{iOS-Applikation} mit \textbf{Swift} und
+\textbf{SwiftUI}. Das Backend stellt eine RESTful~API bereit, die von der Angular-Webapplikation
+(von Manuel Rankl) und der iOS-App konsumiert wird. Als Persistenzschicht kommt \textbf{PostgreSQL}
+in Kombination mit \textbf{Entity~Framework~Core~9} zum Einsatz. Die gesamte Serverinfrastruktur
+wird mittels \textbf{Docker} containerisiert und betrieben.
+
+Die iOS-App ermöglicht die Kartenansicht mit standortbasierten Markierungen über \textbf{MapKit},
+die Verwaltung von Hundeprofilen sowie die Anzeige rassenspezifischer Rechtsvorschriften. Die
+Authentifizierung erfolgt über \textbf{JSON~Web~Tokens~(JWT)}.
+
+\vspace{1.5em}
+\noindent\textit{Schlagwörter: ASP.NET Core, Entity Framework Core, PostgreSQL, Docker, iOS, SwiftUI,
+MapKit, JWT, REST~API, Geofencing}
+
+\clearpage
+
+%% -------------------------------------------------------
+%% Abstract (English)
+%% -------------------------------------------------------
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This diploma thesis describes the development of \textbf{DoggoGO}, a location-based platform for
+dog owners. The application aims to provide relevant information in real time – such as the
+locations of off-leash areas, poop-bag dispensers, and dog waste bins, as well as
+breed-specific legal regulations (leash and muzzle requirements) – based on the user's current
+location.
+
+This part of the thesis covers the technical implementation of the \textbf{backend} using
+\textbf{ASP.NET~Core~8} and the development of the \textbf{iOS application} using \textbf{Swift}
+and \textbf{SwiftUI}. The backend exposes a RESTful~API consumed by both the Angular web
+application (developed by Manuel Rankl) and the iOS app. \textbf{PostgreSQL} together with
+\textbf{Entity~Framework~Core~9} serves as the persistence layer. The entire server
+infrastructure is containerised and operated using \textbf{Docker}.
+
+The iOS app provides a map view with location-based markers via \textbf{MapKit}, dog profile
+management, and the display of breed-specific legal requirements. Authentication is handled
+via \textbf{JSON~Web~Tokens~(JWT)}.
+
+\vspace{1.5em}
+\noindent\textit{Keywords: ASP.NET Core, Entity Framework Core, PostgreSQL, Docker, iOS, SwiftUI,
+MapKit, JWT, REST~API, Geofencing}
+
+\clearpage

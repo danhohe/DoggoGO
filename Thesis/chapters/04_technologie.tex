@@ -1,0 +1,151 @@
+%% -------------------------------------------------------
+%% Kapitel 4: Technologieauswahl
+%% -------------------------------------------------------
+\chapter{Technologieauswahl}
+\label{chap:technologie}
+
+Die Wahl geeigneter Technologien hat einen entscheidenden Einfluss auf Wartbarkeit,
+Performance und Entwicklungsgeschwindigkeit eines Projekts. Dieses Kapitel begründet die
+getroffenen Entscheidungen für Backend und iOS-App und bewertet jeweils relevante
+Alternativen.
+
+\section{Backend-Framework: ASP.NET Core 8}
+\label{sec:aspnet}
+
+\subsection{Bewertete Alternativen}
+\label{subsec:backend-alternativen}
+
+Für die Implementierung der REST-API wurden drei Backend-Frameworks in Betracht gezogen:
+
+\begin{table}[H]
+  \centering
+  \caption{Vergleich Backend-Frameworks}
+  \label{tab:backend-vergleich}
+  \begin{tabularx}{\textwidth}{|l|X|X|X|}
+    \hline
+    \textbf{Kriterium} & \textbf{ASP.NET Core 8} & \textbf{Node.js / Express} &
+    \textbf{Spring Boot 3} \\
+    \hline
+    Sprache             & C\# (.NET)      & JavaScript / TypeScript & Java / Kotlin \\
+    \hline
+    Performance         & Sehr hoch (Benchmark: Top-3 TechEmpower) &
+                          Hoch (Event Loop) & Hoch \\
+    \hline
+    ORM-Unterstützung   & Entity Framework Core (erstklassig) &
+                          Prisma / TypeORM & Hibernate / Spring Data \\
+    \hline
+    Lernkurve           & Mittel (C\# Vorwissen vorhanden) &
+                          Niedrig (JS bekannt) & Hoch \\
+    \hline
+    Docker-Support      & Offizielles .NET-Image, klein & Node-Image & JVM-Image, groß \\
+    \hline
+    Schul-Kontext       & HTL-Lehrplan (C\#) & Partiell & Nein \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\subsection{Entscheidung}
+\label{subsec:aspnet-entscheidung}
+
+\textbf{ASP.NET~Core~8} wurde gewählt, weil C\# im HTL-Lehrplan fest verankert ist und
+bereits umfangreiche Vorkenntnisse vorhanden sind. Das Framework bietet erstklassige
+Integration mit Entity~Framework~Core, sehr gute Performance und einen klar strukturierten
+Middleware-Stack. Die offiziellen Microsoft-Docker-Images sind schlank und werden langfristig
+gewartet. Spring~Boot wäre eine technisch gleichwertige Alternative, erfordert jedoch Java
+und eine deutlich steilere Einarbeitungskurve in das Spring-Ökosystem. Node.js~/ Express
+wurde verworfen, da der Typsicherheitsgewinn gegenüber JavaScript und die bessere
+ORM-Integration von EF~Core für ein datenbankzentrisches Projekt ausschlaggebend war.
+
+\section{ORM: Entity Framework Core 9}
+\label{sec:efcore}
+
+\subsection{Bewertete Alternativen}
+\label{subsec:orm-alternativen}
+
+Für den Datenbankzugriff wurden drei Ansätze verglichen:
+
+\begin{description}
+  \item[Entity Framework Core 9 (EF Core)] Vollständiges ORM mit Code-First-Migrations,
+    LINQ-Abfrageunterstützung und Change~Tracking.
+  \item[Dapper] Lightweight Micro-ORM: Nur SQL-Mapping, kein Change~Tracking, keine
+    automatischen Migrations.
+  \item[ADO.NET (direkt)] Rohe Datenbankzugriffe; maximale Kontrolle, aber hoher
+    Boilerplate-Aufwand.
+\end{description}
+
+\subsection{Entscheidung}
+\label{subsec:efcore-entscheidung}
+
+EF~Core~9 wurde bevorzugt, weil es automatische Migrationen ermöglicht (kein manuelles
+SQL für Schemaänderungen), LINQ-Abfragen typsicher und intellisense-fähig macht und
+sehr gut mit ASP.NET~Core zusammenspielt. Für einfache CRUD-Operationen wie in DoggoGO
+ist der Overhead von EF~Core vernachlässigbar. Dapper wäre bei komplexen, performance-kritischen
+Datenbankabfragen sinnvoller; da DoggoGO aktuell keine komplexen Joins oder Massenoperationen
+benötigt, ist dieser Vorteil irrelevant.
+
+\section{Datenbank: PostgreSQL}
+\label{sec:postgresql}
+
+\subsection{Bewertete Alternativen}
+\label{subsec:db-alternativen}
+
+\begin{table}[H]
+  \centering
+  \caption{Vergleich Datenbanksysteme}
+  \label{tab:db-vergleich}
+  \begin{tabularx}{\textwidth}{|l|X|X|X|}
+    \hline
+    \textbf{Kriterium} & \textbf{PostgreSQL} & \textbf{MySQL / MariaDB} & \textbf{SQLite} \\
+    \hline
+    ACID-Konformität  & Vollständig & Vollständig & Vollständig \\
+    \hline
+    Array-Typ (text[]) & Nativ unterstützt & Nicht nativ & Nicht vorhanden \\
+    \hline
+    Docker-Image      & Offiziell, stabil & Offiziell & Nicht nötig \\
+    \hline
+    Skalierbarkeit    & Hoch & Hoch & Niedrig (Datei-basiert) \\
+    \hline
+    EF Core Support   & Npgsql (erstklassig) & Pomelo (gut) & Eingebaut \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\subsection{Entscheidung}
+\label{subsec:postgresql-entscheidung}
+
+\textbf{PostgreSQL} wurde gewählt, weil das Modell \texttt{LegalRestrictions} die Regeln
+als \texttt{List<string>} speichert – ein Feature, das in PostgreSQL nativ als
+\texttt{text[]} (Array-Typ) unterstützt wird und von Npgsql direkt auf C\#-Listen
+gemappt werden kann. MySQL~/ MariaDB bietet diesen nativen Array-Typ nicht; dort wäre
+eine separate Normalisierungstabelle oder JSON-Serialisierung notwendig gewesen, was den
+Code komplexer gemacht hätte. SQLite schied aus, da die Datei-basierte Architektur für
+eine containerisierte Multi-User-Anwendung nicht geeignet ist.
+
+\section{iOS: Swift und SwiftUI}
+\label{sec:swiftui}
+
+\subsection{Bewertete Alternativen}
+\label{subsec:ios-alternativen}
+
+Für die native iOS-App wurden drei Ansätze verglichen:
+
+\begin{description}
+  \item[Swift / SwiftUI (nativ)] Offizieller Apple-Stack, maximale Plattformintegration,
+    beste MapKit- und Keychain-Unterstützung.
+  \item[React Native] JavaScript-basiert, Cross-Platform (iOS + Android). MapKit-Unterstützung
+    über Drittbibliotheken, weniger tief integriert.
+  \item[Flutter] Dart-basiert, Cross-Platform. Google-Maps-Integration gut; Apple-Ökosystem
+    (Keychain, HealthKit etc.) schwieriger anzubinden.
+\end{description}
+
+\subsection{Entscheidung}
+\label{subsec:swiftui-entscheidung}
+
+Da das Projektziel explizit eine \textbf{iOS}-Applikation vorsieht (kein Android-Support
+im Projektrahmen) und MapKit sowie der iOS~\texttt{Keychain} für Kartendarstellung
+und sichere Token-Speicherung zentrale Anforderungen sind, fiel die Wahl auf den
+nativen \textbf{Swift~/ SwiftUI}-Stack. SwiftUI ermöglicht eine deklarative UI-Entwicklung
+mit weniger Boilerplate als UIKit und integriert sich nahtlos in das Apple-Ökosystem.
+Cross-Platform-Frameworks wie React~Native oder Flutter bieten für reine iOS-Anforderungen
+keinen Mehrwert, führen aber zu einer tieferen Abstraktionsschicht und eingeschränkterem
+Zugang zu nativen APIs.

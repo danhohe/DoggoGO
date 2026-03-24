@@ -1,0 +1,178 @@
+%% -------------------------------------------------------
+%% Kapitel 3: Systemarchitektur
+%% -------------------------------------------------------
+\chapter{Systemarchitektur}
+\label{chap:architektur}
+
+\section{Gesamtarchitektur}
+\label{sec:gesamtarchitektur}
+
+DoggoGO folgt einer klassischen \textbf{Client-Server-Architektur} mit drei Schichten:
+einem Web-Frontend (Angular), einer nativen iOS-App und einem gemeinsamen Backend-Server,
+der über eine REST-API kommuniziert. Die Datenhaltung erfolgt in einer PostgreSQL-Datenbank.
+Abbildung~\ref{fig:gesamtarchitektur} illustriert die Systemkomponenten und deren Beziehungen.
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.9\textwidth}{\centering\vspace{2.5cm}
+    [Komponentendiagramm:\
+    iOS-App $\rightarrow$ REST API (ASP.NET Core 8) $\rightarrow$ PostgreSQL; \
+    Angular-WebApp $\rightarrow$ REST API $\rightarrow$ PostgreSQL]
+    \vspace{2.5cm}}}
+  \caption{Gesamtarchitektur von DoggoGO}
+  \label{fig:gesamtarchitektur}
+\end{figure}
+
+Die Entscheidung für eine gemeinsame Backend-API (anstelle von separaten Backends für Web
+und iOS) hat folgende Vorteile:
+\begin{itemize}
+  \item Einmalige Implementierung der Geschäftslogik – keine Redundanz,
+  \item einheitlicher Datenzugriff für beide Clients,
+  \item einfache Erweiterbarkeit um weitere Clients (z.\,B.\ Android).
+\end{itemize}
+
+\section{Schichten des Backends}
+\label{sec:schichten-backend}
+
+Das Backend ist intern in drei Schichten gegliedert (Abbildung~\ref{fig:backend-schichten}):
+
+\begin{description}
+  \item[Controller-Schicht (Presentation Layer)]
+    ASP.NET~Core~Controller nehmen HTTP-Anfragen entgegen, validieren Eingaben und
+    delegieren die Verarbeitung an die Service-/Logikschicht.
+  \item[Modell- und Datenbankschicht (Data Layer)]
+    Entity~Framework~Core~9 übernimmt als ORM die Abbildung der C\#-Objekte auf
+    PostgreSQL-Tabellen. \texttt{DoggoContext} ist der zentrale \texttt{DbContext}.
+  \item[Hilfsdienste (Utility)]
+    \texttt{BreedSeeder} importiert Hunderassen beim Start aus \texttt{breeds.json} in die
+    Datenbank, sofern noch keine Einträge vorhanden sind.
+\end{description}
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.75\textwidth}{\centering\vspace{2cm}
+    [Schichtendiagramm Backend: Controller → DoggoContext (EF Core) → PostgreSQL; \
+    Utility: BreedSeeder]
+    \vspace{2cm}}}
+  \caption{Interne Schichten des Backends}
+  \label{fig:backend-schichten}
+\end{figure}
+
+\section{Datenbankdesign}
+\label{sec:datenbankdesign}
+
+Das Datenbankschema besteht aus vier Entitäten (Abbildung~\ref{fig:er-diagramm}):
+
+\begin{description}
+  \item[\texttt{Owner}] Repräsentiert eine registrierte Nutzerin / einen registrierten
+    Nutzer mit Anmeldedaten (E-Mail, Passwort-Hash, Passwort-Salt) und optionaler
+    Telefonnummer.
+  \item[\texttt{Dog}] Ein Hundeprofi mit Name und Alter, das einer Nutzerin / einem
+    Nutzer (\texttt{OwnerId}) und einer Hunderasse (\texttt{BreedId}) zugeordnet ist.
+  \item[\texttt{Breed}] Eine Hunderasse mit Bezeichnung und Beschreibung, verknüpft mit
+    einem \texttt{LegalRestrictions}-Eintrag.
+  \item[\texttt{LegalRestrictions}] Rechtskategorie (z.\,B.\ \texttt{spezielle\_hunderasse})
+    und Liste konkreter Vorschriften (Leinen-/Maulkorbpflicht, ATP-Pflicht etc.) als
+    PostgreSQL-Array.
+\end{description}
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.9\textwidth}{\centering\vspace{3cm}
+    [ER-Diagramm: Owner (1) --- (N) Dog (N) --- (1) Breed (N) --- (1) LegalRestrictions;\
+    Owner.Email UNIQUE; Dog→Owner: CASCADE; Dog→Breed, Breed→LegalRestrictions: RESTRICT]
+    \vspace{3cm}}}
+  \caption{Entity-Relationship-Diagramm (DoggoGO-Datenbank)}
+  \label{fig:er-diagramm}
+\end{figure}
+
+\subsection{Beziehungen und Löschverhalten}
+\label{subsec:beziehungen}
+
+Die Beziehungen zwischen den Entitäten wurden im \texttt{DoggoContext} mit \texttt{OnModelCreating}
+explizit konfiguriert:
+
+\begin{itemize}
+  \item \textbf{Owner → Dog (1:N, Cascade Delete):} Wird eine Nutzerin / ein Nutzer gelöscht,
+    werden alle zugehörigen Hundeprofile ebenfalls gelöscht. Dies entspricht dem erwarteten
+    Verhalten beim Account-Delete.
+  \item \textbf{Dog → Breed (N:1, Restrict Delete):} Eine Hunderasse kann nicht gelöscht
+    werden, solange noch Hunde dieser Rasse existieren. Damit wird die referenzielle
+    Integrität gewahrt.
+  \item \textbf{Breed → LegalRestrictions (N:1, Restrict Delete):} Analog – ein
+    Rechtsdatensatz kann nicht entfernt werden, solange Rassen darauf verweisen.
+  \item \textbf{Owner.Email (Unique Index):} Verhindert mehrfache Registrierung mit
+    derselben E-Mail-Adresse auf Datenbankebene.
+\end{itemize}
+
+\section{REST-API-Überblick}
+\label{sec:api-ueberblick}
+
+Die API folgt den REST-Prinzipien: Ressourcen werden über hierarchische URLs adressiert,
+HTTP-Methoden spiegeln die CRUD-Operationen wider, und alle Antworten erfolgen im
+JSON-Format. Tabelle~\ref{tab:api-endpunkte} listet die geplanten Endpunkte auf.
+
+\begin{table}[H]
+  \centering
+  \caption{Übersicht der API-Endpunkte}
+  \label{tab:api-endpunkte}
+  \begin{tabularx}{\textwidth}{|l|l|X|}
+    \hline
+    \textbf{Methode} & \textbf{Pfad} & \textbf{Beschreibung} \\
+    \hline
+    POST   & \texttt{/api/owners/register} & Neue Nutzerin / neuen Nutzer registrieren \\
+    \hline
+    POST   & \texttt{/api/owners/login}    & Anmelden, JWT erhalten \\
+    \hline
+    GET    & \texttt{/api/owners/\{id\}}   & Nutzerprofil abrufen (auth. erforderlich) \\
+    \hline
+    GET    & \texttt{/api/dogs}            & Alle eigenen Hunde abrufen \\
+    \hline
+    POST   & \texttt{/api/dogs}            & Neuen Hund anlegen \\
+    \hline
+    PUT    & \texttt{/api/dogs/\{id\}}     & Hundeprofi aktualisieren \\
+    \hline
+    DELETE & \texttt{/api/dogs/\{id\}}     & Hundeprofi löschen \\
+    \hline
+    GET    & \texttt{/api/breeds}          & Alle Hunderassen abrufen \\
+    \hline
+    GET    & \texttt{/api/breeds/\{id\}}   & Einzelne Rasse mit Rechtsvorschriften abrufen \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\section{Kommunikationsfluss}
+\label{sec:kommunikationsfluss}
+
+Abbildung~\ref{fig:sequenzdiagramm} zeigt den typischen Ablauf einer authentifizierten
+Anfrage von der iOS-App an das Backend:
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.9\textwidth}{\centering\vspace{2.5cm}
+    [Sequenzdiagramm: iOS-App → POST /api/owners/login → Backend prüft Hash →
+    JWT zurück → iOS speichert in Keychain → GET /api/dogs (Bearer Token) →
+    Backend validiert JWT → Dogs-Liste zurück → iOS rendert UI]
+    \vspace{2.5cm}}}
+  \caption{Sequenzdiagramm – Authentifizierter API-Aufruf}
+  \label{fig:sequenzdiagramm}
+\end{figure}
+
+\begin{enumerate}
+  \item Die iOS-App sendet \texttt{POST /api/owners/login} mit Credentials im Request-Body.
+  \item Das Backend prüft den HMAC-SHA512-Hash und gibt bei Erfolg ein signiertes JWT zurück.
+  \item Die App speichert das Token sicher im iOS~\texttt{Keychain}.
+  \item Für alle weiteren Anfragen wird das Token im \texttt{Authorization}-Header
+        (\texttt{Bearer <token>}) mitgesendet.
+  \item Der ASP.NET~Core Middleware-Stack validiert das Token vor jedem geschützten Endpunkt.
+\end{enumerate}
+
+\section{Deployment-Architektur}
+\label{sec:deployment}
+
+Das gesamte Backend-Deployment basiert auf \textbf{Docker Compose}. Die
+\texttt{compose.yaml}-Datei definiert zwei Services: \texttt{postgres} (offizielle
+PostgreSQL-Image) und \texttt{backend} (das ASP.NET~Core-Anwendungs-Image). Beide Services
+kommunizieren über ein gemeinsames Docker-Netzwerk; das Backend verwendet die Umgebungsvariablen
+des Compose-Stacks für die Datenbankverbindung. Die PostgreSQL-Daten werden in einem benannten
+Volume (\texttt{postgres\_data}) persistiert.
