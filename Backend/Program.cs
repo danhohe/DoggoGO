@@ -1,29 +1,67 @@
+using System.Text;
 using Backend.Data;
-using Backend.Utility;
+using Backend.Interfaces;
+using Backend.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<DoggoContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+// ---------- 1. Konfiguration laden ----------
+var configuration = builder.Configuration;
 
+// ---------- 2. Datenbank einrichten ----------
+builder.Services.AddDbContext<DoggoContext>(options =>
+    options.UseNpgsql(configuration.GetConnectionString("TestConnection")));
+
+// ---------- 3. Services (z.B. für DI) ----------
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+
+// ---------- 4. JWT Auth konfigurieren ----------
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        var jwtSecret = configuration["JwtSettings:Secret"] ?? throw new InvalidOperationException("JWT Secret not configured.");
+        var jwtIssuer = configuration["JwtSettings:Issuer"] ?? throw new InvalidOperationException("JWT Issuer not configured.");
+        var jwtAudience = configuration["JwtSettings:Audience"] ?? throw new InvalidOperationException("JWT Audience not configured.");
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
+        };
+        
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine($"JWT Fehler: {context.Exception.Message}");
+                return Task.CompletedTask;
+            }
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+// ---------- 5. Controller aktivieren ----------
 builder.Services.AddControllers();
 
+// ---------- 6. App bauen ----------
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<DoggoContext>();
-    await BreedSeeder.SeedBreedsAsync(context, "Data/breeds.json");
-}
-
-// Configure the HTTP request pipeline
 app.UseHttpsRedirection();
-app.UseRouting();
-app.UseAuthorization();
-app.MapControllers();
 
-// Add your endpoints here
+app.UseAuthentication();  // ← Muss VOR UseAuthorization
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
