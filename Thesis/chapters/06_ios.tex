@@ -284,3 +284,100 @@ func get<T: Decodable>(endpoint: String) async throws -> T {
     return try JSONDecoder().decode(T.self, from: data)
 }
 \end{lstlisting}
+
+\section{Fehlerbehandlung und Ladezustände}
+\label{sec:ios-fehler}
+
+Eine robuste iOS-App muss mit Netzwerkfehlern, ungültigen Tokens und unerwarteten
+Serverantworten umgehen. In der DoggoGO-App wird Fehlerbehandlung konsequent im
+ViewModel-Layer zentralisiert – die View selbst kennt keine Netzwerklogik.
+
+\subsection{Fehlerdefinition}
+\label{subsec:api-error}
+
+Alle möglichen Fehlerszenarien werden in einem \texttt{APIError}-Enum typisiert:
+
+\begin{lstlisting}[language=swift, caption={APIError – Typisierte Fehlerdefinition}, label=lst:apierror]
+enum APIError: LocalizedError {
+    case invalidURL
+    case unauthorized       // 401 – JWT abgelaufen oder ungueltig
+    case notFound           // 404 – Ressource nicht vorhanden
+    case serverError        // 5xx – Backend-Fehler
+    case decodingError      // JSON-Parsing fehlgeschlagen
+    case noConnection       // Netzwerk nicht erreichbar
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:    return "Ungueltige URL."
+        case .unauthorized:  return "Sitzung abgelaufen. Bitte erneut anmelden."
+        case .notFound:      return "Ressource nicht gefunden."
+        case .serverError:   return "Serverfehler. Bitte spaeter versuchen."
+        case .decodingError: return "Antwort konnte nicht verarbeitet werden."
+        case .noConnection:  return "Keine Internetverbindung."
+        }
+    }
+}
+\end{lstlisting}
+
+Das Protokoll \texttt{LocalizedError} stellt sicher, dass SwiftUI und das Betriebssystem
+die Fehlerbeschreibung automatisch für Alert-Dialoge verwenden können.
+
+\subsection{Ladezustand und Fehleranzeige im ViewModel}
+\label{subsec:loading-state}
+
+Jedes ViewModel hält zwei Zustandsvariablen: \texttt{isLoading} blendet während einer
+laufenden Netzwerkanfrage eine Ladeindikator-Ansicht ein, \texttt{errorMessage} speichert
+eine lesbare Fehlerbeschreibung für den Alert-Dialog:
+
+\begin{lstlisting}[language=swift, caption={ViewModel – Ladezustand und Fehlerbehandlung}, label=lst:loading]
+class DogListViewModel: ObservableObject {
+    @Published var dogs: [Dog] = []
+    @Published var isLoading = false
+    @Published var errorMessage: String?
+
+    func loadDogs() async {
+        isLoading = true
+        defer { isLoading = false }
+        do {
+            dogs = try await APIService.shared.get(endpoint: "/api/dogs")
+        } catch APIError.unauthorized {
+            errorMessage = APIError.unauthorized.errorDescription
+            AuthService.shared.deleteToken()   // abgelaufenes Token loeschen
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+}
+\end{lstlisting}
+
+Das \texttt{defer}-Statement stellt sicher, dass \texttt{isLoading} immer auf
+\texttt{false} zurückgesetzt wird – auch wenn die Anfrage mit einem Fehler endet.
+Bei einem \texttt{401~Unauthorized} wird das gespeicherte JWT automatisch gelöscht,
+sodass die Nutzerin / der Nutzer zur Anmeldeseite weitergeleitet wird.
+
+\subsection{Alert-Anzeige in der View}
+\label{subsec:alert}
+
+Die View abonniert \texttt{errorMessage} über ein \texttt{.alert}-Modifier und zeigt
+bei gesetztem Wert automatisch einen Dialog an:
+
+\begin{lstlisting}[language=swift, caption={SwiftUI – Alert fuer Fehlermeldungen}, label=lst:alert]
+.alert("Fehler", isPresented: Binding(
+    get: { viewModel.errorMessage != nil },
+    set: { if !$0 { viewModel.errorMessage = nil } }
+)) {
+    Button("OK", role: .cancel) { }
+} message: {
+    Text(viewModel.errorMessage ?? "")
+}
+.overlay {
+    if viewModel.isLoading {
+        ProgressView("Laden ...")
+            .padding()
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+    }
+}
+\end{lstlisting}
+
+Dieser Ansatz hält die View vollständig frei von Fehlerlogik: Sie bindet lediglich den
+Zustand des ViewModels und delegiert jede Entscheidung dorthin.
