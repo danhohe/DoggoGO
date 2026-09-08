@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.24)  26 MAR 2026 13:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.24)  8 SEP 2026 11:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -841,12 +841,31 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 84.
 )
 \Hy@SectionHShift=\skip62
-) (/usr/local/texlive/2026/texmf-dist/tex/latex/biblatex/biblatex.sty
+) (/usr/local/texlive/2026/texmf-dist/tex/latex/csquotes/csquotes.sty
+Package: csquotes 2024-04-04 v5.2o context-sensitive quotations (JAW)
+\csq@reset=\count358
+\csq@gtype=\count359
+\csq@glevel=\count360
+\csq@qlevel=\count361
+\csq@maxlvl=\count362
+\csq@tshold=\count363
+\csq@ltx@everypar=\toks44
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/csquotes/csquotes.def
+File: csquotes.def 2024-04-04 v5.2o csquotes generic definitions (JAW)
+)
+Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
+Package csquotes Info: ... configuration file loaded successfully.
+
+(/usr/local/texlive/2026/texmf-dist/tex/latex/csquotes/csquotes.cfg
+File: csquotes.cfg 
+))
+(/usr/local/texlive/2026/texmf-dist/tex/latex/biblatex/biblatex.sty
 Package: biblatex 2025/07/10 v3.21 programmable bibliographies (PK/MW)
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/logreq/logreq.sty
 Package: logreq 2010/08/04 v1.0 xml request logger
-\lrq@indent=\count358
+\lrq@indent=\count364
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/logreq/logreq.def
 File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
@@ -854,49 +873,49 @@ File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
 (/usr/local/texlive/2026/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
 )
-\c@tabx@nest=\count359
-\c@listtotal=\count360
-\c@listcount=\count361
-\c@liststart=\count362
-\c@liststop=\count363
-\c@citecount=\count364
-\c@citetotal=\count365
-\c@multicitecount=\count366
-\c@multicitetotal=\count367
-\c@instcount=\count368
-\c@maxnames=\count369
-\c@minnames=\count370
-\c@maxitems=\count371
-\c@minitems=\count372
-\c@citecounter=\count373
-\c@maxcitecounter=\count374
-\c@savedcitecounter=\count375
-\c@uniquelist=\count376
-\c@uniquename=\count377
-\c@refsection=\count378
-\c@refsegment=\count379
-\c@maxextratitle=\count380
-\c@maxextratitleyear=\count381
-\c@maxextraname=\count382
-\c@maxextradate=\count383
-\c@maxextraalpha=\count384
-\c@abbrvpenalty=\count385
-\c@highnamepenalty=\count386
-\c@lownamepenalty=\count387
-\c@maxparens=\count388
-\c@parenlevel=\count389
-\blx@tempcnta=\count390
-\blx@tempcntb=\count391
-\blx@tempcntc=\count392
-\c@blx@maxsection=\count393
-\blx@maxsegment@0=\count394
-\blx@notetype=\count395
-\blx@parenlevel@text=\count396
-\blx@parenlevel@foot=\count397
-\blx@sectionciteorder@0=\count398
-\blx@sectionciteorderinternal@0=\count399
-\blx@entrysetcounter=\count400
-\blx@biblioinstance=\count401
+\c@tabx@nest=\count365
+\c@listtotal=\count366
+\c@listcount=\count367
+\c@liststart=\count368
+\c@liststop=\count369
+\c@citecount=\count370
+\c@citetotal=\count371
+\c@multicitecount=\count372
+\c@multicitetotal=\count373
+\c@instcount=\count374
+\c@maxnames=\count375
+\c@minnames=\count376
+\c@maxitems=\count377
+\c@minitems=\count378
+\c@citecounter=\count379
+\c@maxcitecounter=\count380
+\c@savedcitecounter=\count381
+\c@uniquelist=\count382
+\c@uniquename=\count383
+\c@refsection=\count384
+\c@refsegment=\count385
+\c@maxextratitle=\count386
+\c@maxextratitleyear=\count387
+\c@maxextraname=\count388
+\c@maxextradate=\count389
+\c@maxextraalpha=\count390
+\c@abbrvpenalty=\count391
+\c@highnamepenalty=\count392
+\c@lownamepenalty=\count393
+\c@maxparens=\count394
+\c@parenlevel=\count395
+\blx@tempcnta=\count396
+\blx@tempcntb=\count397
+\blx@tempcntc=\count398
+\c@blx@maxsection=\count399
+\blx@maxsegment@0=\count400
+\blx@notetype=\count401
+\blx@parenlevel@text=\count402
+\blx@parenlevel@foot=\count403
+\blx@sectionciteorder@0=\count404
+\blx@sectionciteorderinternal@0=\count405
+\blx@entrysetcounter=\count406
+\blx@biblioinstance=\count407
 \labelnumberwidth=\skip63
 \labelalphawidth=\skip64
 \biblabelsep=\skip65
@@ -908,9 +927,9 @@ Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
 \blx@bcfin=\read4
 \blx@bcfout=\write4
 \blx@langwohyphens=\language92
-\c@mincomprange=\count402
-\c@maxcomprange=\count403
-\c@mincompwidth=\count404
+\c@mincomprange=\count408
+\c@maxcomprange=\count409
+\c@mincompwidth=\count410
 Package biblatex Info: Trying to load biblatex default data model...
 Package biblatex Info: ... file 'blx-dm.def' found.
 
@@ -921,74 +940,74 @@ Package biblatex Info: Trying to load biblatex style data model...
 Package biblatex Info: ... file 'ieee.dbx' not found.
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
-\c@afterword=\count405
-\c@savedafterword=\count406
-\c@annotator=\count407
-\c@savedannotator=\count408
-\c@author=\count409
-\c@savedauthor=\count410
-\c@bookauthor=\count411
-\c@savedbookauthor=\count412
-\c@commentator=\count413
-\c@savedcommentator=\count414
-\c@editor=\count415
-\c@savededitor=\count416
-\c@editora=\count417
-\c@savededitora=\count418
-\c@editorb=\count419
-\c@savededitorb=\count420
-\c@editorc=\count421
-\c@savededitorc=\count422
-\c@foreword=\count423
-\c@savedforeword=\count424
-\c@holder=\count425
-\c@savedholder=\count426
-\c@introduction=\count427
-\c@savedintroduction=\count428
-\c@namea=\count429
-\c@savednamea=\count430
-\c@nameb=\count431
-\c@savednameb=\count432
-\c@namec=\count433
-\c@savednamec=\count434
-\c@translator=\count435
-\c@savedtranslator=\count436
-\c@shortauthor=\count437
-\c@savedshortauthor=\count438
-\c@shorteditor=\count439
-\c@savedshorteditor=\count440
-\c@labelname=\count441
-\c@savedlabelname=\count442
-\c@institution=\count443
-\c@savedinstitution=\count444
-\c@lista=\count445
-\c@savedlista=\count446
-\c@listb=\count447
-\c@savedlistb=\count448
-\c@listc=\count449
-\c@savedlistc=\count450
-\c@listd=\count451
-\c@savedlistd=\count452
-\c@liste=\count453
-\c@savedliste=\count454
-\c@listf=\count455
-\c@savedlistf=\count456
-\c@location=\count457
-\c@savedlocation=\count458
-\c@organization=\count459
-\c@savedorganization=\count460
-\c@origlocation=\count461
-\c@savedoriglocation=\count462
-\c@origpublisher=\count463
-\c@savedorigpublisher=\count464
-\c@publisher=\count465
-\c@savedpublisher=\count466
-\c@language=\count467
-\c@savedlanguage=\count468
-\c@origlanguage=\count469
-\c@savedoriglanguage=\count470
-\c@pageref=\count471
-\c@savedpageref=\count472
+\c@afterword=\count411
+\c@savedafterword=\count412
+\c@annotator=\count413
+\c@savedannotator=\count414
+\c@author=\count415
+\c@savedauthor=\count416
+\c@bookauthor=\count417
+\c@savedbookauthor=\count418
+\c@commentator=\count419
+\c@savedcommentator=\count420
+\c@editor=\count421
+\c@savededitor=\count422
+\c@editora=\count423
+\c@savededitora=\count424
+\c@editorb=\count425
+\c@savededitorb=\count426
+\c@editorc=\count427
+\c@savededitorc=\count428
+\c@foreword=\count429
+\c@savedforeword=\count430
+\c@holder=\count431
+\c@savedholder=\count432
+\c@introduction=\count433
+\c@savedintroduction=\count434
+\c@namea=\count435
+\c@savednamea=\count436
+\c@nameb=\count437
+\c@savednameb=\count438
+\c@namec=\count439
+\c@savednamec=\count440
+\c@translator=\count441
+\c@savedtranslator=\count442
+\c@shortauthor=\count443
+\c@savedshortauthor=\count444
+\c@shorteditor=\count445
+\c@savedshorteditor=\count446
+\c@labelname=\count447
+\c@savedlabelname=\count448
+\c@institution=\count449
+\c@savedinstitution=\count450
+\c@lista=\count451
+\c@savedlista=\count452
+\c@listb=\count453
+\c@savedlistb=\count454
+\c@listc=\count455
+\c@savedlistc=\count456
+\c@listd=\count457
+\c@savedlistd=\count458
+\c@liste=\count459
+\c@savedliste=\count460
+\c@listf=\count461
+\c@savedlistf=\count462
+\c@location=\count463
+\c@savedlocation=\count464
+\c@organization=\count465
+\c@savedorganization=\count466
+\c@origlocation=\count467
+\c@savedoriglocation=\count468
+\c@origpublisher=\count469
+\c@savedorigpublisher=\count470
+\c@publisher=\count471
+\c@savedpublisher=\count472
+\c@language=\count473
+\c@savedlanguage=\count474
+\c@origlanguage=\count475
+\c@savedoriglanguage=\count476
+\c@pageref=\count477
+\c@savedpageref=\count478
 \shorthandwidth=\skip71
 \shortjournalwidth=\skip72
 \shortserieswidth=\skip73
@@ -1014,19 +1033,19 @@ Package biblatex Info: ... file 'biblatex.def' found.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/biblatex/biblatex.def
 File: biblatex.def 2025/07/10 v3.21 biblatex compatibility (PK/MW)
-\c@textcitecount=\count473
-\c@textcitetotal=\count474
-\c@textcitemaxnames=\count475
-\c@biburlbigbreakpenalty=\count476
-\c@biburlbreakpenalty=\count477
-\c@biburlnumpenalty=\count478
-\c@biburlucpenalty=\count479
-\c@biburllcpenalty=\count480
+\c@textcitecount=\count479
+\c@textcitetotal=\count480
+\c@textcitemaxnames=\count481
+\c@biburlbigbreakpenalty=\count482
+\c@biburlbreakpenalty=\count483
+\c@biburlnumpenalty=\count484
+\c@biburlucpenalty=\count485
+\c@biburllcpenalty=\count486
 \biburlbigskip=\muskip19
 \biburlnumskip=\muskip20
 \biburlucskip=\muskip21
 \biburllcskip=\muskip22
-\c@smartand=\count481
+\c@smartand=\count487
 )
 Package biblatex Info: Trying to load bibliography style 'ieee'...
 Package biblatex Info: ... file 'ieee.bbx' found.
@@ -1048,8 +1067,8 @@ Package biblatex Info: ... file 'standard.bbx' found.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
 File: standard.bbx 2025/07/10 v3.21 biblatex bibliography style (PK/MW)
-\c@bbx:relatedcount=\count482
-\c@bbx:relatedtotal=\count483
+\c@bbx:relatedcount=\count488
+\c@bbx:relatedtotal=\count489
 ))))
 Package biblatex Info: Trying to load citation style 'ieee'...
 Package biblatex Info: ... file 'ieee.cbx' found.
@@ -1086,7 +1105,7 @@ Package: expl3 2026-01-19 L3 programming layer (loader)
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count484
+\l__color_backend_stack_int=\count490
 ))
 Package biblatex Info: ... and expl3
 (biblatex)             2026-01-19 L3 programming layer (loader) 
@@ -1119,19 +1138,18 @@ Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 \f@nch@widthL=\skip96
 \f@nch@widthC=\skip97
 \f@nch@widthR=\skip98
-\@temptokenb=\toks44
+\@temptokenb=\toks45
 )
 (/usr/local/texlive/2026/texmf-dist/tex/latex/parskip/parskip.sty
 Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
 )
+Package csquotes Info: Checking for multilingual support...
+Package csquotes Info: ... found 'babel' package.
+Package csquotes Info: Adjusting default style.
+Package csquotes Info: Redefining alias 'default' -> 'ngerman'.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 14
+3.
 
-Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing.
-(biblatex)                Loading 'csquotes' recommended.
-
-\@quotelevel=\count485
-\@quotereset=\count486
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 13
-6.
 (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (./thesis.aux
@@ -1140,24 +1158,24 @@ Package babel Info: 'ngerman' activates 'german' shorthands.
 )
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 136.
-LaTeX Font Info:    ... okay on input line 136.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 136.
-LaTeX Font Info:    ... okay on input line 136.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 136.
-LaTeX Font Info:    ... okay on input line 136.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 136.
-LaTeX Font Info:    ... okay on input line 136.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 136.
-LaTeX Font Info:    ... okay on input line 136.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 136.
-LaTeX Font Info:    ... okay on input line 136.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 136.
-LaTeX Font Info:    ... okay on input line 136.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 136.
-LaTeX Font Info:    ... okay on input line 136.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 136.
-LaTeX Font Info:    ... okay on input line 136.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 143.
+LaTeX Font Info:    ... okay on input line 143.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -1176,7 +1194,7 @@ LaTeX Font Info:    ... okay on input line 136.
 * \oddsidemargin=27.31465pt
 * \evensidemargin=27.31465pt
 * \topmargin=-23.91173pt
-* \headheight=12.0pt
+* \headheight=14.5pt
 * \headsep=25.0pt
 * \topskip=12.0pt
 * \footskip=30.0pt
@@ -1195,17 +1213,17 @@ LaTeX Font Info:    ... okay on input line 136.
 
 (/usr/local/texlive/2026/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count487
+\scratchcounter=\count491
 \scratchdimen=\dimen317
 \scratchbox=\box97
-\nofMPsegments=\count488
-\nofMParguments=\count489
-\everyMPshowfont=\toks45
-\MPscratchCnt=\count490
+\nofMPsegments=\count492
+\nofMParguments=\count493
+\everyMPshowfont=\toks46
+\MPscratchCnt=\count494
 \MPscratchDim=\dimen318
-\MPnumerator=\count491
-\makeMPintoPDFobject=\count492
-\everyMPtoPDFconversion=\toks46
+\MPnumerator=\count495
+\makeMPintoPDFobject=\count496
+\everyMPtoPDFconversion=\toks47
 ) (/usr/local/texlive/2026/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -1224,8 +1242,8 @@ Package caption Info: longtable package is loaded.
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 )
 Package caption Info: End \AtBeginDocument code.
-\c@lstlisting=\count493
-Package hyperref Info: Link coloring ON on input line 136.
+\c@lstlisting=\count497
+Package hyperref Info: Link coloring ON on input line 143.
 
 (./thesis.out) (./thesis.out)
 \@outlinefile=\write5
@@ -1257,49 +1275,49 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'thesis.bbl' found.
 
 (./thesis.bbl)
-Package biblatex Info: Reference section=0 on input line 136.
-Package biblatex Info: Reference segment=0 on input line 136.
-<images/htl_leo_logo.png, id=340, 654.5253pt x 156.585pt>
+Package biblatex Info: Reference section=0 on input line 143.
+Package biblatex Info: Reference segment=0 on input line 143.
+<images/htl_leo_logo.png, id=384, 654.5253pt x 156.585pt>
 File: images/htl_leo_logo.png Graphic file (type png)
 <use images/htl_leo_logo.png>
-Package pdftex.def Info: images/htl_leo_logo.png  used on input line 140.
+Package pdftex.def Info: images/htl_leo_logo.png  used on input line 147.
 (pdftex.def)             Requested size: 142.26378pt x 34.03307pt.
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-49.
+56.
  (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-49.
+56.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-149.
+156.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-149.
+156.
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 149.
+(Font)              <12> on input line 156.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 149.
+(Font)              <8> on input line 156.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 149.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 149
+(Font)              <6> on input line 156.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 156
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 149
+LaTeX Font Info:    Trying to load font information for U+msb on input line 156
 .
 
 (/usr/local/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1313,7 +1331,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.177 \clearpage
+l.184 \clearpage
                  [1
 
 ] (./chapters/00_abstract.tex
@@ -1333,57 +1351,41 @@ Overfull \hbox (1.98796pt too wide) in paragraph at lines 20--23
 
 ]
 Package babel Info: 'ngerman' activates 'german' shorthands.
-(babel)             Reported on input line 65.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[5])
+(babel)             Reported on input line 70.
+ [5] [6])
 \tf@toc=\write6
 \openout6 = `thesis.toc'.
 
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[6] (./thesis.lof)
+ [7] (./thesis.lof)
 \tf@lof=\write7
 \openout7 = `thesis.lof'.
 
- [7
+ [8
 
 
 ] (./thesis.lot)
 \tf@lot=\write8
 \openout8 = `thesis.lot'.
 
- [8
+
+[9
 
 
 ] (./thesis.lol)
 \tf@lol=\write9
 \openout9 = `thesis.lol'.
 
- [9
+ [10
 
 
-]
-(./chapters/01_einleitung.tex
+] (./chapters/01_einleitung.tex
 Kapitel 1.
 
-Overfull \hbox (15.24478pt too wide) in paragraph at lines 48--48
+Overfull \hbox (16.14354pt too wide) in paragraph at lines 48--48
 []|\T1/lmr/bx/n/10.95 Rechtsvorgaben|  
  []
 
-[10
+[11
 
 
 ]
@@ -1391,15 +1393,7 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 7
 4.
  (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[11{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+) [12{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
 Overfull \hbox (13.54428pt too wide) in paragraph at lines 110--112
 \T1/lmr/m/n/12 no-lo-gi-en (ASP.NET Co-re 8, En-ti-ty Fra-me-work Co-re 9, Post
 -greS-QL, iOS/SwiftUI)
@@ -1410,27 +1404,12 @@ Overfull \hbox (42.61281pt too wide) in paragraph at lines 113--115
 []\T1/lmr/m/n/12 Detaillierte Be-schrei-bung der API-Endpunkte,
  []
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[12]
+[13]
 Overfull \hbox (4.46065pt too wide) in paragraph at lines 121--123
 []\T1/lmr/m/n/12 Reflexion der er-reich-ten Zie-le, sub-op-ti-ma-ler Ent-
  []
 
-) (./chapters/02_anforderungen.tex
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[13]
+) (./chapters/02_anforderungen.tex [14]
 Kapitel 2.
 
 Overfull \hbox (15.65277pt too wide) in paragraph at lines 18--21
@@ -1442,49 +1421,16 @@ Overfull \hbox (17.05164pt too wide) in paragraph at lines 22--25
 []\T1/lmr/m/n/12 Das Pro-jekt-team (Ma-nu-el Ran-kl für das Angular-
  []
 
-[14
+[15
 
-]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[15]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[16]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[17]
+] [16] [17] [18]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
 88.
  (/usr/local/texlive/2026/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-))
-(./chapters/03_architektur.tex
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[18]
+)) (./chapters/03_architektur.tex [19]
 Kapitel 3.
-[19
+[20
 
 ]
 Overfull \hbox (27.9694pt too wide) in paragraph at lines 52--54
@@ -1517,27 +1463,13 @@ Overfull \hbox (7.32274pt too wide) in paragraph at lines 97--100
 .) als PostgreSQL-
  []
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[20]
+[21]
 Overfull \hbox (25.47784pt too wide) in paragraph at lines 135--137
 \T1/lmr/m/n/12 Die Be-zie-hun-gen zwi-schen den En-ti-tä-ten wur-den im \T1/lmt
 t/m/n/12 DoggoContext \T1/lmr/m/n/12 mit \T1/lmtt/m/n/12 OnModelCreating
  []
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[21]
+[22]
 Overfull \hbox (3.10562pt too wide) in paragraph at lines 205--205
  [][]\T1/lmr/bx/n/10.95 PostgreSQL 
  []
@@ -1548,31 +1480,28 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 217.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 217.
+[23{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
+Overfull \hbox (0.43489pt too wide) in paragraph at lines 245--252
+ []\T1/lmr/bx/n/12 Passwortspeicherung[] \T1/lmr/m/n/12 Pass-wör-ter wer-den ni
+e-mals im Klar-text ge-spei-chert. Statt-
+ []
 
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[22{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}])
-(./chapters/04_technologie.tex
-Overfull \hbox (9.14961pt too wide) in paragraph at lines 240--4
+Overfull \hbox (0.50319pt too wide) in paragraph at lines 254--262
+ []\T1/lmr/bx/n/12 JWT-Tokenfluss[] \T1/lmr/m/n/12 Nach er-folg-rei-cher An-mel
+-dung stellt der Ser-ver ein \T1/lmr/bx/n/12 JSON Web
+ []
+
+[24]) (./chapters/04_technologie.tex
+Overfull \hbox (9.14961pt too wide) in paragraph at lines 277--4
 \T1/lmr/m/n/12 Das ge-sam-te Backend-Deployment ba-siert auf \T1/lmr/bx/n/12 Do
 -cker Com-po-se\T1/lmr/m/n/12 . Die \T1/lmtt/m/n/12 compose.yaml\T1/lmr/m/n/12 
 -
  []
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[23]
+[25]
 Kapitel 4.
-[24
+[26
 
 ]
 Overfull \hbox (33.95985pt too wide) in paragraph at lines 69--71
@@ -1585,22 +1514,7 @@ Overfull \hbox (42.66386pt too wide) in paragraph at lines 73--75
 her Boilerplate-
  []
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[25]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[26]
+[27] [28]
 Overfull \hbox (43.34662pt too wide) in paragraph at lines 137--139
 []\T1/lmr/m/n/12 JavaScript-basiert, Cross-Platform (iOS + An-dro-id). MapKit-U
 nterstützung
@@ -1612,32 +1526,41 @@ Overfull \hbox (16.71783pt too wide) in paragraph at lines 139--141
 le-Ökosystem
  []
 
-) (./chapters/05_backend.tex
 
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+Overfull \hbox (37.32384pt too wide) in paragraph at lines 155--155
+[]\T1/lmr/bx/n/17.28 Nebenläufigkeit: Swift Con-cur-ren-cy (async/await) 
+ []
 
-[27]
-Kapitel 5.
+
+Overfull \hbox (156.6824pt too wide) in paragraph at lines 166--170
+[]\T1/lmr/m/n/12 Die klas-si-sche Lö-sung: \T1/lmtt/m/n/12 URLSession.dataTask(
+with:completionHandler:)
+ []
+
+[29]
+Overfull \hbox (87.3659pt too wide) in paragraph at lines 185--194
+\T1/lmr/m/n/12 ge-gen-über Completion-Handlern deut-lich les-ba-rer ^^U ein \T1
+/lmtt/m/n/12 try await URLSession.shared.data(for:)
+ []
+
+
+Overfull \hbox (0.22806pt too wide) in paragraph at lines 185--194
+\T1/lmr/m/n/12 Auf-wand für das Subscription-Management; für die DoggoGO-Anwend
+ungsfälle (ein-
+ []
+
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 33.
+nput line 195.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 34.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 197.
+) (./chapters/05_backend.tex [30]
+Kapitel 5.
 
 Overfull \hbox (14.58374pt too wide) in paragraph at lines 51--54
 \T1/lmtt/m/n/12 Dog \T1/lmr/m/n/12 hält Na-me, Al-ter so-wie Fremd-schlüs-sel z
 u \T1/lmtt/m/n/12 Owner \T1/lmr/m/n/12 und \T1/lmtt/m/n/12 Breed\T1/lmr/m/n/12 
 . Navigations-Properties
  []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Overfull \hbox (42.22557pt too wide) in paragraph at lines 72--75
@@ -1651,111 +1574,41 @@ Overfull \hbox (2.94159pt too wide) in paragraph at lines 72--75
 /n/12 List<string>\T1/lmr/m/n/12 , die Npgs-ql auf \T1/lmtt/m/n/12 text[]
  []
 
-[28
+[31
 
-]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[29]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[30]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
+] [32] [33] [34] [35]
 Overfull \hbox (33.2443pt too wide) in paragraph at lines 276--279
 \T1/lmr/m/n/12 Das \T1/lmtt/m/n/12 Dockerfile \T1/lmr/m/n/12 ver-wen-det einen 
 Multi-Stage-Build, um ein mög-lichst klei-nes Produktions-
  []
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[31]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
+[36] [37]
 Overfull \hbox (0.26347pt too wide) in paragraph at lines 305--308
 \T1/lmr/m/n/12 Das Datenbank-Volume \T1/lmtt/m/n/12 postgres_data \T1/lmr/m/n/1
 2 sorgt da-für, dass Da-ten zwi-schen Container-
  []
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+Overfull \hbox (31.35242pt too wide) in paragraph at lines 344--350
+\T1/lmr/m/n/12 bu-ten \T1/lmtt/m/n/12 [ApiController] \T1/lmr/m/n/12 und \T1/lm
+tt/m/n/12 [Route(äpi/[controller]")] \T1/lmr/m/n/12 an-no-tiert. \T1/lmtt/m/n/1
+2 [ApiController]
+ []
 
 
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+Overfull \hbox (13.54805pt too wide) in paragraph at lines 344--350
+\T1/lmr/m/n/12 ak-ti-viert au-to-ma-ti-sche Mo-dell-va-li-die-rung und stan-dar
+-di-sier-te Feh-ler-re-spon-ses; \T1/lmtt/m/n/12 [Route]
+ []
 
-[32]
-<images/swagger_screenshot.png, id=778, 1734.48pt x 932.48375pt>
+[38] [39] [40] [41]
+<images/swagger_screenshot.png, id=1063, 1734.48pt x 932.48375pt>
 File: images/swagger_screenshot.png Graphic file (type png)
 <use images/swagger_screenshot.png>
-Package pdftex.def Info: images/swagger_screenshot.png  used on input line 352.
+Package pdftex.def Info: images/swagger_screenshot.png  used on input line 491.
 
 (pdftex.def)             Requested size: 384.1096pt x 206.49876pt.
-) (./chapters/06_ios.tex
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[33]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[34 <./images/swagger_screenshot.png>]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[35]
+) (./chapters/06_ios.tex [42] [43 <./images/swagger_screenshot.png>]
 Kapitel 6.
 
 Overfull \hbox (13.7362pt too wide) in paragraph at lines 10--14
@@ -1775,7 +1628,7 @@ Overfull \hbox (30.99448pt too wide) in paragraph at lines 45--46
  [][] 
  []
 
-[36
+[44
 
 ]
 Overfull \hbox (1.82442pt too wide) in paragraph at lines 101--104
@@ -1783,96 +1636,17 @@ Overfull \hbox (1.82442pt too wide) in paragraph at lines 101--104
 sen, Sackerl-s-pen-der, Hundekot-
  []
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[37]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[38]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
+[45] [46]
 Overfull \hbox (0.91782pt too wide) in paragraph at lines 235--239
 \T1/lmtt/m/n/12 LegalRestrictions \T1/lmr/m/n/12 in ei-ner struk-tu-rier-ten An
 -sicht an. Ras-sen der Ka-te-go-rie \T1/lmtt/m/n/12 spezi-
  []
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[39]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-) (./chapters/07_testing.tex
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[40]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[41]
+[47] [48] [49] [50] [51]) (./chapters/07_testing.tex [52]
 Kapitel 7.
-[42
+[53
 
-]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[43]) (./chapters/08_zusammenfassung.tex
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[44]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[45]
+] [54] [55]) (./chapters/08_zusammenfassung.tex [56]
 Kapitel 8.
 
 Overfull \hbox (4.14822pt too wide) in paragraph at lines 20--24
@@ -1880,7 +1654,7 @@ Overfull \hbox (4.14822pt too wide) in paragraph at lines 20--24
 rif-ten. Die MVVM-Architektur
  []
 
-[46
+[57
 
 ]
 Overfull \hbox (18.60973pt too wide) in paragraph at lines 73--76
@@ -1894,14 +1668,7 @@ Overfull \hbox (6.27605pt too wide) in paragraph at lines 73--76
 oxy (Nginx)
  []
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[47]
+[58]
 Overfull \hbox (20.3645pt too wide) in paragraph at lines 88--91
 []\T1/lmr/m/n/12 Import von Open-Data-Geodaten (z.B.
  []
@@ -1919,29 +1686,13 @@ d-Client
 
 )
 
-LaTeX Warning: Empty bibliography on input line 217.
+LaTeX Warning: Empty bibliography on input line 224.
 
-(./appendix/api_spec.tex
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[48]
+(./appendix/api_spec.tex [59]
 Anhang A.
-[49
+[60
 
-]) (./appendix/prompts_ki.tex
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[50]
+]) (./appendix/prompts_ki.tex [61]
 Anhang B.
 
 Underfull \hbox (badness 10000) in paragraph at lines 13--13
@@ -2013,7 +1764,7 @@ Overfull \hbox (7.3182pt too wide) in alignment at lines 20--41
  [] [] [] [] 
  []
 
-) [51
+) [62
 
 ] (./thesis.aux)
  ***********
@@ -2021,16 +1772,16 @@ LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 14AC6B45B25103140A1B971CBADCF277;13446.
+(rerunfilecheck)             Checksum: 9C81FFA58E777DD9BB76515582544AA9;15628.
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 36594 strings out of 467525
- 690933 string characters out of 5418988
- 2051869 words of memory out of 5000000
- 64309 multiletter control sequences out of 15000+600000
+ 37449 strings out of 467525
+ 704995 string characters out of 5418988
+ 1998480 words of memory out of 5000000
+ 64980 multiletter control sequences out of 15000+600000
  713895 words of font info for 101 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  84i,12n,104p,1199b,2389s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -2044,10 +1795,10 @@ ic/lm/lmri10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmri
 sr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/t
 exlive/2026/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/202
 6/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
-Output written on thesis.pdf (52 pages, 683127 bytes).
+Output written on thesis.pdf (63 pages, 717832 bytes).
 PDF statistics:
- 1375 PDF objects out of 1440 (max. 8388607)
- 1280 compressed objects within 13 object streams
- 606 named destinations out of 1000 (max. 500000)
- 687 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1676 PDF objects out of 1728 (max. 8388607)
+ 1567 compressed objects within 16 object streams
+ 782 named destinations out of 1000 (max. 500000)
+ 775 words of extra memory for PDF output out of 10000 (max. 10000000)
 
