@@ -26,7 +26,7 @@
 \usepackage{multirow}
 
 %% Tabellen: raggedright X-Spalte (verhindert Overfull hbox)
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{Y}{>{\raggedright\arraybackslash\hyphenpenalty=0\exhyphenpenalty=0}X}
 \newcolumntype{Z}{>{\centering\arraybackslash}X}
 \renewcommand{\arraystretch}{1.3}
 
@@ -67,6 +67,8 @@
 
 \usepackage{parskip}
 \setlength{\parskip}{6pt}
+
+\hyphenation{Rechts-vor-ga-ben}
 
 %% -------------------------------------------------------
 %% Code-Listing Stil
