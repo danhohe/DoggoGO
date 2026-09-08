@@ -69,7 +69,7 @@ SwiftUI wird eine Karte mit \texttt{Map(coordinateRegion:)} eingebunden. Der akt
 Standort der Nutzerin / des Nutzers wird über \texttt{CLLocationManager} ermittelt und
 als Region übergeben.
 
-\begin{lstlisting}[language=swift, caption={Kartenansicht in SwiftUI (vereinfacht)}, label=lst:mapview, float=h]
+\begin{lstlisting}[language=swift, caption={Kartenansicht in SwiftUI (vereinfacht)}, label=lst:mapview, float=htbp]
 import SwiftUI
 import MapKit
 
@@ -112,7 +112,7 @@ erfasst werden. Die App fragt beim ersten Start die Berechtigung
 Pflichteinträge \texttt{NS\-Lo\-ca\-tion\-When\-In\-Use\-Usage\-De\-scrip\-tion} mit einer verständlichen
 Begründung.
 
-\begin{lstlisting}[language=swift, caption={LocationManager (Auszug)}, label=lst:locationmanager, float=h]
+\begin{lstlisting}[language=swift, caption={LocationManager (Auszug)}, label=lst:locationmanager, float=htbp]
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private let manager = CLLocationManager()
     @Published var userLocation: CLLocation?
@@ -142,7 +142,7 @@ Die Anmeldeansicht (\texttt{LoginView}) enthält Eingabefelder für E-Mail und P
 Nach dem Tippen auf „Anmelden" wird \texttt{POST /api/owners/login} mit den Credentials
 aufgerufen. Bei Erfolg liefert das Backend ein JWT zurück:
 
-\begin{lstlisting}[language=swift, caption={Login-Anfrage (Auszug)}, label=lst:login, float=h]
+\begin{lstlisting}[language=swift, caption={Login-Anfrage (Auszug)}, label=lst:login, float=htbp]
 func login(email: String, password: String) async throws {
     let body = LoginRequest(email: email, password: password)
     let response: AuthResponse = try await apiService.post(
@@ -159,7 +159,7 @@ Das JWT wird sicher im iOS~\texttt{Keychain} gespeichert, nicht in
 \texttt{UserDefaults}, da der Keychain verschlüsselt und vor anderen Apps geschützt ist.
 Der \texttt{AuthService} kapselt alle Keychain-Operationen:
 
-\begin{lstlisting}[language=swift, caption={AuthService – Keychain-Speicherung (Auszug)}, label=lst:keychain, float=h]
+\begin{lstlisting}[language=swift, caption={AuthService – Keychain-Speicherung (Auszug)}, label=lst:keychain, float=htbp]
 class AuthService {
     static let shared = AuthService()
     private let tokenKey = "doggo_jwt_token"
@@ -201,7 +201,7 @@ Nutzers auf und ruft dazu \texttt{GET /api/dogs} mit dem Bearer-Token auf. Über
 Bearbeiten eines Profils. Die Rassenauswahl erfolgt über einen \texttt{Picker}, der die
 von \texttt{GET /api/breeds} geladene Liste anzeigt.
 
-\begin{lstlisting}[language=swift, caption={DogListView – Übersicht der Hundeprofile (Auszug)}, label=lst:doglist, float=h]
+\begin{lstlisting}[language=swift, caption={DogListView – Übersicht der Hundeprofile (Auszug)}, label=lst:doglist, float=htbp]
 struct DogListView: View {
     @StateObject private var viewModel = DogListViewModel()
 
@@ -237,7 +237,7 @@ Nach der Rassenauswahl ruft die App \texttt{GET /api/breeds/\{id\}} ab und zeigt
 \texttt{spezi\-elle\_hun\-de\-rasse} werden farblich hervorgehoben (rotes Label), um die
 Nutzerin / den Nutzer auf besondere Pflichten aufmerksam zu machen:
 
-\begin{lstlisting}[language=swift, caption={LegalRestrictionsView – Anzeige der Vorschriften}, label=lst:legal, float=h]
+\begin{lstlisting}[language=swift, caption={LegalRestrictionsView – Anzeige der Vorschriften}, label=lst:legal, float=htbp]
 struct LegalRestrictionsView: View {
     let restrictions: LegalRestrictions
 
@@ -266,7 +266,7 @@ Alle Netzwerkanfragen werden über einen zentralen \texttt{APIService} abgewicke
 \texttt{URLSession} kapselt. Das Bearer-Token wird in jedem Request automatisch als
 \texttt{Authorization}-Header eingefügt:
 
-\begin{lstlisting}[language=swift, caption={APIService – Authentifizierter Request (Auszug)}, label=lst:apiservice, float=h]
+\begin{lstlisting}[language=swift, caption={APIService – Authentifizierter Request (Auszug)}, label=lst:apiservice, float=htbp]
 func get<T: Decodable>(endpoint: String) async throws -> T {
     guard let url = URL(string: baseURL + endpoint) else {
         throw APIError.invalidURL
