@@ -1,0 +1,157 @@
+%% -------------------------------------------------------
+%% Kapitel 7: Testing und Deployment
+%% -------------------------------------------------------
+\chapter{Testing und Deployment}
+\label{chap:testing}
+
+\section{Teststrategie}
+\label{sec:teststrategie}
+
+Eine systematische Teststrategie stellt sicher, dass das Backend und die iOS-App korrekt
+funktionieren und die definierten Anforderungen erfüllen. Für DoggoGO wurden drei
+Testebenen eingesetzt:
+
+\begin{enumerate}
+  \item \textbf{Manuelle API-Tests} über Swagger~UI und Postman
+  \item \textbf{Unit-Tests} für einzelne Backend-Komponenten (xUnit)
+  \item \textbf{Integrationstests} für das Zusammenspiel zwischen iOS-App und Backend
+\end{enumerate}
+
+\section{Backend-Tests}
+\label{sec:backend-tests}
+
+\subsection{Manuelle Tests mit Swagger und Postman}
+\label{subsec:swagger-tests}
+
+Während der Entwicklung wurden alle API-Endpunkte zunächst manuell über die
+\textbf{Swagger-UI} getestet. Dies erlaubt schnelles Feedback ohne Testrahmenaufwand:
+Registrierung, Anmeldung, CRUD-Operationen für Hunde sowie das Abrufen der Rassenliste
+wurden iterativ überprüft. Für komplexere Szenarien (z.\,B.\ Fehlerfälle, ungültige Tokens)
+wurde \textbf{Postman} mit einer gespeicherten Collection genutzt, die die wichtigsten
+Endpunkte mit vorbereiteten Request-Bodies enthält.
+
+Tabelle~\ref{tab:test-szenarien} listet die wichtigsten getesteten Szenarien auf:
+
+\begin{table}[H]
+  \centering
+  \caption{Getestete API-Szenarien}
+  \label{tab:test-szenarien}
+  \small
+  \begin{tabularx}{\textwidth}{|l|l|Y|l|}
+    \hline
+    \textbf{Szenario} & \textbf{Endpunkt} & \textbf{Erwartetes Ergebnis} &
+    \textbf{Status} \\
+    \hline
+    Registrierung (gültig)     & POST /owners/register & 201 Created, Owner-Objekt    & OK \\
+    \hline
+    Registrierung (doppelt)    & POST /owners/register & 409 Conflict (doppelte Email) & OK \\
+    \hline
+    Anmeldung (gültig)         & POST /owners/login    & 200 OK, JWT                  & OK \\
+    \hline
+    Anmeldung (Falsches PW)    & POST /owners/login    & 401 Unauthorized             & OK \\
+    \hline
+    Hund anlegen (auth.)       & POST /api/dogs        & 201 Created, Dog-Objekt      & OK \\
+    \hline
+    Hund anlegen (unauth.)     & POST /api/dogs        & 401 Unauthorized             & OK \\
+    \hline
+    Hund löschen (Cascade)     & DELETE /owners/\{id\} & 204 + Hunde gelöscht         & OK \\
+    \hline
+    Rassen abrufen             & GET /api/breeds       & 200 OK, Rassenliste mit Regeln & OK \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\subsection{Unit-Tests mit xUnit}
+\label{subsec:xunit}
+
+Für die Passwort-Hashing-Logik und die JWT-Erzeugung wurden Unit-Tests mit
+\textbf{xUnit} implementiert. Listing~\ref{lst:unittest} zeigt einen exemplarischen Test
+für den Passwort-Hash-Vergleich:
+
+\begin{lstlisting}[language=csharp, caption={xUnit-Test – Passwort-Hash-Verifikation}, label=lst:unittest]
+public class PasswordHashTests
+{
+    [Fact]
+    public void VerifyPassword_CorrectPassword_ReturnsTrue()
+    {
+        // Arrange
+        using var hmac = new HMACSHA512();
+        var salt = hmac.Key;
+        var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes("Test1234!"));
+
+        // Act
+        using var hmac2 = new HMACSHA512(salt);
+        var verifyHash = hmac2.ComputeHash(
+            Encoding.UTF8.GetBytes("Test1234!"));
+
+        // Assert
+        Assert.Equal(hash, verifyHash);
+    }
+
+    [Fact]
+    public void VerifyPassword_WrongPassword_ReturnsFalse()
+    {
+        using var hmac = new HMACSHA512();
+        var salt = hmac.Key;
+        var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes("Test1234!"));
+
+        using var hmac2 = new HMACSHA512(salt);
+        var verifyHash = hmac2.ComputeHash(
+            Encoding.UTF8.GetBytes("WrongPassword"));
+
+        Assert.NotEqual(hash, verifyHash);
+    }
+}
+\end{lstlisting}
+
+\section{iOS-Tests}
+\label{sec:ios-tests}
+
+Die iOS-App wurde mit \textbf{XCTest} getestet. Aufgrund des Umfangs der Diplomarbeit
+konzentrierten sich die Tests auf das \texttt{AuthService}-Modul (Keychain-Operationen)
+und die \texttt{APIService}-Klasse (URL-Konstruktion, Fehlerbehandlung):
+
+\begin{lstlisting}[language=swift, caption={XCTest – AuthService Keychain-Test}, label=lst:xctest]
+class AuthServiceTests: XCTestCase {
+
+    func testSaveAndRetrieveToken() {
+        let service = AuthService.shared
+        let testToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test"
+
+        service.saveToken(testToken)
+        let retrieved = service.getToken()
+
+        XCTAssertEqual(testToken, retrieved)
+    }
+
+    func testDeleteToken() {
+        let service = AuthService.shared
+        service.saveToken("some.token.value")
+        service.deleteToken()
+
+        XCTAssertNil(service.getToken())
+    }
+}
+\end{lstlisting}
+
+\section{Integrationstests}
+\label{sec:integrationstests}
+
+Integrationstests überprüften das Ende-zu-Ende-Verhalten des Gesamtsystems: Die iOS-App
+wird im Simulator gestartet, und die Benutzerabläufe (Registrierung → Anmeldung →
+Hundeprofi anlegen → Rasse mit Rechtsvorschriften abrufen) werden manuell durchgeführt.
+Die HTTP-Anfragen wurden dabei mit dem Netzwerk-Inspector in Xcode beobachtet, um
+korrekte Request/Response-Zyklen zu verifizieren.
+
+\section{Deployment-Verifikation}
+\label{sec:deployment-test}
+
+Nach einem \texttt{docker compose up --build} wurden folgende Punkte geprüft:
+
+\begin{itemize}
+  \item PostgreSQL-Container läuft und ist über Port~5432 erreichbar.
+  \item Backend-Container startet, Datenbankmigrationen werden ohne Fehler angewendet.
+  \item Breed-Seeding protokolliert \textit{„Breeds seeded successfully"}.
+  \item Swagger-UI ist unter \texttt{http://localhost:8080/swagger} erreichbar.
+  \item Registrierung und Anmeldung über Swagger-UI funktionieren korrekt.
+\end{itemize}

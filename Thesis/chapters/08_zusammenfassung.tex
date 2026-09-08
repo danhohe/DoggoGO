@@ -1,0 +1,104 @@
+%% -------------------------------------------------------
+%% Kapitel 8: Zusammenfassung
+%% -------------------------------------------------------
+\chapter{Zusammenfassung}
+\label{chap:zusammenfassung}
+
+\section{Erreichte Ziele}
+\label{sec:erreichte-ziele}
+
+Im Rahmen dieser Diplomarbeit wurden die beiden zentralen Komponenten von DoggoGO –
+Backend und iOS-Applikation – konzipiert und implementiert.
+
+Das \textbf{Backend} auf Basis von ASP.NET~Core~8 stellt eine vollständige RESTful~API
+mit Registrierung, JWT-Authentifizierung, Hundeprofilverwaltung und Rassendatenverwaltung
+bereit. Die Datenhaltung erfolgt über PostgreSQL mit EF~Core~9; das automatische
+Breed-Seeding aus einer JSON-Datei macht die Rassen-Datenbank sofort nutzbar. Das
+gesamte System ist mittels Docker~Compose containerisiert und damit plattformunabhängig
+deploybar.
+
+Die \textbf{iOS-App} bietet eine kartenbasierte Darstellung des Benutzerstandorts
+(MapKit), sichere JWT-Authentifizierung mit Keychain-Persistenz, Hundeprofilverwaltung
+sowie die Anzeige rassenspezifischer Rechtsvorschriften. Die MVVM-Architektur mit
+SwiftUI ermöglicht eine klare Trennung von Darstellung und Logik.
+
+Alle in Kapitel~\ref{chap:anforderungen} definierten funktionalen Anforderungen
+(FA-B01 bis FA-B08 und FA-I01 bis FA-I08) wurden erfüllt. Die nicht-funktionalen
+Anforderungen bezüglich Sicherheit (NF-01, NF-02), Datenschutz (NF-03) und
+Portierbarkeit (NF-06) wurden ebenfalls umgesetzt.
+
+\section{Suboptimale Entscheidungen}
+\label{sec:suboptimal}
+
+Im Rückblick lassen sich einige Entscheidungen identifizieren, die bei einer Neuentwicklung
+anders getroffen würden:
+
+\paragraph{Doppelter Foreign-Key in der Initialmigration}
+Die automatisch generierte EF~Core-Migration \texttt{InitDatabase} enthielt einen
+redundanten Foreign-Key \texttt{LegalRestrictionsId1} in der \texttt{Breeds}-Tabelle.
+Dieser entstand durch eine nicht klar definierte \texttt{WithMany()}-Konfiguration und
+musste manuell aus der Migration entfernt werden. Eine sorgfältigere Konfiguration in
+\texttt{OnModelCreating} hätte diesen Fehler vermieden.
+
+\paragraph{Fehlendes Controller-Layer}
+Das Backend wurde zunächst ohne dedizierte Controller-Klassen begonnen; Endpunkte wurden
+direkt in \texttt{Program.cs} als Minimal~API definiert. Erst im Verlauf des Projekts
+wurde auf den klassischen Controller-Ansatz umgestellt, was zu einer Umstrukturierung
+des Codes führte. Ein frühzeitiger Entschluss für einen der beiden Ansätze hätte Zeit
+gespart.
+
+\paragraph{Fehlende Input-Validierung}
+In der aktuellen Version werden Eingaben (z.\,B.\ beim Anlegen eines Hundes) nicht
+serverseitig mit \texttt{DataAnnotations} oder einem Validierungsframework validiert.
+Ungültige Werte (leerer Name, negatives Alter) könnten so in die Datenbank gelangen.
+Für eine produktive Anwendung ist eine umfassende Validierungsschicht zwingend erforderlich.
+
+\paragraph{iOS-Simulator statt echtes Gerät}
+Die iOS-App wurde ausschließlich im Xcode-Simulator getestet. GPS-Standortdaten wurden
+simuliert. Tests auf einem physischen Gerät hätten möglicherweise Probleme mit der
+Standortgenauigkeit oder Keychain-Berechtigungen aufgedeckt.
+
+\section{Einschränkungen der Lösung}
+\label{sec:einschraenkungen}
+
+\begin{itemize}
+  \item \textbf{Keine echten Geo-Daten:} Freilaufwiesen, Sackerlspender und
+    Hundekot-Mülleimer sind im aktuellen Stand nicht in der Datenbank enthalten.
+    Die Kartendarstellung zeigt ausschließlich den Benutzerstandort. Die Entitäten und
+    API-Endpunkte für Standortdaten wurden geplant, konnten im Rahmen der Diplomarbeit
+    aber nicht vollständig implementiert werden.
+  \item \textbf{Nur iOS, kein Android:} Eine Android-App ist nicht Teil des Projekts.
+    Die API-Architektur ist jedoch so gestaltet, dass ein Android-Client ohne
+    Backend-Änderungen ergänzt werden könnte.
+  \item \textbf{Keine Produktionsumgebung:} Das System wurde für Entwicklungs- und
+    Demonstrationszwecke konfiguriert. Für einen produktiven Betrieb wären HTTPS-Terminierung,
+    Secrets-Management (z.\,B.\ Vault) und ein Reverse-Proxy (Nginx) notwendig.
+  \item \textbf{Regionale Begrenzung:} Die Rechtsvorschriften sind derzeit auf
+    österreichisches Recht (Wiener Hundegesetz) beschränkt. Eine Ausweitung auf andere
+    Bundesländer oder Länder erfordert weitere Datenerhebung und -pflege.
+\end{itemize}
+
+\section{Erweiterungsmöglichkeiten}
+\label{sec:erweiterungen}
+
+Das System bietet eine solide Basis für zahlreiche Erweiterungen:
+
+\begin{description}
+  \item[Standort-Daten (DOG3–DOG5, DOG17)]
+    Import von Open-Data-Geodaten (z.\,B.\ der Stadt Wien) für Freilaufwiesen,
+    Sackerlspender und Hundewaschstationen. Neue \texttt{Location}-Entität im Backend,
+    REST-Endpunkte für Geo-Abfragen.
+  \item[Geofencing-Benachrichtigungen (DOG11)]
+    Push-Benachrichtigungen via APNs, wenn die Nutzerin / der Nutzer eine Zone mit
+    besonderen Vorschriften betritt. Serverseitig über einen Background-Worker realisierbar.
+  \item[Routenplanung (DOG14)]
+    Integration von MapKit-Routing zur Navigation zur nächsten Freilaufwiese.
+  \item[Favoriten (DOG15)]
+    Persistenz von Lieblings-Standorten in der Datenbank.
+  \item[Android-App]
+    Da die REST-API plattformunabhängig ist, kann ein Android-Client (Kotlin / Jetpack
+    Compose) ohne Backend-Änderungen ergänzt werden.
+  \item[Community-Features]
+    Nutzerbewertungen und Erfahrungsberichte zu Standorten (neue Entitäten \texttt{Review},
+    \texttt{Report}).
+\end{description}

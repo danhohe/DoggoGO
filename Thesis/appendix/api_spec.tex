@@ -1,0 +1,76 @@
+%% -------------------------------------------------------
+%% Anhang A: API-Spezifikation
+%% -------------------------------------------------------
+\chapter{API-Endpunkte im Detail}
+\label{app:api}
+
+Dieser Anhang listet alle implementierten und geplanten REST-Endpunkte der
+DoggoGO-Backend-API mit Request/Response-Schemata auf. Die vollständige und interaktive
+Dokumentation ist über die Swagger-UI unter \texttt{/swagger} erreichbar.
+
+\section*{Authentifizierung}
+
+\textbf{POST /api/owners/register}
+
+\begin{itemize}
+  \item \textbf{Beschreibung:} Registriert eine neue Nutzerin / einen neuen Nutzer.
+  \item \textbf{Request-Body (JSON):}
+\end{itemize}
+\begin{lstlisting}[language={}]
+{
+  "name": "Max Muster",
+  "email": "max@example.com",
+  "password": "SecurePass123!",
+  "phoneNumber": "+43 123 456789"
+}
+\end{lstlisting}
+\begin{itemize}
+  \item \textbf{Response 201:} Owner-Objekt (ohne Passwort-Felder)
+  \item \textbf{Response 409:} E-Mail bereits vergeben
+\end{itemize}
+
+\vspace{1em}
+\textbf{POST /api/owners/login}
+\begin{itemize}
+  \item \textbf{Beschreibung:} Meldet eine Nutzerin / einen Nutzer an und gibt ein JWT zurück.
+  \item \textbf{Request-Body (JSON):}
+\end{itemize}
+\begin{lstlisting}[language={}]
+{
+  "email": "max@example.com",
+  "password": "SecurePass123!"
+}
+\end{lstlisting}
+\begin{itemize}
+  \item \textbf{Response 200:} \texttt{\{"token": "eyJ...\}"}
+  \item \textbf{Response 401:} Ungültige Anmeldedaten
+\end{itemize}
+
+\section*{Hunde (Dogs)}
+
+\textbf{GET /api/dogs} \quad \textit{(Authentifizierung erforderlich)}\\
+Gibt alle Hundeprofile der aktuellen Nutzerin / des aktuellen Nutzers zurück.
+
+\textbf{POST /api/dogs} \quad \textit{(Authentifizierung erforderlich)}\\
+Legt ein neues Hundeprofil an.
+\begin{lstlisting}[language={}]
+{
+  "name": "Bello",
+  "age": 3,
+  "breedId": "a1b2c3d4-..."
+}
+\end{lstlisting}
+
+\textbf{PUT /api/dogs/\{id\}} \quad \textit{(Authentifizierung erforderlich)}\\
+Aktualisiert ein bestehendes Hundeprofil.
+
+\textbf{DELETE /api/dogs/\{id\}} \quad \textit{(Authentifizierung erforderlich)}\\
+Löscht ein Hundeprofil.
+
+\section*{Hunderassen (Breeds)}
+
+\textbf{GET /api/breeds}\\
+Gibt alle Hunderassen inklusive \texttt{LegalRestrictions} zurück.
+
+\textbf{GET /api/breeds/\{id\}}\\
+Gibt eine einzelne Rasse mit vollständigen Rechtsvorschriften zurück.

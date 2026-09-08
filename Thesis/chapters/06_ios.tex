@@ -1,0 +1,383 @@
+%% -------------------------------------------------------
+%% Kapitel 6: iOS-Applikation
+%% -------------------------------------------------------
+\chapter{iOS-Applikation}
+\label{chap:ios}
+
+\section{Architektur der iOS-App}
+\label{sec:ios-architektur}
+
+Die iOS-Applikation wurde mit \textbf{Swift} und \textbf{SwiftUI} entwickelt und folgt
+dem \textbf{MVVM-Muster} (Model-View-ViewModel). Diese Architektur trennt die
+UI-Darstellung (View) von der Geschäftslogik und dem Zustand (ViewModel) und erleichtert
+Testbarkeit und Wartbarkeit.
+
+\begin{description}
+  \item[Model] Entspricht den Datenstrukturen, die der Backend-API entsprechen
+    (\texttt{Dog}, \texttt{Owner}, \texttt{Breed}, \texttt{LegalRestrictions}).
+  \item[ViewModel] Verwaltet den Zustand der UI mit \texttt{@Published}-Eigenschaften
+    und kommuniziert mit dem Backend über HTTP. Durch das \texttt{@StateObject}-Macro
+    wird der Lebenszyklus an die View gebunden.
+  \item[View] Deklarative SwiftUI-Views lesen den Zustand aus dem ViewModel und reagieren
+    automatisch auf Änderungen.
+\end{description}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      box/.style={draw, rectangle, rounded corners=4pt,
+                  minimum width=3cm, minimum height=0.9cm,
+                  align=center, font=\small, fill=gray!10},
+      ext/.style={draw, rectangle, rounded corners=4pt,
+                  minimum width=3cm, minimum height=0.9cm,
+                  align=center, font=\small, fill=white, dashed},
+      arr/.style={{Stealth[length=5pt]}-{Stealth[length=5pt]}, thick},
+      oarr/.style={-{Stealth[length=5pt]}, thick, dashed}
+    ]
+    \node[box] (view)  at (0, 0)   {View\\(SwiftUI)};
+    \node[box] (vm)    at (4, 0)   {ViewModel\\(@ObservableObject)};
+    \node[box] (model) at (8, 0)   {Model\\(Codable DTOs)};
+    \node[ext] (api)   at (4,-1.8) {Backend REST-API\\(URLSession)};
+
+    \draw[arr]  (view)  -- node[font=\footnotesize, above]{Bindings} (vm);
+    \draw[arr]  (vm)    -- node[font=\footnotesize, above]{Daten}    (model);
+    \draw[oarr] (vm)    -- node[font=\footnotesize, right]{HTTP}     (api);
+  \end{tikzpicture}
+  \caption{MVVM-Architektur der DoggoGO iOS-App}
+  \label{fig:mvvm}
+\end{figure}
+
+\section{Projektstruktur}
+\label{sec:ios-struktur}
+
+Das Xcode-Projekt ist in folgende Gruppen gegliedert:
+
+\begin{itemize}
+  \item \texttt{Models/} – \texttt{Codable}-Strukturen für API-DTOs
+  \item \texttt{ViewModels/} – \texttt{ObservableObject}-Klassen mit Geschäftslogik
+  \item \texttt{Views/} – SwiftUI-Views (Login, Map, DogList, BreedPicker, etc.)
+  \item \texttt{Services/} – \texttt{APIService} (HTTP-Kommunikation), \texttt{AuthService}
+    (Keychain-Zugriff)
+  \item \texttt{Assets.xcassets} – App-Icons, Farbschemata
+\end{itemize}
+
+\section{MapKit-Integration}
+\label{sec:mapkit}
+
+Die Kartenansicht basiert auf \textbf{MapKit}, Apples nativer Kartenbibliothek. In
+SwiftUI wird eine Karte mit \texttt{Map(coordinateRegion:)} eingebunden. Der aktuelle
+Standort der Nutzerin / des Nutzers wird über \texttt{CLLocationManager} ermittelt und
+als Region übergeben.
+
+\begin{lstlisting}[language=swift, caption={Kartenansicht in SwiftUI (vereinfacht)}, label=lst:mapview]
+import SwiftUI
+import MapKit
+
+struct MapView: View {
+    @StateObject private var locationManager = LocationManager()
+    @State private var region = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(
+            latitude: 48.2692, longitude: 14.2956), // Leonding
+        span: MKCoordinateSpan(
+            latitudeDelta: 0.05, longitudeDelta: 0.05)
+    )
+
+    var body: some View {
+        Map(coordinateRegion: $region,
+            showsUserLocation: true,
+            annotationItems: locationManager.pois) { poi in
+            MapMarker(coordinate: poi.coordinate,
+                      tint: poi.color)
+        }
+        .ignoresSafeArea()
+        .onReceive(locationManager.$userLocation) { loc in
+            guard let loc else { return }
+            region.center = loc.coordinate
+        }
+    }
+}
+\end{lstlisting}
+
+Für die Darstellung von Points of Interest (Freilaufwiesen, Sackerlspender,
+Hundekot-Mülleimer) werden \texttt{MapMarker}-Annotationen mit farblicher Codierung
+pro Kategorie genutzt.
+
+\section{Standortdienste und Berechtigungen}
+\label{sec:standortdienste}
+
+Die Standortermittlung wird über \texttt{CLLocationManager} realisiert. Gemäß
+DSGVO-Anforderung (NF-03) darf der Standort nur mit expliziter Nutzer\-innen-/Nutzerzustimmung
+erfasst werden. Die App fragt beim ersten Start die Berechtigung
+\texttt{requestWhenInUseAuthorization()} ab. Die \texttt{Info.plist} enthält die
+Pflichteinträge \texttt{NSLocationWhenInUseUsageDescription} mit einer verständlichen
+Begründung.
+
+\begin{lstlisting}[language=swift, caption={LocationManager (Auszug)}, label=lst:locationmanager]
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    private let manager = CLLocationManager()
+    @Published var userLocation: CLLocation?
+
+    override init() {
+        super.init()
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.requestWhenInUseAuthorization()
+        manager.startUpdatingLocation()
+    }
+
+    func locationManager(_ manager: CLLocationManager,
+                         didUpdateLocations locations: [CLLocation]) {
+        userLocation = locations.last
+    }
+}
+\end{lstlisting}
+
+\section{Authentifizierung in der iOS-App}
+\label{sec:ios-auth}
+
+\subsection{Login und Registrierung}
+\label{subsec:ios-login}
+
+Die Anmeldeansicht (\texttt{LoginView}) enthält Eingabefelder für E-Mail und Passwort.
+Nach dem Tippen auf „Anmelden" wird \texttt{POST /api/owners/login} mit den Credentials
+aufgerufen. Bei Erfolg liefert das Backend ein JWT zurück:
+
+\begin{lstlisting}[language=swift, caption={Login-Anfrage (Auszug)}, label=lst:login]
+func login(email: String, password: String) async throws {
+    let body = LoginRequest(email: email, password: password)
+    let response: AuthResponse = try await apiService.post(
+        endpoint: "/api/owners/login", body: body)
+    AuthService.shared.saveToken(response.token)
+    isAuthenticated = true
+}
+\end{lstlisting}
+
+\subsection{Token-Persistenz im Keychain}
+\label{subsec:keychain}
+
+Das JWT wird sicher im iOS~\texttt{Keychain} gespeichert, nicht in
+\texttt{UserDefaults}, da der Keychain verschlüsselt und vor anderen Apps geschützt ist.
+Der \texttt{AuthService} kapselt alle Keychain-Operationen:
+
+\begin{lstlisting}[language=swift, caption={AuthService – Keychain-Speicherung (Auszug)}, label=lst:keychain]
+class AuthService {
+    static let shared = AuthService()
+    private let tokenKey = "doggo_jwt_token"
+
+    func saveToken(_ token: String) {
+        let data = Data(token.utf8)
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: tokenKey,
+            kSecValueData as String: data
+        ]
+        SecItemDelete(query as CFDictionary)
+        SecItemAdd(query as CFDictionary, nil)
+    }
+
+    func getToken() -> String? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: tokenKey,
+            kSecReturnData as String: true
+        ]
+        var item: CFTypeRef?
+        guard SecItemCopyMatching(query as CFDictionary, &item) == noErr,
+              let data = item as? Data else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+}
+\end{lstlisting}
+
+Beim App-Start prüft das Root-ViewModel, ob ein Token im Keychain vorhanden ist, und
+überspringt in diesem Fall die Anmeldeseite direkt zur Kartenansicht.
+
+\section{Hundeprofilverwaltung}
+\label{sec:hundeprofil}
+
+Die \texttt{DogListView} listet alle Hunde der angemeldeten Nutzerin / des angemeldeten
+Nutzers auf und ruft dazu \texttt{GET /api/dogs} mit dem Bearer-Token auf. Über einen
+\texttt{NavigationLink} gelangt man zur Detailansicht oder zum Formular zum Anlegen /
+Bearbeiten eines Profils. Die Rassenauswahl erfolgt über einen \texttt{Picker}, der die
+von \texttt{GET /api/breeds} geladene Liste anzeigt.
+
+\begin{lstlisting}[language=swift, caption={DogListView – Übersicht der Hundeprofile (Auszug)}, label=lst:doglist]
+struct DogListView: View {
+    @StateObject private var viewModel = DogListViewModel()
+
+    var body: some View {
+        NavigationView {
+            List(viewModel.dogs) { dog in
+                NavigationLink(destination: DogDetailView(dog: dog)) {
+                    VStack(alignment: .leading) {
+                        Text(dog.name).font(.headline)
+                        Text("\(dog.breed.breedName), \(dog.age) Jahre")
+                            .font(.subheadline).foregroundColor(.secondary)
+                    }
+                }
+            }
+            .navigationTitle("Meine Hunde")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink("Hinzufuegen",
+                        destination: AddDogView())
+                }
+            }
+            .task { await viewModel.loadDogs() }
+        }
+    }
+}
+\end{lstlisting}
+
+\section{Anzeige gesetzlicher Vorschriften}
+\label{sec:ios-legal}
+
+Nach der Rassenauswahl ruft die App \texttt{GET /api/breeds/\{id\}} ab und zeigt die
+\texttt{LegalRestrictions} in einer strukturierten Ansicht an. Rassen der Kategorie
+\texttt{spezielle\_hunderasse} werden farblich hervorgehoben (rotes Label), um die
+Nutzerin / den Nutzer auf besondere Pflichten aufmerksam zu machen:
+
+\begin{lstlisting}[language=swift, caption={LegalRestrictionsView – Anzeige der Vorschriften}, label=lst:legal]
+struct LegalRestrictionsView: View {
+    let restrictions: LegalRestrictions
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Rechtliche Vorgaben")
+                .font(.title2).bold()
+            if restrictions.category == "spezielle_hunderasse" {
+                Text("Spezielle Hunderasse!")
+                    .foregroundColor(.red).bold()
+            }
+            ForEach(restrictions.rules, id: \.self) { rule in
+                Label(rule, systemImage: "exclamationmark.circle")
+                    .font(.callout)
+            }
+        }
+        .padding()
+    }
+}
+\end{lstlisting}
+
+\section{HTTP-Kommunikation mit dem Backend}
+\label{sec:ios-http}
+
+Alle Netzwerkanfragen werden über einen zentralen \texttt{APIService} abgewickelt, der
+\texttt{URLSession} kapselt. Das Bearer-Token wird in jedem Request automatisch als
+\texttt{Authorization}-Header eingefügt:
+
+\begin{lstlisting}[language=swift, caption={APIService – Authentifizierter Request (Auszug)}, label=lst:apiservice]
+func get<T: Decodable>(endpoint: String) async throws -> T {
+    guard let url = URL(string: baseURL + endpoint) else {
+        throw APIError.invalidURL
+    }
+    var request = URLRequest(url: url)
+    if let token = AuthService.shared.getToken() {
+        request.setValue("Bearer \(token)",
+                         forHTTPHeaderField: "Authorization")
+    }
+    let (data, response) = try await URLSession.shared.data(for: request)
+    guard let http = response as? HTTPURLResponse,
+          (200..<300).contains(http.statusCode) else {
+        throw APIError.serverError
+    }
+    return try JSONDecoder().decode(T.self, from: data)
+}
+\end{lstlisting}
+
+\section{Fehlerbehandlung und Ladezustände}
+\label{sec:ios-fehler}
+
+Eine robuste iOS-App muss mit Netzwerkfehlern, ungültigen Tokens und unerwarteten
+Serverantworten umgehen. In der DoggoGO-App wird Fehlerbehandlung konsequent im
+ViewModel-Layer zentralisiert – die View selbst kennt keine Netzwerklogik.
+
+\subsection{Fehlerdefinition}
+\label{subsec:api-error}
+
+Alle möglichen Fehlerszenarien werden in einem \texttt{APIError}-Enum typisiert:
+
+\begin{lstlisting}[language=swift, caption={APIError – Typisierte Fehlerdefinition}, label=lst:apierror]
+enum APIError: LocalizedError {
+    case invalidURL
+    case unauthorized       // 401 – JWT abgelaufen oder ungueltig
+    case notFound           // 404 – Ressource nicht vorhanden
+    case serverError        // 5xx – Backend-Fehler
+    case decodingError      // JSON-Parsing fehlgeschlagen
+    case noConnection       // Netzwerk nicht erreichbar
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:    return "Ungueltige URL."
+        case .unauthorized:  return "Sitzung abgelaufen. Bitte erneut anmelden."
+        case .notFound:      return "Ressource nicht gefunden."
+        case .serverError:   return "Serverfehler. Bitte spaeter versuchen."
+        case .decodingError: return "Antwort konnte nicht verarbeitet werden."
+        case .noConnection:  return "Keine Internetverbindung."
+        }
+    }
+}
+\end{lstlisting}
+
+Das Protokoll \texttt{LocalizedError} stellt sicher, dass SwiftUI und das Betriebssystem
+die Fehlerbeschreibung automatisch für Alert-Dialoge verwenden können.
+
+\subsection{Ladezustand und Fehleranzeige im ViewModel}
+\label{subsec:loading-state}
+
+Jedes ViewModel hält zwei Zustandsvariablen: \texttt{isLoading} blendet während einer
+laufenden Netzwerkanfrage eine Ladeindikator-Ansicht ein, \texttt{errorMessage} speichert
+eine lesbare Fehlerbeschreibung für den Alert-Dialog:
+
+\begin{lstlisting}[language=swift, caption={ViewModel – Ladezustand und Fehlerbehandlung}, label=lst:loading]
+class DogListViewModel: ObservableObject {
+    @Published var dogs: [Dog] = []
+    @Published var isLoading = false
+    @Published var errorMessage: String?
+
+    func loadDogs() async {
+        isLoading = true
+        defer { isLoading = false }
+        do {
+            dogs = try await APIService.shared.get(endpoint: "/api/dogs")
+        } catch APIError.unauthorized {
+            errorMessage = APIError.unauthorized.errorDescription
+            AuthService.shared.deleteToken()   // abgelaufenes Token loeschen
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+}
+\end{lstlisting}
+
+Das \texttt{defer}-Statement stellt sicher, dass \texttt{isLoading} immer auf
+\texttt{false} zurückgesetzt wird – auch wenn die Anfrage mit einem Fehler endet.
+Bei einem \texttt{401~Unauthorized} wird das gespeicherte JWT automatisch gelöscht,
+sodass die Nutzerin / der Nutzer zur Anmeldeseite weitergeleitet wird.
+
+\subsection{Alert-Anzeige in der View}
+\label{subsec:alert}
+
+Die View abonniert \texttt{errorMessage} über ein \texttt{.alert}-Modifier und zeigt
+bei gesetztem Wert automatisch einen Dialog an:
+
+\begin{lstlisting}[language=swift, caption={SwiftUI – Alert fuer Fehlermeldungen}, label=lst:alert]
+.alert("Fehler", isPresented: Binding(
+    get: { viewModel.errorMessage != nil },
+    set: { if !$0 { viewModel.errorMessage = nil } }
+)) {
+    Button("OK", role: .cancel) { }
+} message: {
+    Text(viewModel.errorMessage ?? "")
+}
+.overlay {
+    if viewModel.isLoading {
+        ProgressView("Laden ...")
+            .padding()
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+    }
+}
+\end{lstlisting}
+
+Dieser Ansatz hält die View vollständig frei von Fehlerlogik: Sie bindet lediglich den
+Zustand des ViewModels und delegiert jede Entscheidung dorthin.

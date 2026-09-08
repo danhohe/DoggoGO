@@ -1,0 +1,205 @@
+%% -------------------------------------------------------
+%% Kapitel 2: Anforderungsanalyse
+%% -------------------------------------------------------
+\chapter{Anforderungsanalyse}
+\label{chap:anforderungen}
+
+Dieses Kapitel beschreibt die Anforderungen an das Backend und die iOS-App von DoggoGO.
+Die Erhebung erfolgte auf Basis des Projektvorschlags, des Product Backlogs sowie eigener
+Überlegungen zu Sicherheit, Performance und Wartbarkeit.
+
+\section{Stakeholder und Zielgruppe}
+\label{sec:stakeholder}
+
+Die wichtigsten Stakeholder des Projekts sind:
+
+\begin{description}
+  \item[Hundehalter\-innen und Hundehalter (Endnutzer\-innen/-nutzer)]
+    Personen, die mit einem oder mehreren Hunden in urbanen oder ländlichen Gebieten
+    unterwegs sind und standortbezogene Informationen benötigen. Sie interagieren mit der
+    Plattform über die Webapplikation oder die iOS-App.
+  \item[Entwicklerinnen und Entwickler]
+    Das Projektteam (Manuel Rankl für das Angular-Frontend, Daniel Hoheneder für Backend
+    und iOS). Anforderungen an Wartbarkeit, klare API-Contracts und gute Dokumentation
+    sind daher ebenso relevant.
+  \item[HTL Leonding (Auftraggeber)]
+    Die Schule als Auftraggeber und Bewerter der Diplomarbeit erwartet eine technisch
+    fundierte, vollständig dokumentierte Lösung, die die im Projektvorschlag definierten
+    Ziele erfüllt.
+\end{description}
+
+\section{Funktionale Anforderungen}
+\label{sec:funktionale-anforderungen}
+
+\subsection{Backend-API}
+\label{subsec:fa-backend}
+
+\begin{table}[H]
+  \centering
+  \caption{Funktionale Anforderungen – Backend}
+  \label{tab:fa-backend}
+  \begin{tabularx}{\textwidth}{|l|Y|}
+    \hline
+    \textbf{ID} & \textbf{Anforderung} \\
+    \hline
+    FA-B01 & Das System muss eine RESTful~API bereitstellen, die von der Angular-Webanwendung
+             und der iOS-App konsumiert werden kann. \\
+    \hline
+    FA-B02 & Nutzer\-innen und Nutzer müssen sich mit E-Mail-Adresse und Passwort registrieren
+             und anmelden können. \\
+    \hline
+    FA-B03 & Nach erfolgreicher Anmeldung muss ein JWT ausgestellt werden, das alle
+             nachfolgenden Anfragen autorisiert. \\
+    \hline
+    FA-B04 & Angemeldete Nutzer\-innen und Nutzer müssen Hundeprofile (Name, Alter, Rasse)
+             anlegen, lesen, aktualisieren und löschen können (CRUD). \\
+    \hline
+    FA-B05 & Das System muss eine Liste aller verfügbaren Hunderassen mit deren Beschreibung
+             und rassenspezifischen Rechtsvorschriften liefern. \\
+    \hline
+    FA-B06 & Rasseninformationen müssen beim ersten Start aus einer JSON-Datei automatisch
+             in die Datenbank eingelesen werden (Seeding). \\
+    \hline
+    FA-B07 & Das Backend muss in einem Docker-Container lauffähig sein und mit einer
+             ebenfalls containerisierten PostgreSQL-Instanz kommunizieren. \\
+    \hline
+    FA-B08 & Die API-Endpunkte müssen über Swagger~(OpenAPI) dokumentiert und testbar sein. \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\subsection{iOS-Applikation}
+\label{subsec:fa-ios}
+
+\begin{table}[H]
+  \centering
+  \caption{Funktionale Anforderungen – iOS-App}
+  \label{tab:fa-ios}
+  \begin{tabularx}{\textwidth}{|l|Y|}
+    \hline
+    \textbf{ID} & \textbf{Anforderung} \\
+    \hline
+    FA-I01 & Die App muss eine interaktive Karte anzeigen (DOG1). \\
+    \hline
+    FA-I02 & Der eigene Standort muss auf der Karte dargestellt werden (DOG2). \\
+    \hline
+    FA-I03 & Nutzer\-innen und Nutzer müssen sich in der App registrieren und anmelden
+             können. \\
+    \hline
+    FA-I04 & Angemeldete Nutzer\-innen und Nutzer müssen Hundeprofile verwalten können. \\
+    \hline
+    FA-I05 & Die App muss die Maulkorb- und Leinenpflicht für die gespeicherte Rasse und
+             den aktuellen Standort anzeigen (DOG6). \\
+    \hline
+    FA-I06 & Nutzer\-innen und Nutzer müssen aus einer Liste von Hunderassen auswählen
+             können (DOG8). \\
+    \hline
+    FA-I07 & Die App muss mit dem Backend über die bereitgestellte REST-API kommunizieren. \\
+    \hline
+    FA-I08 & Sitzungen müssen durch Speicherung des JWT persistent über App-Neustarts
+             hinaus erhalten bleiben. \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\section{Nicht-funktionale Anforderungen}
+\label{sec:nfas}
+
+\begin{table}[H]
+  \centering
+  \caption{Nicht-funktionale Anforderungen}
+  \label{tab:nfas}
+  \begin{tabularx}{\textwidth}{|l|l|Y|}
+    \hline
+    \textbf{ID} & \textbf{Kategorie} & \textbf{Anforderung} \\
+    \hline
+    NF-01 & Sicherheit   & Passwörter dürfen nicht im Klartext gespeichert werden.
+                           Es wird HMAC-SHA512 mit individuellem Salt eingesetzt. \\
+    \hline
+    NF-02 & Sicherheit   & JWTs müssen mit einem serverseitigen Secret signiert sein und
+                           eine konfigurierbare Ablaufzeit besitzen. \\
+    \hline
+    NF-03 & Datenschutz  & Die App darf Standortdaten nur mit expliziter Zustimmung der
+                           Nutzerin / des Nutzers erfassen (DSGVO, DOG12). \\
+    \hline
+    NF-04 & Performance  & API-Antworten müssen unter normalen Bedingungen in unter
+                           500\,ms eintreffen. \\
+    \hline
+    NF-05 & Wartbarkeit  & Der Quellcode muss in einem öffentlichen Git-Repository
+                           versioniert sein; Commits müssen nachvollziehbar beschrieben
+                           werden. \\
+    \hline
+    NF-06 & Portierbarkeit & Das Backend muss plattformunabhängig über Docker deploybar
+                           sein. \\
+    \hline
+    NF-07 & Kompatibilität & Die iOS-App muss auf Geräten ab iOS~16 lauffähig sein. \\
+    \hline
+    NF-08 & Erweiterbarkeit & Die Datenbankmodelle und API-Endpunkte müssen so gestaltet
+                           sein, dass neue Entitäten (z.\,B.\ Standorte, Events) ohne
+                           Breaking~Changes ergänzt werden können. \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\section{Use-Case-Szenarien}
+\label{sec:use-cases}
+
+Abbildung~\ref{fig:use-case} zeigt die wesentlichen Use Cases aus Sicht der Backend- und
+iOS-Komponenten.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      actor/.style={draw, rectangle, rounded corners=6pt,
+                    minimum width=2.8cm, minimum height=0.7cm,
+                    align=center, font=\small},
+      uc/.style={draw, ellipse, minimum width=3.2cm, minimum height=0.8cm,
+                 align=center, font=\small},
+      sys/.style={draw, dashed, rectangle, rounded corners=2pt,
+                  inner sep=8pt, font=\small\itshape},
+      arr/.style={-{Stealth[length=5pt]}, thin}
+    ]
+    % Akteur links
+    \node[actor] (user) at (0,0) {Nutzer\-in / Nutzer};
+
+    % System-Rahmen
+    \node[sys, fit={(3,-2.5)(9,2.5)}] (sys) {};
+    \node[font=\footnotesize\itshape] at (6, 2.2) {DoggoGO (iOS-App + Backend)};
+
+    % Use Cases
+    \node[uc] (uc1) at (6, 1.6) {Registrieren};
+    \node[uc] (uc2) at (6, 0.7) {Anmelden};
+    \node[uc] (uc3) at (6,-0.2) {Hund anlegen};
+    \node[uc] (uc4) at (6,-1.1) {Rasse auswählen};
+    \node[uc] (uc5) at (6,-2.0) {Vorschriften abrufen};
+
+    % Verbindungen
+    \foreach \uc in {uc1,uc2,uc3,uc4,uc5}
+      \draw[arr] (user) -- (\uc);
+  \end{tikzpicture}
+  \caption{Use-Case-Diagramm – Backend und iOS-App}
+  \label{fig:use-case}
+\end{figure}
+
+Die wichtigsten Szenarien sind:
+
+\paragraph{UC-01: Registrierung}
+Eine neue Nutzerin / ein neuer Nutzer öffnet die iOS-App, gibt Name, E-Mail und Passwort ein
+und sendet die Anfrage an \texttt{POST /api/owners/register}. Das Backend validiert die
+Eingaben, hasht das Passwort und legt einen neuen \texttt{Owner}-Datensatz an. Die App erhält
+eine Erfolgsantwort und leitet zur Anmeldeseite weiter.
+
+\paragraph{UC-02: Anmeldung und Kartenzugriff}
+Die Nutzerin / der Nutzer meldet sich mit E-Mail und Passwort an (\texttt{POST /api/owners/login}).
+Das Backend prüft den Passwort-Hash und stellt bei Übereinstimmung ein JWT aus. Die iOS-App
+speichert das Token im \texttt{Keychain} und nutzt es für alle weiteren Anfragen. Anschließend
+wird die Kartenansicht mit dem aktuellen Standort geladen.
+
+\paragraph{UC-03: Hundeprofil anlegen}
+Nach der Anmeldung wählt die Nutzerin / der Nutzer aus der Rassenliste eine Hunderasse aus
+(\texttt{GET /api/breeds}) und erstellt ein Hundeprofil (\texttt{POST /api/dogs}). Der
+Datensatz wird in der Datenbank gespeichert und der iOS-App bestätigt.
+
+\paragraph{UC-04: Rechtliche Einschränkungen abrufen}
+Die iOS-App ruft für die gespeicherte Hunderasse die \texttt{LegalRestrictions} ab und zeigt
+Leinen- und Maulkorbvorschriften für den aktuellen Standort an.

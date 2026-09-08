@@ -1,0 +1,123 @@
+%% -------------------------------------------------------
+%% Kapitel 1: Einleitung
+%% -------------------------------------------------------
+\chapter{Einleitung}
+\label{chap:einleitung}
+
+\section{Ausgangssituation und Problemstellung}
+\label{sec:ausgangssituation}
+
+Wer mit einem Hund in einer österreichischen Stadt oder Gemeinde unterwegs ist, sieht sich
+täglich mit einer Vielzahl praktischer Fragen konfrontiert: Wo befindet sich die nächste
+Freilaufwiese, auf der der Hund ohne Leine toben darf? Gibt es in der Nähe einen
+Hundekot-Müllbehälter oder einen Sackerlspender? Und – besonders relevant für Halter\-innen
+und Halter bestimmter Rassen – gilt an diesem Ort eine Leinen- oder Maulkorbpflicht für
+ihren Hund?
+
+Diese Informationen sind zwar grundsätzlich verfügbar, aber über viele verschiedene Quellen
+verstreut: kommunale Webseiten, amtliche Kundmachungen, geografische Open-Data-Portale oder
+mündliche Weitergabe unter Hundehalter\-innen und Hundehaltern. Eine zentrale, standortbewusste
+und rassenspezifische Anlaufstelle fehlt im deutschsprachigen App-Markt weitgehend.
+
+\subsection{Defizite bestehender Lösungen}
+\label{subsec:defizite}
+
+Eine Analyse verfügbarer Anwendungen zeigt, dass keine der bekannten Lösungen alle
+relevanten Anforderungen in einer einzigen App vereint:
+
+\begin{table}[H]
+  \centering
+  \caption{Vergleich bestehender Lösungen}
+  \label{tab:konkurrenzanalyse}
+  \small
+  \begin{tabularx}{\textwidth}{|l|Y|Y|Y|Y|}
+    \hline
+    \textbf{App / Dienst} & \textbf{Karte mit POIs} & \textbf{Rechtsvorgaben} &
+    \textbf{Rassenfilter} & \textbf{iOS-App} \\
+    \hline
+    BringGassi       & Ja (wenige) & Nein & Nein & Ja \\
+    \hline
+    Google Maps      & Nein        & Nein & Nein & Ja \\
+    \hline
+    Open\-Street\-Map & Begrenzt   & Nein & Nein & Indirekt \\
+    \hline
+    Wien.gv.at       & Ja (Wien)   & Begrenzt & Nein & Nein \\
+    \hline
+    \textbf{DoggoGO} & \textbf{Ja} & \textbf{Ja} & \textbf{Ja} & \textbf{Ja} \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\textbf{BringGassi} bietet zwar eine kartenzentrierte Ansicht für Hundeausflüge, deckt
+jedoch keine rechtlichen Vorgaben ab und ist regional stark begrenzt. \textbf{Google Maps}
+erlaubt grundsätzlich die Suche nach Hundeauslaufzonen, verfügt aber über keinerlei
+rassenspezifische Rechtsinformationen und ist nicht auf Hundehaltung spezialisiert. Kommunale
+Portale wie das der Stadt Wien bieten Standortdaten für ihren Zuständigkeitsbereich, sind
+aber weder mobil optimiert noch rassenspezifisch und nicht überregional einsetzbar.
+
+Das Kerndefizit aller betrachteten Lösungen liegt in der fehlenden Verknüpfung von drei
+Aspekten, die Hundehalter\-innen und Hundehalter täglich benötigen:
+\begin{enumerate}
+  \item standortbezogene Karte mit relevanten Points of Interest (POIs),
+  \item rassenspezifische gesetzliche Informationen (Leinen-/Maulkorbpflicht),
+  \item plattformübergreifende Verfügbarkeit (Web \emph{und} iOS).
+\end{enumerate}
+
+\section{Zielsetzung dieser Arbeit}
+\label{sec:zielsetzung}
+
+Diese Diplomarbeit behandelt die Realisierung von zwei zentralen Komponenten des
+DoggoGO-Projekts: dem \textbf{Backend} und der \textbf{iOS-Applikation}.
+
+Das \textbf{Backend} hat folgende Aufgaben:
+\begin{itemize}
+  \item Bereitstellung einer RESTful~API für die Angular-Webanwendung und die iOS-App,
+  \item Verwaltung von Hundehalter\-innen und Hundehaltern sowie ihrer Hundeprofile,
+  \item Persistenz der Hunderassen inklusive ihrer rassenspezifischen Rechtsvorschriften,
+  \item sicherer Betrieb in einer Docker-Container-Umgebung.
+\end{itemize}
+
+Die \textbf{iOS-App} soll:
+\begin{itemize}
+  \item eine interaktive Karte mit standortbasierten Markierungen (Freilaufwiesen,
+        Sackerlspender, Hundekot-Müllbehälter) anzeigen,
+  \item das Hundeprofil der Nutzerin / des Nutzers verwalten,
+  \item rassenspezifische Leinen- und Maulkorbvorschriften für den aktuellen Standort anzeigen,
+  \item eine sichere Anmeldung per JWT-Authentifizierung bieten.
+\end{itemize}
+
+\section{Abgrenzung}
+\label{sec:abgrenzung}
+
+Die Angular-Webanwendung (inklusive UI/UX-Konzept, Routenplanung, Wetterintegration und
+Progressive-Web-App-Funktionalität) wurde von Manuel Rankl entwickelt und ist nicht
+Gegenstand dieser Arbeit. Gleiches gilt für die Entwicklung eines Android-Clients. Das in
+dieser Arbeit beschriebene Backend bildet die gemeinsame Datenbasis für beide Frontends.
+
+\section{Aufbau der Arbeit}
+\label{sec:aufbau}
+
+Die vorliegende Arbeit ist wie folgt gegliedert:
+
+\begin{description}
+  \item[Kapitel~\ref{chap:anforderungen} – Anforderungsanalyse:]
+    Beschreibung der Stakeholder, funktionaler und nicht-funktionaler Anforderungen sowie
+    der Use-Case-Szenarien aus Sicht des Backends und der iOS-App.
+  \item[Kapitel~\ref{chap:architektur} – Systemarchitektur:]
+    Gesamtarchitektur der Plattform, Datenbankdesign, REST-API-Überblick und
+    Kommunikationsfluss zwischen den Systemkomponenten.
+  \item[Kapitel~\ref{chap:technologie} – Technologieauswahl:]
+    Begründete Auswahl der eingesetzten Technologien (ASP.NET~Core~8, Entity~Framework~Core~9,
+    PostgreSQL, iOS/SwiftUI) mit Bewertung von Alternativen.
+  \item[Kapitel~\ref{chap:backend} – Backend-Implementierung:]
+    Detaillierte Beschreibung der API-Endpunkte, Datenbankmodelle, Migrations,
+    Authentifizierung, Breed-Seeding und Docker-Deployment.
+  \item[Kapitel~\ref{chap:ios} – iOS-Applikation:]
+    Architektur und Implementierung der iOS-App: MapKit-Integration, Standortdienste,
+    Authentifizierungsflow und Hundeprofilverwaltung.
+  \item[Kapitel~\ref{chap:testing} – Testing und Deployment:]
+    Teststrategie, durchgeführte Tests und Erkenntnisse aus dem Deployment.
+  \item[Kapitel~\ref{chap:zusammenfassung} – Zusammenfassung:]
+    Reflexion der erreichten Ziele, suboptimaler Entscheidungen, Einschränkungen und
+    Erweiterungsmöglichkeiten.
+\end{description}
