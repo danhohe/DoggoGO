@@ -343,7 +343,7 @@ Verbindung aufgebaut wird.
 
 Die eigentliche HTTP-Schnittstelle des Backends wird durch ASP.NET~Core~Controller realisiert.
 Jeder Controller erbt von \texttt{ControllerBase} und wird mit den Attributen
-\texttt{[ApiController]} und \texttt{[Route("api/[controller]")}} annotiert.
+\texttt{[ApiController]} und \texttt{[Route("api/[controller]")]} annotiert.
 \texttt{[ApiController]} aktiviert automatische Modellvalidierung und standardisierte
 Fehlerresponses; \texttt{[Route]} legt das URL-Präfix fest (z.\,B.\ \texttt{/api/owners},
 \texttt{/api/dogs}).
