@@ -15,7 +15,7 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.15": {
+      "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.19": {
         "type": "package",
         "dependencies": {
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "7.1.2"
@@ -1217,10 +1217,10 @@
         "logo.png"
       ]
     },
-    "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.15": {
-      "sha512": "41DQAWCOIDS9ZzW6hWCShRiVrBLvz2QqR+i0VhMa4JHuQLNW2axfiWgEbB8jYt8try1ez2Q+z1PfF3vbl+B9gA==",
+    "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.19": {
+      "sha512": "vkGkpvEGGLFHeYhlBqdJiOL/7aYiUmLg2PTfuDDjBDUDb5QTpoeWLNOOoodTlu88J+GluGE+DFF1kd9hxJd5bA==",
       "type": "package",
-      "path": "microsoft.aspnetcore.authentication.jwtbearer/8.0.15",
+      "path": "microsoft.aspnetcore.authentication.jwtbearer/8.0.19",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1228,7 +1228,7 @@
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll",
         "lib/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.xml",
-        "microsoft.aspnetcore.authentication.jwtbearer.8.0.15.nupkg.sha512",
+        "microsoft.aspnetcore.authentication.jwtbearer.8.0.19.nupkg.sha512",
         "microsoft.aspnetcore.authentication.jwtbearer.nuspec"
       ]
     },
@@ -3660,7 +3660,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.15",
+      "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.19",
       "Microsoft.AspNetCore.OpenApi >= 8.0.15",
       "Microsoft.EntityFrameworkCore >= 9.0.5",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.5",
@@ -3714,7 +3714,7 @@
         "dependencies": {
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
-            "version": "[8.0.15, )"
+            "version": "[8.0.19, )"
           },
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",

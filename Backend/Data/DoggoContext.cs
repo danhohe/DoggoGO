@@ -5,15 +5,16 @@ namespace Backend.Data;
 
 public class DoggoContext : DbContext
 {
-    public DoggoContext(DbContextOptions<DoggoContext> options): base(options)
+    public DoggoContext(DbContextOptions<DoggoContext> options) : base(options)
     { }
-    
+
     public DbSet<Dog> Dogs { get; set; }
     public DbSet<Owner> Owners { get; set; }
     public DbSet<Breed> Breeds { get; set; }
     public DbSet<LegalRestrictions> LegalRestrictions { get; set; }
     public DbSet<Location> Locations { get; set; }
-    
+
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -22,6 +23,7 @@ public class DoggoContext : DbContext
             .WithMany(o => o.Dogs)
             .HasForeignKey(d => d.OwnerId)
             .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<Dog>()
             .HasOne(d => d.Breed)
             .WithMany()
@@ -36,7 +38,7 @@ public class DoggoContext : DbContext
         modelBuilder.Entity<Owner>()
             .Property(o => o.PhoneNumber)
             .IsRequired(false);
-        
+
         modelBuilder.Entity<Breed>()
             .HasOne(b => b.LegalRestrictions)
             .WithMany()

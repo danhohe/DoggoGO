@@ -234,6 +234,43 @@ Anfrage von der iOS-App an das Backend:
   \item Der ASP.NET~Core Middleware-Stack validiert das Token vor jedem geschützten Endpunkt.
 \end{enumerate}
 
+\section{Sicherheitsarchitektur}
+\label{sec:sicherheit}
+
+Sicherheit ist ein Querschnittsthema, das alle Schichten des Systems betrifft. Für DoggoGO
+wurden Maßnahmen auf drei Ebenen getroffen: Passwortspeicherung, Tokenbasierte
+Authentifizierung und Autorisierung auf Datensatzebene.
+
+\paragraph{Passwortspeicherung}
+Passwörter werden niemals im Klartext gespeichert. Stattdessen wird für jede Nutzerin /
+jeden Nutzer beim Registrieren ein individueller zufälliger Salt erzeugt
+(\texttt{HMACSHA512.Key}), und das Passwort wird mit diesem Salt gehasht. Da jeder Salt
+einzigartig ist, erzeugt dasselbe Passwort für unterschiedliche Nutzer\-innen und Nutzer
+stets unterschiedliche Hashwerte. Damit sind vorberechnete Regenbogentabellen
+(\emph{Rainbow Tables}) wirkungslos. Salt und Hash werden als \texttt{byte[]}-Felder in
+der Datenbank persistiert.
+
+\paragraph{JWT-Tokenfluss}
+Nach erfolgreicher Anmeldung stellt der Server ein \textbf{JSON Web Token} (JWT) aus.
+Das Token ist mit einem serverseitigen Secret (HMAC-SHA256) signiert und trägt als
+Payload die \texttt{OwnerId} sowie die E-Mail-Adresse. Es hat eine konfigurierbare
+Ablaufzeit (Standard: 8~Stunden). Der Client sendet das Token bei jeder nachfolgenden
+Anfrage im \texttt{Authorization}-Header (\texttt{Bearer <token>}). Der ASP.NET~Core
+Middleware-Stack validiert die Signatur und den Ablaufzeitstempel, bevor die
+Controller-Methode aufgerufen wird – manipulierte oder abgelaufene Tokens werden mit
+\texttt{401~Unauthorized} abgelehnt.
+
+\paragraph{Autorisierung auf Datensatzebene}
+Die \texttt{OwnerId} wird serverseitig aus den verifizierten JWT-Claims gelesen, nie aus
+dem Request-Body. Dadurch ist es technisch unmöglich, dass eine angemeldete Nutzerin /
+ein angemeldeter Nutzer Daten einer anderen Person liest oder verändert: Jede Datenbankabfrage
+filtert implizit nach der eigenen \texttt{OwnerId}.
+
+\paragraph{CORS}
+Die API ist so konfiguriert, dass nur definierte Origins (Angular-Frontend und iOS-App)
+Cross-Origin-Anfragen stellen dürfen. Damit werden unberechtigte Zugriffe von fremden
+Webseiten auf die API unterbunden.
+
 \section{Deployment-Architektur}
 \label{sec:deployment}
 

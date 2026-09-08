@@ -151,3 +151,49 @@ mit weniger Boilerplate als UIKit und integriert sich nahtlos in das Apple-Ökos
 Cross-Platform-Frameworks wie React~Native oder Flutter bieten für reine iOS-Anforderungen
 keinen Mehrwert, führen aber zu einer tieferen Abstraktionsschicht und eingeschränkterem
 Zugang zu nativen APIs.
+
+\section{Nebenläufigkeit: Swift Concurrency (async/await)}
+\label{sec:swift-concurrency}
+
+\subsection{Bewertete Alternativen}
+\label{subsec:concurrency-alternativen}
+
+Netzwerkanfragen in iOS-Apps dürfen den Hauptthread (UI-Thread) nicht blockieren, da
+sonst die Benutzeroberfläche einfriert. Historisch standen drei Ansätze zur Verfügung:
+
+\begin{description}
+  \item[Completion Handler (Callbacks)]
+    Die klassische Lösung: \texttt{URLSession.dataTask(with:completionHandler:)} nimmt
+    eine Closure entgegen, die nach Abschluss der Anfrage aufgerufen wird. Bei
+    verketteten Anfragen entsteht schnell \emph{Callback~Hell} – tief verschachtelte
+    Closures, die schwer lesbar und fehleranfällig sind.
+  \item[Combine Framework]
+    Apples reaktives Framework ermöglicht deklarative Datenpipelines mit
+    \texttt{Publisher} und \texttt{Subscriber}. Combine ist mächtig, hat aber eine
+    steile Lernkurve und erzeugt bei einfachen HTTP-Anfragen viel Boilerplate
+    (\texttt{AnyCancellable}, \texttt{sink}, \texttt{receive(on:)}).
+  \item[Swift Concurrency (async/await)]
+    Seit Swift~5.5 (iOS~15+) bietet die Sprache natives \texttt{async/await}. Damit
+    lassen sich asynchrone Operationen sequenziell und lesbar formulieren, ohne
+    Callback-Verschachtelung. \texttt{URLSession} unterstützt \texttt{async/await}
+    nativ seit iOS~15.
+\end{description}
+
+\subsection{Entscheidung}
+\label{subsec:concurrency-entscheidung}
+
+\textbf{Swift Concurrency} wurde gewählt, weil die Zielplattform iOS~16+ ist (Anforderung
+NF-07) und daher \texttt{async/await} in vollem Umfang verfügbar ist. Der Code ist
+gegenüber Completion-Handlern deutlich lesbarer – ein \texttt{try await
+URLSession.shared.data(for:)} ersetzt eine dreistufige Callback-Kette vollständig.
+Gegenüber Combine entfällt der Aufwand für das Subscription-Management; für die
+DoggoGO-Anwendungsfälle (einfache Request-Response-Zyklen ohne komplexe Datenpipelines)
+ist Combine überdimensioniert. Zusätzlich erlaubt das \texttt{.task\{\}}-Modifier in
+SwiftUI das automatische Starten und Abbrechen von asynchronen Aufgaben in Abhängigkeit
+vom View-Lebenszyklus, was die Integration mit dem MVVM-Pattern vereinfacht:
+
+\begin{lstlisting}[language=swift, caption={Swift Concurrency – .task\{\} in SwiftUI}, label=lst:task-modifier]
+.task {
+    await viewModel.loadDogs()  // startet beim Erscheinen, bricht
+}                               // ab wenn die View verschwindet
+\end{lstlisting}
