@@ -96,7 +96,12 @@
   frame=single,
   rulecolor=\color{codegray}
 }
-\lstset{style=mystyle}
+\lstset{style=mystyle,
+  extendedchars=true,
+  literate={—}{{-}}1 {–}{{-}}1 {→}{{->}}2 {…}{{...}}3
+           {ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+           {Ä}{{\"A}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1 {ß}{{\ss}}1
+}
 
 \lstdefinelanguage{csharp}{
   keywords={abstract, as, base, bool, break, byte, case, catch, char, checked,
