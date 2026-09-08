@@ -17,18 +17,18 @@ Abbildung~\ref{fig:gesamtarchitektur} illustriert die Systemkomponenten und dere
   \begin{tikzpicture}[
       comp/.style={draw, rectangle, rounded corners=4pt,
                    minimum width=3.2cm, minimum height=0.9cm,
-                   align=center, fill=gray!10, font=\small},
+                   align=center, fill=gray!10, font=\small, text width=3cm},
       arr/.style={-{Stealth[length=5pt]}, thick},
-      label/.style={font=\footnotesize\itshape, midway, above}
+      label/.style={font=\footnotesize\itshape, pos=0.65, above}
     ]
     \node[comp] (ios)     at (0, 1.2)  {iOS-App\\(Swift/SwiftUI)};
     \node[comp] (angular) at (0,-1.2)  {Angular\\Web-App};
-    \node[comp] (api)     at (4.5, 0)  {Backend-API\\(ASP.NET Core 8)};
-    \node[comp] (db)      at (9, 0)    {PostgreSQL\\Datenbank};
+    \node[comp] (api)     at (5, 0)    {Backend-API\\(ASP.NET Core 8)};
+    \node[comp] (db)      at (10, 0)   {PostgreSQL\\Datenbank};
 
-    \draw[arr] (ios)     -- node[label]{HTTP/JSON} (api);
-    \draw[arr] (angular) -- node[label, below]{HTTP/JSON} (api);
-    \draw[arr] (api)     -- node[label]{EF Core} (db);
+    \draw[arr] (ios)     -- node[label, yshift=5pt]{HTTP/JSON} (api);
+    \draw[arr] (angular) -- node[label, below, yshift=-5pt]{HTTP/JSON} (api);
+    \draw[arr] (api)     -- node[label, pos=0.4]{EF Core} (db);
   \end{tikzpicture}
   \caption{Gesamtarchitektur von DoggoGO}
   \label{fig:gesamtarchitektur}
@@ -63,15 +63,15 @@ Das Backend ist intern in drei Schichten gegliedert (Abbildung~\ref{fig:backend-
   \centering
   \begin{tikzpicture}[
       layer/.style={draw, rectangle, minimum width=5.5cm, minimum height=0.85cm,
-                    align=center, font=\small, fill=gray!10},
+                    align=center, font=\small, fill=gray!10, text width=5cm},
       util/.style={draw, rectangle, dashed, minimum width=3cm, minimum height=0.85cm,
-                   align=center, font=\small, fill=white},
+                   align=center, font=\small, fill=white, text width=2.8cm},
       arr/.style={-{Stealth[length=5pt]}, thick}
     ]
-    \node[layer] (ctrl) at (0, 2.2) {Controller-Schicht\\(HTTP-Requests, Routing)};
-    \node[layer] (data) at (0, 1.1) {Datenbankschicht\\(DoggoContext / EF Core 9)};
+    \node[layer] (ctrl) at (0, 3.0) {Controller-Schicht\\(HTTP-Requests, Routing)};
+    \node[layer] (data) at (0, 1.5) {Datenbankschicht\\(DoggoContext / EF Core 9)};
     \node[layer] (pg)   at (0, 0)   {PostgreSQL};
-    \node[util]  (seed) at (5, 1.1) {BreedSeeder\\(Utility)};
+    \node[util]  (seed) at (8, 1.5) {BreedSeeder\\(Utility)};
 
     \draw[arr] (ctrl) -- (data);
     \draw[arr] (data) -- (pg);
@@ -194,7 +194,7 @@ Anfrage von der iOS-App an das Backend:
   \centering
   \begin{tikzpicture}[
       lifeline/.style={draw, rectangle, minimum width=2.4cm, minimum height=0.7cm,
-                       align=center, font=\small\bfseries, fill=gray!15},
+                       align=center, font=\small\bfseries, fill=gray!15, text width=2.2cm},
       msg/.style={-{Stealth[length=4pt]}, thin},
       ret/.style={-{Stealth[length=4pt]}, thin, dashed},
       lbl/.style={font=\footnotesize, above, midway}
@@ -202,24 +202,24 @@ Anfrage von der iOS-App an das Backend:
     % Köpfe
     \node[lifeline] (ios) at (0,0)   {iOS-App};
     \node[lifeline] (api) at (6,0)   {Backend-API};
-    \node[lifeline] (db)  at (11,0)  {PostgreSQL};
+    \node[lifeline] (db)  at (12.5,0) {PostgreSQL};
 
     % Lebenslinien
-    \draw[dotted] (ios.south) -- (0,-7.5);
-    \draw[dotted] (api.south) -- (6,-7.5);
-    \draw[dotted] (db.south)  -- (11,-7.5);
+    \draw[dotted] (ios.south) -- (0,-8.2);
+    \draw[dotted] (api.south) -- (6,-8.2);
+    \draw[dotted] (db.south)  -- (12.5,-8.2);
 
     % Nachrichten
-    \draw[msg] (0,-0.8) -- node[lbl]{POST /api/owners/login} (6,-0.8);
-    \draw[msg] (6,-1.4) -- node[lbl]{SELECT Owner WHERE email} (11,-1.4);
-    \draw[ret] (11,-2.0) -- node[lbl]{Owner-Datensatz} (6,-2.0);
-    \draw[ret] (6,-2.6) -- node[lbl]{200 OK + JWT} (0,-2.6);
-    \node[font=\footnotesize\itshape] at (1.5,-3.1) {$\rightarrow$ Token in Keychain};
-    \draw[msg] (0,-3.7) -- node[lbl]{GET /api/dogs (Bearer Token)} (6,-3.7);
-    \draw[msg] (6,-4.3) -- node[lbl]{JWT validieren + SELECT Dogs} (11,-4.3);
-    \draw[ret] (11,-4.9) -- node[lbl]{Dog-Datensätze} (6,-4.9);
-    \draw[ret] (6,-5.5) -- node[lbl]{200 OK + Dogs\-Liste (JSON)} (0,-5.5);
-    \node[font=\footnotesize\itshape] at (1.5,-6.0) {$\rightarrow$ UI aktualisieren};
+    \draw[msg] (0,-1.1)    -- node[lbl]{POST /api/owners/login}       (6,-1.1);
+    \draw[msg] (6,-1.85)   -- node[lbl]{SELECT Owner WHERE email}     (12.5,-1.85);
+    \draw[ret] (12.5,-2.6) -- node[lbl]{Owner-Datensatz}              (6,-2.6);
+    \draw[ret] (6,-3.35)   -- node[lbl]{200 OK + JWT}                 (0,-3.35);
+    \node[font=\footnotesize\itshape, anchor=west] at (0.15,-4.0) {$\rightarrow$ Token in Keychain};
+    \draw[msg] (0,-4.75)   -- node[lbl]{GET /api/dogs (Bearer Token)} (6,-4.75);
+    \draw[msg] (6,-5.5)    -- node[lbl]{JWT validieren + SELECT Dogs} (12.5,-5.5);
+    \draw[ret] (12.5,-6.25) -- node[lbl]{Dog-Datensätze}              (6,-6.25);
+    \draw[ret] (6,-7.0)    -- node[lbl]{200 OK + Dogs\-Liste (JSON)}  (0,-7.0);
+    \node[font=\footnotesize\itshape, anchor=west] at (0.15,-7.6) {$\rightarrow$ UI aktualisieren};
   \end{tikzpicture}
   \caption{Sequenzdiagramm – Authentifizierter API-Aufruf}
   \label{fig:sequenzdiagramm}

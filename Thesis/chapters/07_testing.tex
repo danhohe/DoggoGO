@@ -68,7 +68,7 @@ Für die Passwort-Hashing-Logik und die JWT-Erzeugung wurden Unit-Tests mit
 \textbf{xUnit} implementiert. Listing~\ref{lst:unittest} zeigt einen exemplarischen Test
 für den Passwort-Hash-Vergleich:
 
-\begin{lstlisting}[language=csharp, caption={xUnit-Test – Passwort-Hash-Verifikation}, label=lst:unittest]
+\begin{lstlisting}[language=csharp, caption={xUnit-Test – Passwort-Hash-Verifikation}, label=lst:unittest, float=h]
 public class PasswordHashTests
 {
     [Fact]
@@ -111,7 +111,7 @@ Die iOS-App wurde mit \textbf{XCTest} getestet. Aufgrund des Umfangs der Diploma
 konzentrierten sich die Tests auf das \texttt{AuthService}-Modul (Keychain-Operationen)
 und die \texttt{APIService}-Klasse (URL-Konstruktion, Fehlerbehandlung):
 
-\begin{lstlisting}[language=swift, caption={XCTest – AuthService Keychain-Test}, label=lst:xctest]
+\begin{lstlisting}[language=swift, caption={XCTest – AuthService Keychain-Test}, label=lst:xctest, float=h]
 class AuthServiceTests: XCTestCase {
 
     func testSaveAndRetrieveToken() {

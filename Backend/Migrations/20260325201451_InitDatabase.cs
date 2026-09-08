@@ -48,8 +48,7 @@ namespace Backend.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     BreedName = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    LegalRestrictionsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    LegalRestrictionsId1 = table.Column<Guid>(type: "uuid", nullable: true)
+                    LegalRestrictionsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,11 +59,6 @@ namespace Backend.Migrations
                         principalTable: "LegalRestrictions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Breeds_LegalRestrictions_LegalRestrictionsId1",
-                        column: x => x.LegalRestrictionsId1,
-                        principalTable: "LegalRestrictions",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -98,11 +92,6 @@ namespace Backend.Migrations
                 name: "IX_Breeds_LegalRestrictionsId",
                 table: "Breeds",
                 column: "LegalRestrictionsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Breeds_LegalRestrictionsId1",
-                table: "Breeds",
-                column: "LegalRestrictionsId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Dogs_BreedId",

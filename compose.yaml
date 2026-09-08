@@ -10,6 +10,19 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  backend:
+    build:
+      context: .
+      dockerfile: Backend/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=doggo_db;Username=doggo;Password=doggoGO123"
+      Jwt__Secret: "DoggoGO-SuperSecretKey-2025-ChangeInProduction!"
+      Jwt__Issuer: "DoggoGO"
+      Jwt__Audience: "DoggoGO-Clients"
 
 volumes:
   postgres_data:

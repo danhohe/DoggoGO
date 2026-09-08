@@ -1,2 +1,44 @@
-{
-}
+[
+  {
+    "name": "Freilaufwiese Leonding-Zentrum",
+    "latitude": 48.2700,
+    "longitude": 14.2960,
+    "category": "freilaufwiese"
+  },
+  {
+    "name": "Freilaufwiese Doppl",
+    "latitude": 48.2650,
+    "longitude": 14.3010,
+    "category": "freilaufwiese"
+  },
+  {
+    "name": "Sackerlspender Hauptplatz",
+    "latitude": 48.2692,
+    "longitude": 14.2956,
+    "category": "sackerlspender"
+  },
+  {
+    "name": "Sackerlspender Parkanlage",
+    "latitude": 48.2715,
+    "longitude": 14.2920,
+    "category": "sackerlspender"
+  },
+  {
+    "name": "Hundekot-Mülleimer Schulstraße",
+    "latitude": 48.2680,
+    "longitude": 14.2975,
+    "category": "muell_eimer"
+  },
+  {
+    "name": "Hundekot-Mülleimer Sportplatz",
+    "latitude": 48.2730,
+    "longitude": 14.2940,
+    "category": "muell_eimer"
+  },
+  {
+    "name": "Hundewaschstation Tierpark",
+    "latitude": 48.2660,
+    "longitude": 14.2930,
+    "category": "waschstation"
+  }
+]

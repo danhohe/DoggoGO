@@ -40,14 +40,9 @@ namespace Backend.Migrations
                     b.Property<Guid>("LegalRestrictionsId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("LegalRestrictionsId1")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("LegalRestrictionsId");
-
-                    b.HasIndex("LegalRestrictionsId1");
 
                     b.ToTable("Breeds");
                 });
@@ -99,6 +94,31 @@ namespace Backend.Migrations
                     b.ToTable("LegalRestrictions");
                 });
 
+            modelBuilder.Entity("Backend.Models.Location", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Locations");
+                });
+
             modelBuilder.Entity("Backend.Models.Owner", b =>
                 {
                     b.Property<Guid>("Id")
@@ -140,10 +160,6 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Backend.Models.LegalRestrictions", null)
-                        .WithMany("Breeds")
-                        .HasForeignKey("LegalRestrictionsId1");
-
                     b.Navigation("LegalRestrictions");
                 });
 
@@ -164,11 +180,6 @@ namespace Backend.Migrations
                     b.Navigation("Breed");
 
                     b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("Backend.Models.LegalRestrictions", b =>
-                {
-                    b.Navigation("Breeds");
                 });
 
             modelBuilder.Entity("Backend.Models.Owner", b =>

@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Backend.Migrations
 {
     [DbContext(typeof(DoggoContext))]
-    [Migration("20250527191852_InitDatabase")]
+    [Migration("20260325201451_InitDatabase")]
     partial class InitDatabase
     {
         /// <inheritdoc />
@@ -43,14 +43,9 @@ namespace Backend.Migrations
                     b.Property<Guid>("LegalRestrictionsId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("LegalRestrictionsId1")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("LegalRestrictionsId");
-
-                    b.HasIndex("LegalRestrictionsId1");
 
                     b.ToTable("Breeds");
                 });
@@ -143,10 +138,6 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Backend.Models.LegalRestrictions", null)
-                        .WithMany("Breeds")
-                        .HasForeignKey("LegalRestrictionsId1");
-
                     b.Navigation("LegalRestrictions");
                 });
 
@@ -167,11 +158,6 @@ namespace Backend.Migrations
                     b.Navigation("Breed");
 
                     b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("Backend.Models.LegalRestrictions", b =>
-                {
-                    b.Navigation("Breeds");
                 });
 
             modelBuilder.Entity("Backend.Models.Owner", b =>

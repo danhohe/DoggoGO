@@ -1,0 +1,92 @@
+\babel@toc {ngerman}{}\relax 
+\contentsline {chapter}{Eidesstattliche Erklärung}{1}{chapter*.1}%
+\contentsline {chapter}{Kurzfassung}{2}{chapter*.2}%
+\contentsline {chapter}{Abstract}{3}{chapter*.3}%
+\contentsline {chapter}{Abbildungsverzeichnis}{7}{chapter*.5}%
+\contentsline {chapter}{Tabellenverzeichnis}{8}{chapter*.6}%
+\contentsline {chapter}{Quellcodeverzeichnis}{9}{chapter*.7}%
+\contentsline {chapter}{\numberline {1}Einleitung}{10}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Ausgangssituation und Problemstellung}{10}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Defizite bestehender Lösungen}{10}{subsection.1.1.1}%
+\contentsline {section}{\numberline {1.2}Zielsetzung dieser Arbeit}{11}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Abgrenzung}{12}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Aufbau der Arbeit}{12}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Anforderungsanalyse}{14}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Stakeholder und Zielgruppe}{14}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Funktionale Anforderungen}{15}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Backend-API}{15}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}iOS-Applikation}{16}{subsection.2.2.2}%
+\contentsline {section}{\numberline {2.3}Nicht-funktionale Anforderungen}{17}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Use-Case-Szenarien}{17}{section.2.4}%
+\contentsline {paragraph}{UC-01: Registrierung}{18}{section*.13}%
+\contentsline {paragraph}{UC-02: Anmeldung und Kartenzugriff}{18}{section*.14}%
+\contentsline {paragraph}{UC-03: Hundeprofil anlegen}{18}{section*.15}%
+\contentsline {paragraph}{UC-04: Rechtliche Einschränkungen abrufen}{18}{section*.16}%
+\contentsline {chapter}{\numberline {3}Systemarchitektur}{19}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Gesamtarchitektur}{19}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Schichten des Backends}{20}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Datenbankdesign}{20}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Beziehungen und Löschverhalten}{21}{subsection.3.3.1}%
+\contentsline {section}{\numberline {3.4}REST-API-Überblick}{21}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Kommunikationsfluss}{22}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Deployment-Architektur}{23}{section.3.6}%
+\contentsline {chapter}{\numberline {4}Technologieauswahl}{24}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Backend-Framework: ASP.NET Core 8}{24}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Bewertete Alternativen}{24}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Entscheidung}{25}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}ORM: Entity Framework Core 9}{25}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Bewertete Alternativen}{25}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Entscheidung}{26}{subsection.4.2.2}%
+\contentsline {section}{\numberline {4.3}Datenbank: PostgreSQL}{26}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Bewertete Alternativen}{26}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Entscheidung}{26}{subsection.4.3.2}%
+\contentsline {section}{\numberline {4.4}iOS: Swift und SwiftUI}{27}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Bewertete Alternativen}{27}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Entscheidung}{27}{subsection.4.4.2}%
+\contentsline {chapter}{\numberline {5}Backend-Implementierung}{28}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Projektstruktur}{28}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Datenbankmodelle}{28}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Owner}{28}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Dog}{28}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Breed und LegalRestrictions}{29}{subsection.5.2.3}%
+\contentsline {section}{\numberline {5.3}DoggoContext und Beziehungskonfiguration}{29}{section.5.3}%
+\contentsline {section}{\numberline {5.4}EF Core Migrations}{29}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Breed-Seeding}{30}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Authentifizierung mit JWT}{30}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}Passwort-Hashing}{30}{subsection.5.6.1}%
+\contentsline {subsection}{\numberline {5.6.2}JWT-Ausstellung}{31}{subsection.5.6.2}%
+\contentsline {section}{\numberline {5.7}Program.cs – Anwendungskonfiguration}{31}{section.5.7}%
+\contentsline {section}{\numberline {5.8}Docker-Deployment}{32}{section.5.8}%
+\contentsline {subsection}{\numberline {5.8.1}Dockerfile (Multi-Stage-Build)}{32}{subsection.5.8.1}%
+\contentsline {subsection}{\numberline {5.8.2}Docker Compose}{32}{subsection.5.8.2}%
+\contentsline {section}{\numberline {5.9}API-Dokumentation mit Swagger}{33}{section.5.9}%
+\contentsline {chapter}{\numberline {6}iOS-Applikation}{36}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Architektur der iOS-App}{36}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Projektstruktur}{36}{section.6.2}%
+\contentsline {section}{\numberline {6.3}MapKit-Integration}{37}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Standortdienste und Berechtigungen}{38}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Authentifizierung in der iOS-App}{38}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}Login und Registrierung}{38}{subsection.6.5.1}%
+\contentsline {subsection}{\numberline {6.5.2}Token-Persistenz im Keychain}{39}{subsection.6.5.2}%
+\contentsline {section}{\numberline {6.6}Hundeprofilverwaltung}{39}{section.6.6}%
+\contentsline {section}{\numberline {6.7}Anzeige gesetzlicher Vorschriften}{40}{section.6.7}%
+\contentsline {section}{\numberline {6.8}HTTP-Kommunikation mit dem Backend}{40}{section.6.8}%
+\contentsline {chapter}{\numberline {7}Testing und Deployment}{42}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Teststrategie}{42}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Backend-Tests}{42}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Manuelle Tests mit Swagger und Postman}{42}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Unit-Tests mit xUnit}{43}{subsection.7.2.2}%
+\contentsline {section}{\numberline {7.3}iOS-Tests}{43}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Integrationstests}{43}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Deployment-Verifikation}{44}{section.7.5}%
+\contentsline {chapter}{\numberline {8}Zusammenfassung}{46}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Erreichte Ziele}{46}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Suboptimale Entscheidungen}{46}{section.8.2}%
+\contentsline {paragraph}{Doppelter Foreign-Key in der Initialmigration}{47}{section*.47}%
+\contentsline {paragraph}{Fehlendes Con\-trol\-ler-Layer}{47}{section*.48}%
+\contentsline {paragraph}{Fehlende Input-Validierung}{47}{section*.49}%
+\contentsline {paragraph}{iOS-Simulator statt echtes Gerät}{47}{section*.50}%
+\contentsline {section}{\numberline {8.3}Einschränkungen der Lösung}{47}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Erweiterungsmöglichkeiten}{48}{section.8.4}%
+\contentsline {chapter}{\numberline {A}API-Endpunkte im Detail}{49}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Dokumentation der KI-Nutzung}{51}{appendix.B}%

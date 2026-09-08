@@ -26,18 +26,18 @@ Testbarkeit und Wartbarkeit.
   \centering
   \begin{tikzpicture}[
       box/.style={draw, rectangle, rounded corners=4pt,
-                  minimum width=3cm, minimum height=0.9cm,
-                  align=center, font=\small, fill=gray!10},
+                  minimum width=4.0cm, minimum height=0.9cm,
+                  align=center, font=\small, fill=gray!10, text width=3.8cm},
       ext/.style={draw, rectangle, rounded corners=4pt,
-                  minimum width=3cm, minimum height=0.9cm,
-                  align=center, font=\small, fill=white, dashed},
+                  minimum width=4.0cm, minimum height=0.9cm,
+                  align=center, font=\small, fill=white, dashed, text width=3.8cm},
       arr/.style={{Stealth[length=5pt]}-{Stealth[length=5pt]}, thick},
       oarr/.style={-{Stealth[length=5pt]}, thick, dashed}
     ]
     \node[box] (view)  at (0, 0)   {View\\(SwiftUI)};
-    \node[box] (vm)    at (4, 0)   {ViewModel\\(@ObservableObject)};
-    \node[box] (model) at (8, 0)   {Model\\(Codable DTOs)};
-    \node[ext] (api)   at (4,-1.8) {Backend REST-API\\(URLSession)};
+    \node[box] (vm)    at (6, 0)   {ViewModel\\(@ObservableObject)};
+    \node[box] (model) at (12, 0)  {Model\\(Codable DTOs)};
+    \node[ext] (api)   at (6,-2)   {Backend REST-API\\(URLSession)};
 
     \draw[arr]  (view)  -- node[font=\footnotesize, above]{Bindings} (vm);
     \draw[arr]  (vm)    -- node[font=\footnotesize, above]{Daten}    (model);
@@ -69,7 +69,7 @@ SwiftUI wird eine Karte mit \texttt{Map(coordinateRegion:)} eingebunden. Der akt
 Standort der Nutzerin / des Nutzers wird über \texttt{CLLocationManager} ermittelt und
 als Region übergeben.
 
-\begin{lstlisting}[language=swift, caption={Kartenansicht in SwiftUI (vereinfacht)}, label=lst:mapview]
+\begin{lstlisting}[language=swift, caption={Kartenansicht in SwiftUI (vereinfacht)}, label=lst:mapview, float=h]
 import SwiftUI
 import MapKit
 
@@ -106,13 +106,13 @@ pro Kategorie genutzt.
 \label{sec:standortdienste}
 
 Die Standortermittlung wird über \texttt{CLLocationManager} realisiert. Gemäß
-DSGVO-Anforderung (NF-03) darf der Standort nur mit expliziter Nutzer\-innen-/Nutzerzustimmung
+DSGVO-Anforderung (NF-03) darf der Standort nur mit expliziter Nutzer\-innen-/Nut\-zer\-zu\-stim\-mung
 erfasst werden. Die App fragt beim ersten Start die Berechtigung
-\texttt{requestWhenInUseAuthorization()} ab. Die \texttt{Info.plist} enthält die
-Pflichteinträge \texttt{NSLocationWhenInUseUsageDescription} mit einer verständlichen
+\texttt{re\-quest\-When\-In\-Use\-Au\-thor\-iza\-tion()} ab. Die \texttt{Info.plist} enthält die
+Pflichteinträge \texttt{NS\-Lo\-ca\-tion\-When\-In\-Use\-Usage\-De\-scrip\-tion} mit einer verständlichen
 Begründung.
 
-\begin{lstlisting}[language=swift, caption={LocationManager (Auszug)}, label=lst:locationmanager]
+\begin{lstlisting}[language=swift, caption={LocationManager (Auszug)}, label=lst:locationmanager, float=h]
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private let manager = CLLocationManager()
     @Published var userLocation: CLLocation?
@@ -142,7 +142,7 @@ Die Anmeldeansicht (\texttt{LoginView}) enthält Eingabefelder für E-Mail und P
 Nach dem Tippen auf „Anmelden" wird \texttt{POST /api/owners/login} mit den Credentials
 aufgerufen. Bei Erfolg liefert das Backend ein JWT zurück:
 
-\begin{lstlisting}[language=swift, caption={Login-Anfrage (Auszug)}, label=lst:login]
+\begin{lstlisting}[language=swift, caption={Login-Anfrage (Auszug)}, label=lst:login, float=h]
 func login(email: String, password: String) async throws {
     let body = LoginRequest(email: email, password: password)
     let response: AuthResponse = try await apiService.post(
@@ -159,7 +159,7 @@ Das JWT wird sicher im iOS~\texttt{Keychain} gespeichert, nicht in
 \texttt{UserDefaults}, da der Keychain verschlüsselt und vor anderen Apps geschützt ist.
 Der \texttt{AuthService} kapselt alle Keychain-Operationen:
 
-\begin{lstlisting}[language=swift, caption={AuthService – Keychain-Speicherung (Auszug)}, label=lst:keychain]
+\begin{lstlisting}[language=swift, caption={AuthService – Keychain-Speicherung (Auszug)}, label=lst:keychain, float=h]
 class AuthService {
     static let shared = AuthService()
     private let tokenKey = "doggo_jwt_token"
@@ -201,7 +201,7 @@ Nutzers auf und ruft dazu \texttt{GET /api/dogs} mit dem Bearer-Token auf. Über
 Bearbeiten eines Profils. Die Rassenauswahl erfolgt über einen \texttt{Picker}, der die
 von \texttt{GET /api/breeds} geladene Liste anzeigt.
 
-\begin{lstlisting}[language=swift, caption={DogListView – Übersicht der Hundeprofile (Auszug)}, label=lst:doglist]
+\begin{lstlisting}[language=swift, caption={DogListView – Übersicht der Hundeprofile (Auszug)}, label=lst:doglist, float=h]
 struct DogListView: View {
     @StateObject private var viewModel = DogListViewModel()
 
@@ -234,10 +234,10 @@ struct DogListView: View {
 
 Nach der Rassenauswahl ruft die App \texttt{GET /api/breeds/\{id\}} ab und zeigt die
 \texttt{LegalRestrictions} in einer strukturierten Ansicht an. Rassen der Kategorie
-\texttt{spezielle\_hunderasse} werden farblich hervorgehoben (rotes Label), um die
+\texttt{spezi\-elle\_hun\-de\-rasse} werden farblich hervorgehoben (rotes Label), um die
 Nutzerin / den Nutzer auf besondere Pflichten aufmerksam zu machen:
 
-\begin{lstlisting}[language=swift, caption={LegalRestrictionsView – Anzeige der Vorschriften}, label=lst:legal]
+\begin{lstlisting}[language=swift, caption={LegalRestrictionsView – Anzeige der Vorschriften}, label=lst:legal, float=h]
 struct LegalRestrictionsView: View {
     let restrictions: LegalRestrictions
 
@@ -266,7 +266,7 @@ Alle Netzwerkanfragen werden über einen zentralen \texttt{APIService} abgewicke
 \texttt{URLSession} kapselt. Das Bearer-Token wird in jedem Request automatisch als
 \texttt{Authorization}-Header eingefügt:
 
-\begin{lstlisting}[language=swift, caption={APIService – Authentifizierter Request (Auszug)}, label=lst:apiservice]
+\begin{lstlisting}[language=swift, caption={APIService – Authentifizierter Request (Auszug)}, label=lst:apiservice, float=h]
 func get<T: Decodable>(endpoint: String) async throws -> T {
     guard let url = URL(string: baseURL + endpoint) else {
         throw APIError.invalidURL

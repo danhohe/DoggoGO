@@ -12,6 +12,7 @@ public class DoggoContext : DbContext
     public DbSet<Owner> Owners { get; set; }
     public DbSet<Breed> Breeds { get; set; }
     public DbSet<LegalRestrictions> LegalRestrictions { get; set; }
+    public DbSet<Location> Locations { get; set; }
     
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

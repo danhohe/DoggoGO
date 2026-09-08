@@ -16,6 +16,7 @@ Dokumentation ist über die Swagger-UI unter \texttt{/swagger} erreichbar.
   \item \textbf{Beschreibung:} Registriert eine neue Nutzerin / einen neuen Nutzer.
   \item \textbf{Request-Body (JSON):}
 \end{itemize}
+\noindent\begin{minipage}{\linewidth}
 \begin{lstlisting}[language={}]
 {
   "name": "Max Muster",
@@ -24,6 +25,7 @@ Dokumentation ist über die Swagger-UI unter \texttt{/swagger} erreichbar.
   "phoneNumber": "+43 123 456789"
 }
 \end{lstlisting}
+\end{minipage}
 \begin{itemize}
   \item \textbf{Response 201:} Owner-Objekt (ohne Passwort-Felder)
   \item \textbf{Response 409:} E-Mail bereits vergeben
@@ -35,14 +37,16 @@ Dokumentation ist über die Swagger-UI unter \texttt{/swagger} erreichbar.
   \item \textbf{Beschreibung:} Meldet eine Nutzerin / einen Nutzer an und gibt ein JWT zurück.
   \item \textbf{Request-Body (JSON):}
 \end{itemize}
+\noindent\begin{minipage}{\linewidth}
 \begin{lstlisting}[language={}]
 {
   "email": "max@example.com",
   "password": "SecurePass123!"
 }
 \end{lstlisting}
+\end{minipage}
 \begin{itemize}
-  \item \textbf{Response 200:} \texttt{\{"token": "eyJ...\}"}
+  \item \textbf{Response 200:} \verb|{"token": "eyJ..."}|
   \item \textbf{Response 401:} Ungültige Anmeldedaten
 \end{itemize}
 
@@ -51,8 +55,11 @@ Dokumentation ist über die Swagger-UI unter \texttt{/swagger} erreichbar.
 \textbf{GET /api/dogs} \quad \textit{(Authentifizierung erforderlich)}\\
 Gibt alle Hundeprofile der aktuellen Nutzerin / des aktuellen Nutzers zurück.
 
-\textbf{POST /api/dogs} \quad \textit{(Authentifizierung erforderlich)}\\
-Legt ein neues Hundeprofil an.
+\textbf{POST /api/dogs} \quad \textit{(Authentifizierung erforderlich)}
+
+Legt ein neues Hundeprofil an. Request-Body (JSON):
+
+\noindent\begin{minipage}{\linewidth}
 \begin{lstlisting}[language={}]
 {
   "name": "Bello",
@@ -60,6 +67,7 @@ Legt ein neues Hundeprofil an.
   "breedId": "a1b2c3d4-..."
 }
 \end{lstlisting}
+\end{minipage}
 
 \textbf{PUT /api/dogs/\{id\}} \quad \textit{(Authentifizierung erforderlich)}\\
 Aktualisiert ein bestehendes Hundeprofil.
